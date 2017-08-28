@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-groupservices">
+	
+	
+	<!-- 查询用户列表条件-->
+	<sql id="groupCon">
+		<if test="{group_num} != null">
+	    	and group_num = #{group_num}
+	    </if>
+		<if test="{group_name} != null">
+	    	and group_name = #{group_name}
+	    </if>
+	</sql> 
+		
+	<!-- 查找组列表 -->
+	<sql-service id="grouplist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_group 
+			where 
+				1 = 1
+			<include ref="wms-groupservices.groupCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select 
+					group_id,group_name,group_num,create_time
+				from 
+					lab_group
+				where 
+					1 = 1
+				<include ref="wms-groupservices.groupCon"/>
+				order by 
+		    		group_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 查找该组已经有的学生 -->
+	<selectSet  id="listbygroupid" txRef="tx_01" dsKey="readDB">
+		select 
+			*
+		from 
+			lab_group_student
+		where 
+			1 = 1
+		<if test="{group_id}!=null">
+			and group_id = #{group_id}
+		</if>
+		order by 
+    		group_student_id desc
+	</selectSet>
+		
+	
+	<!-- 添加分组 -->
+	<sql-service id="insertGroup" txRef="tx_02" dsKey="writeDB">
+		<selectVar resultKey="{group_num}">
+			SELECT nextval_string('group', '01', 4)
+	    </selectVar>
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_group(
+				group_name, group_num,class_id,class_name,type, state, operator, create_time, update_time
+			) VALUES(
+				#{group_name}, #{group_num|''},#{class_id|0},#{class_name|''}, #{type|0}, #{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新分组 -->
+	<update id="updateGroup" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_group set 
+			group_name = #{group_name},
+			type = #{type},
+			update_time = #{update_time|now()}
+		where 
+			group_id = #{group_id}
+	</update>
+	
+	<!-- 删除分组 -->
+	<sql-service id="deleteGroup" txRef="tx_02" dsKey="writeDB">
+		<update rowCount="{rowCount}">
+			delete from lab_group 
+			where 
+				group_id = #{group_id}
+		</update>
+		<update>
+			delete from lab_group_student
+			where 
+				group_id = #{group_id}
+		</update>
+		<return value="{rowCount}" />
+	</sql-service>
+	
+	<!-- 删除某个组的学生 -->
+	<update id="deleteGroupStudent" txRef="tx_02" dsKey="writeDB">
+		delete from lab_group_student
+		where 
+			group_id = #{group_id}
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectGroupById" txRef="tx_01" dsKey="readDB">
+		select * from lab_group where group_id = #{group_id}
+	</selectOne>
+	
+	<!-- 添加分组 -->
+	<sql-service id="insertGroupStudent" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_group_student(
+				group_id, group_name, group_num, student_id, student_name, 
+				state, operator, create_time, update_time
+			) VALUES(
+				#{group_id}, #{group_name}, #{group_num|''}, #{student_id}, #{student_name}, 
+				#{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 删除分组里面的学生-->
+	<update id="deleteStudentGroup" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from 
+			lab_group_student
+		where 
+			group_id = #{group_id}
+	</update>
+	
+	<!-- 查找分组下拉框 -->
+	<selectSet id="groupSelect" txRef="tx_01" dsKey="readDB">
+		select group_id,group_name from lab_group
+	</selectSet>
+	
+</sqlservices>

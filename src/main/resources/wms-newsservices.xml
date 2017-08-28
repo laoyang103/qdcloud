@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-newsservices">
+	
+	
+	<!-- 查询新闻列表条件-->
+	<sql id="newsCon">
+		<if test="{title} != null">
+	    	and title like concat('%',#{title},'%') 
+	    </if>
+	    <if test="{flag} != null">
+	    	and flag = #{flag}
+	    </if>
+	</sql> 
+		
+	<!-- 查找新闻列表 -->
+	<sql-service id="newslist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_news
+			where 
+				1 = 1 
+			<include ref="wms-newsservices.newsCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_news 
+				where 1 = 1
+				<include ref="wms-newsservices.newsCon"/>
+				order by 
+		    		id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加新闻 -->
+	<sql-service id="insertNews" txRef="tx_02" dsKey="writeDB">
+		<!-- 序列查询 -->
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_news(
+				title, source, keyword, abstractTitle, content, flag, 
+				state, operator, create_time, update_time
+			) VALUES(
+				#{title}, #{source|''}, #{keyword|''}, #{abstractTitle|''}, #{content|''}, #{flag|1}, 
+				#{state|1}, #{operator|''}, now(), now()
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新新闻 -->
+	<update id="updateNews" rowCount="{rowCount}" txRef="tx_01" dsKey="writeDB">
+		update lab_news set 
+			title = #{title},
+			content = #{content},
+			update_time = #{update_time|now()}
+		where 
+			id = #{id}
+	</update>
+	
+	<!-- 删除新闻 -->
+	<update id="deleteNews" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from
+			lab_news 
+		where 
+			id = #{id}
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectNewsById" txRef="tx_01" dsKey="readDB">
+		select * from lab_news where id = #{id}
+	</selectOne>
+</sqlservices>

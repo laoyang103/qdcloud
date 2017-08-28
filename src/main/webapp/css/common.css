@@ -1,0 +1,166 @@
+/* 说明： 收银台改版
+ * 开发时间： 2016-04-28
+ * 开发者： meme   
+ * 版本时间： 2016-04-28
+ * 注意事项： 初始化样式,如果此样式未对网页产生影响尽量不要修改
+ */
+ 
+/*global*/
+html{color:#666;}
+html,body,header,footer,section,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,form,input,textarea,p,span,em,i{margin:0;padding:0;}
+img{border:0;}
+em{font-style:normal;font-weight:normal;}
+ul,li{list-style:none;}
+select,input,textarea{font-size:12px;font-family:inherit;font-weight:inherit;}
+textarea{resize:none;}
+/*select{appearance: none;-webkit-appearance:none;}*/
+input:focus,textarea:focus{outline:none;}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ color: #ccc; } 
+::-moz-placeholder { /* Mozilla Firefox 19+ */ color: #ccc; } 
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { color: #ccc; } 
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #ccc; }
+
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+/* link */
+a{color:#666;text-decoration:none;outline:none;blr:expression(this.onFocus=this.blur());}
+a:hover{color:#ff7900;}
+.cursor_p{ cursor:pointer;}
+.undL{text-decoration:underline}
+.lineT{text-decoration:line-through}
+.height20{ height:20px;}
+/*float*/
+.fl,.lf{float:left;display:inline;}
+.fr{float:right;display:inline;}
+.clear{clear: both;display: block;font-size: 0;height: 0;line-height: 0;overflow: hidden;}
+.clearfix_fixed:after{clear: both;content: ".";display: block;height: 0;visibility: hidden;}
+.clearfix_fixed{zoom:1;}
+.zoom{ overflow:hidden;_zoom:1;}
+/*font*/
+.tc{text-align:center;}
+.tl{text-align:left;}
+.tr{text-align:right;}
+.vt{vertical-align:top;}
+.vm{vertical-align:middle;}
+.vb{vertical-align:bottom;}
+.line45{line-height:45px;}
+.bold{font-weight:bold;}
+.italic{ font-style:italic}
+.normal{font-weight:normal;}
+.arial{ font-family:Arial, Helvetica, sans-serif;}
+.font12{font-size:12px;}
+.font13{font-size:13px;}
+.font14{font-size:14px;}
+.font18{font-size:18px;}
+.font15{font-size:15px;}
+.font16{font-size:16px;}
+.font20{font-size:20px;}
+.font24{ font-size:24px;}
+.font30{font-size:30px;}
+.em1{text-indent:1em;}
+.em2{text-indent:2em;}
+/*强制不换行省略*/
+.text_ell{display:block;word-break:break-all;white-space:nowrap; text-overflow:ellipsis;}
+/*display*/
+.dis_none{display:none;}
+.dis_block{display:block;}
+.dis_inline{display:inline;}
+.dis_inline-block{display:inline-block;}
+.overHidden{overflow:hidden;}
+.overScroll{overflow:scroll;}
+/* ====== display:box ====== */
+.disp-box,.disp-box-s,.disp-box-c,.disp-box-e,.disp-box-stretch{display:box;display:-webkit-box;display:-moz-box;display:-o-box;}
+.disp-box-f1{display:block;box-flex:1;-webkit-box-flex:1;-moz-box-flex:1;-o-box-flex:1;}
+.disp-box-e{-webkit-box-align:end;-moz-box-align:end;-o-box-align:end;box-align:end;}
+.disp-box-c{-webkit-box-align:center;-moz-box-align:center;-o-box-align:center;box-align:center;}
+.disp_table{ display:table;}
+.disp_table_c{ display:table-cell;}
+
+/* color */
+.white{ color:#fff;}
+.red{color:#c00c00;}
+.red1{color:#fe0000;}
+.JuHong{color:#f63;}
+.hui999{ color:#999;}
+.hui666{ color:#666;}
+.hui000{ color:#000;}
+.hui48{color:#484848;}
+.hui333{color:#333;}
+.green{ color:#05a05c}
+.blue{ color:#0ae}
+.yellow{ color:#ffba00}
+.blue1{color:#0066cc}
+/*margin padding*/
+.ml-5{margin-left:5px;}
+.mt-3{ margin-top:3px;}
+.mt-8{margin-top:8px;}
+.mt-10{margin-top:10px;}
+.mt-13{margin-top:13px;}
+.mt-18{margin-top:18px;}
+.mb-10{margin-bottom:10px;}
+.mr-10{margin-right:10px;}
+.ml-10{margin-left:10px;}
+.mt-15{margin-top:15px;}
+.mb-15{margin-bottom:15px;}
+.mr-5{margin-right:5px;}
+.mr-15{margin-right:15px;}
+.ml-15{margin-left:15px;}
+.ml-25{margin-left:25px;}
+.mt-20{margin-top:20px;}
+.mb-20{margin-bottom:20px;}
+.mr-20{margin-right:20px;}
+.mr-35{margin-right:35px;}
+.ml-20{margin-left:20px;}
+.mt-25{margin-top:25px;}
+.mt-30{margin-top:30px;}
+.ml-30{margin-left:30px;}
+.ml-40{margin-left:40px;}
+.mt-5{margin-top:5px;}
+.mt-45{margin-top:45px;}
+.mt-35{margin-top:35px;}
+.pr-5{padding-right:5px;}
+.pt-5{padding-top:5px;}
+.pt-10{padding-top:10px;}
+.pt-15{padding-top:15px;}
+.pb-10{padding-bottom:10px;}
+.pr-10{padding-right:10px;}
+.pl-10{padding-left:10px;}
+.pt-25{padding-top:25px;}
+.pb-15{padding-bottom:15px;}
+.pr-15{padding-right:15px;}
+.pl-15{padding-left:15px;}
+.pt-20{padding-top:20px;}
+.pb-20{padding-bottom:20px;}
+.pr-20{padding-right:20px;}
+.pl-20{padding-left:20px;}
+.pb-30{padding-bottom:30px;}
+.pr-30{padding-right:30px;}
+.mt-50{margin-top:50px;}
+.marAuto{margin:0 auto}
+/*space*/
+.space_30{ height:30px;}
+/*width*/
+.w-600{width:600px;}
+.w-550{width:550px;}
+.w-500{width:500px;}
+.w-300{width:300px;}
+.w-250{width:250px;}
+.w-220{width:220px;}
+.w-200{width:200px;}
+.w-150{width:150px;}
+.w-100{width:100px;}
+.w-80{width:80px;}
+.w-35{width:35px;}
+.w-50{width:50px;}
+.w-60{ width:60px;}
+.wid100{width:100%;}
+/*background*/
+.bg_none{background:none}
+.bg_white{ background:#fff;}
+.bord1e2{border:1px solid #e2e2e2;}
+/*position*/
+.pos_r,.iw{position:relative;/*z-index:1*/}
+.pos_a{position:absolute}
+.iw i,.iw s{ position:absolute; overflow:hidden;}
+.checkbox{ width:14px; height:14px; vertical-align:middle; margin:0 5px 1px 0;}
+
+

@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-courseservices">
+	
+	
+	<!-- 查询课程列表条件-->
+	<sql id="courseCon">
+		<if test="{room_id} != null and {room_id} != ''">
+	    	and o.room_id = #{room_id}
+	    </if>
+		<if test="{room_day} != null and {room_day} != ''">
+	    	and o.room_day = #{room_day}
+	    </if>
+	</sql> 
+		
+	<!-- 查找教师预约教室列表 -->
+	<sql-service id="courselist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_room_order o
+			where 
+				o.teacher_id = #{user_id} and o.audit_state = 100 and o.state = 1 
+			<include ref="wms-courseservices.courseCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select o.*,c.* from 
+				lab_room_order o
+				left join lab_course c on o.room_id = c.room_id and o.begin_time = c.begin_time and o.end_time = c.end_time and o.teacher_id = c.teacher_id
+				where o.teacher_id = #{user_id} and o.audit_state = 100 and o.state = 1 
+				<include ref="wms-courseservices.courseCon"/>
+				order by 
+		    		o.order_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 查询课程列表条件-->
+	<sql id="courseCon2">
+		<if test="{course_id} != null">
+	    	and s.course_id = #{course_id}
+	    </if>
+		<if test="{course_name} != null">
+	    	and s.course_name like concat('%',#{course_name},'%')
+	    </if>
+	    <if test="{experiment_name} != null">
+	    	and s.experiment_name like concat('%',#{experiment_name},'%')
+	    </if>
+	    <if test="{class_id} != null">
+	    	and s.class_id = #{class_id}
+	    </if>
+	    <if test="{begin_time} != null">
+	    	and s.begin_time &gt; #{begin_time}
+	    </if>
+	    <if test="{end_time} != null">
+	    	and s.end_time &lt; #{end_time}
+	    </if>
+	</sql> 
+	
+	<!-- 学生查找课程列表 -->
+	<sql-service id="studenttasklist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_course_student cs
+			where 
+				1 = 1
+				<if test="{student_id}!=null">
+					and cs.student_id = #{student_id}
+				</if>
+			<include ref="wms-courseservices.courseCon2"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select s.* ,cs.state csstate,cs.course_student_id
+				from 
+					lab_course_student cs
+				left join 
+					lab_course s on s.course_id = cs.course_id
+				where 
+					1 = 1
+					<if test="{student_id}!=null">
+						and cs.student_id = #{student_id}
+					</if>
+				<include ref="wms-courseservices.courseCon2"/>
+				order by 
+		    		s.course_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加课程 -->
+	<sql-service id="insertCourse" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_course(
+				course_name, experiment_id, experiment_name, example_id, example_name,example_content, time_id,
+				begin_time, end_time, class_id, class_name, room_id, room_name,place_count,place_ok_count, 
+				state, teacher_id, teacher_name, operator, create_time, update_time
+			) VALUES(
+				#{course_name}, #{experiment_id}, #{experiment_name}, #{example_id}, #{example_name}, #{example_content|''},#{time_id},
+				#{begin_time}, #{end_time}, #{class_id|0}, #{class_name|''}, #{room_id|0}, #{room_name|''},#{place_count}, #{place_ok_count|0}, 
+				#{state|1}, #{teacher_id|0}, #{teacher_name|''}, #{user_name|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 判断学生是否已经预约过或者别人帮预约过某个时间的课程  -->
+	<selectVar id="sforder" txRef="tx_02" dsKey="readDB">
+		select count(1) from lab_course_order where student_id = #{user_id} and time_id = #{time_id}
+	</selectVar>
+	
+	<!-- 判断学生是否已经签到  -->
+	<selectVar id="sfqiandao" txRef="tx_02" dsKey="readDB">
+		select count(1) from lab_course_student where  course_id = #{course_id} and student_id = #{student_ids} and time_id = #{time_id}
+	</selectVar>
+	
+	<!-- 课程选择学生  保存选择的学生-->
+	<sql-service id="insertStudentCourse" txRef="tx_02" dsKey="writeDB">
+		<insert>
+			INSERT INTO lab_course_student(
+				course_id, course_name, student_id,time_id, student_name, example_content, 
+				example_checked, example_score, example_comment, begin_time ,end_time,
+				experiment_report, experiment_checked, experiment_score, experiment_comment, 
+				operator, create_time, update_time
+			) VALUES(
+				#{course_id}, #{course_name}, #{student_id},#{time_id}, #{student_name}, #{example_content|''}, 
+				#{example_checked|0}, #{example_score|0}, #{example_comment|''}, #{begin_time},#{end_time},
+				#{experiment_report|''}, #{experiment_checked|0}, #{experiment_score|0}, #{experiment_comment|''}, 
+				#{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<update>
+			update lab_course_student_station
+			set
+				state = 0
+			where
+				state = 1 and student_id = #{student_id} and time_id =#{time_id}
+		</update>
+	</sql-service>
+	
+	<!-- 获取单个 lab_course_student_station  -->
+	<selectOne id="selectOneStation" txRef="tx_02" dsKey="readDB">
+		select * from lab_course_student_station where station_id = #{station_id} and time_id = #{time_id} limit 1
+	</selectOne>
+	
+	<!-- 更新课程 -->
+	<update id="updateCourse" txRef="tx_02" dsKey="writeDB">
+		update lab_course set 
+			course_name = #{course_name},
+			experiment_id = #{experiment_id},
+			experiment_name = #{experiment_name},
+			example_content = #{example_content},
+			example_id = #{example_id},
+			example_name = #{example_name},
+			update_time = #{update_time|now()}
+		where 
+			course_id = #{course_id}
+	</update>
+	
+	<!-- 查找某个课程下面学生已做题的数目 -->
+	<selectVar id="askCourseNum" txRef="tx_01" dsKey="readDB">
+		select count(1) from lab_course_student where example_content != '' and course_id = #{course_id}
+	</selectVar>
+	
+	<selectOne  id="selectCourseById2" txRef="tx_01" dsKey="readDB">
+		select 
+			cs.course_student_id,c.course_name,le.experiment_name,le.experiment_id,e.example_id,e.example_name,
+			c.begin_time,c.end_time,c.class_id,u.class_name,c.room_id,c.room_name,e.example_content exampleContent,
+			cs.student_id,cs.student_name,cs.example_checked,cs.example_flag,cs.example_score,cs.experiment_flag,
+			cs.example_comment,cs.experiment_report,cs.experiment_checked,cs.experiment_score,cs.experiment_comment,
+			cs.experiment_state,cs.begin_time csbegintime,cs.end_time csendtime,cs.example_state csstate,
+			cs.example_content,cs.experiment_report
+		from 	
+			lab_course_student cs 
+		left join lab_course c on cs.course_id = c.course_id
+		left join lab_example e on c.example_id = e.example_id
+		left join lab_user u on u.user_id = cs.student_id
+		left join lab_experiment le on c.experiment_id = le.experiment_id
+		where 
+			cs.student_id = #{student_id} and cs.course_id = #{course_id} and c.time_id = #{time_id}
+	</selectOne>
+	
+	<selectOne  id="studentTaskById" txRef="tx_01" dsKey="readDB">
+		select *
+		from 	
+			lab_course_student 
+		where 
+			course_student_id = #{course_student_id}
+	</selectOne>
+	
+	<selectOne  id="studentShangkeById2" txRef="tx_01" dsKey="readDB">
+		select cs.*,u.class_name,c.class_id,c.course_name,c.experiment_name,c.example_name
+		from 	
+			lab_course_student cs 
+		left join lab_course c on cs.course_id = c.course_id
+		left join lab_user u on u.user_id = cs.student_id
+		where 
+			course_student_id = #{course_student_id}
+	</selectOne>
+	
+	<!-- 学生提交作业 -->
+	<update rowCount="{rowCount}" id="updateStudentCourse" txRef="tx_02" dsKey="writeDB">
+		update lab_course_student set 
+			example_flag = 1,
+			example_state = 20,
+			end_time = now(),
+			example_content = #{example_content},
+			update_time = #{update_time|now()}
+		where 
+			course_student_id = #{course_student_id}
+	</update>
+	
+	<!-- 学生提交实验报告 -->
+	<update id="updateStudentReport" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_course_student set 
+			experiment_flag = 1,
+			experiment_state = 20,
+			experiment_report = #{experiment_report},
+			update_time = #{update_time|now()}
+		where 
+			course_student_id = #{course_student_id}
+	</update>
+	
+	<!-- 判断该课程下的 所有 试题是否全部 学生做完提交  如果全部做完 则 该课程为完成状态 -->
+	<sql-service id="updateComplateCourse" txRef="tx_02" dsKey="writeDB">
+		<selectVar resultKey="{course_id}">
+			<![CDATA[
+			select count(1) from lab_course_student where state < 30 and course_id = #{course_id}
+			]]>
+		</selectVar>
+		<!-- 学生全部提交 -->
+		<if test="{course_id} == 0">
+			<update>
+				update lab_course
+				set
+					state = 30
+				where
+					course_id = #{course_id}
+			</update>
+		</if>
+	</sql-service>
+	
+	<!-- 教师批改作业 -->
+	<update id="updateTeacherCourse" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_course_student set 
+			example_checked = 1,
+			example_state = 30,
+			example_score = #{example_score},
+			example_comment = #{example_comment},
+			update_time = #{update_time|now()}
+		where 
+			course_student_id = #{course_student_id}
+	</update>
+	
+	<!-- 教师批改报告 -->
+	<update id="updateTeacherReport" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_course_student set 
+			experiment_checked = 1,
+			experiment_state = 30,
+			experiment_score = #{experiment_score},
+			experiment_comment = #{experiment_comment},
+			update_time = #{update_time|now()}
+		where 
+			course_student_id = #{course_student_id}
+	</update>
+	
+	<!-- 删除课程 -->
+	<update id="deleteCourse" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		 delete from 
+		 	lab_course 
+		where 
+			course_id = #{course_id}
+	</update>
+	
+	<!-- 删除课程选择的学生 -->
+	<update id="deleteStudentCourse" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from lab_course_student 
+		where 
+			course_id = #{course_id}
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectCourseById" txRef="tx_01" dsKey="readDB">
+		select * from lab_course where course_id = #{course_id}
+	</selectOne>	
+	
+	<!-- 更新课程预约学生的数量 -->
+	<update id="updateOrderCount" rowCount="{ncount}" txRef="tx_01" dsKey="writeDB">
+		update lab_course set
+			place_ok_count = #{place_ok_count}
+		where
+			course_id = #{course_id}
+	</update>	
+	
+	<!-- 查询实验 by 任务id -->
+	<selectOne id="selectExpByCourseId" txRef="tx_01" dsKey="readDB">
+		select e.* 
+		from 
+			lab_experiment e
+		left join 
+			lab_course	c
+		on e.experiment_id = c.experiment_id
+		where 
+			c.course_id = #{course_id} 
+	</selectOne>
+	
+	<!-- 查询批改作业列表条件-->
+	<sql id="studentCourseCon">
+		<if test="{course_student_id} != null">
+	    	and cs.course_student_id = #{course_student_id}
+	    </if>
+	    <if test="{user_id} != null">
+	    	and c.teacher_id = #{user_id}
+	    </if>
+		<if test="{course_name} != null">
+	    	and c.course_name like concat('%',#{course_name},'%')
+	    </if>
+	    <if test="{experiment_name} != null">
+	    	and c.experiment_name like concat('%',#{experiment_name},'%')
+	    </if>
+	    <if test="{class_id} != null">
+	    	and c.class_id = #{class_id}
+	    </if>
+	    <if test="{begin_time} != null">
+	    	and c.begin_time &gt; #{begin_time}
+	    </if>
+	    <if test="{end_time} != null">
+	    	and c.end_time &lt; #{end_time}
+	    </if>
+	    <if test="{student_name} != null">
+	    	and cs.student_name like concat('%',#{student_name},'%');
+	    </if>
+	</sql> 
+	
+	<!--教师 ：批改 作业列表 -->
+	<sql-service id="studentCourselist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(cs.course_student_id) 
+			from 
+				lab_course_student cs ,
+				lab_course c  
+			where 
+				1 = 1 and cs.course_id = c.course_id 
+			<include ref="wms-courseservices.studentCourseCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select cs.course_student_id,c.course_id,c.course_name,c.experiment_name,
+					   u.class_id,u.class_name,cs.student_id,cs.student_name,
+					   c.begin_time,c.end_time,cs.example_checked,cs.example_score,cs.experiment_report,
+					   cs.experiment_checked,cs.experiment_score,
+					   cs.experiment_comment,cs.example_flag
+				from 
+					lab_course_student cs
+				left join 
+					lab_course c on cs.course_id = c.course_id  
+				left join 
+					lab_user u on u.user_id = cs.student_id
+				where 
+					1 = 1 
+				<include ref="wms-courseservices.studentCourseCon"/>
+				order by 
+		    		cs.course_student_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!--教师： 查询单个作业的批改结果 -->
+	<selectOne id="exampleById" txRef="tx_01" dsKey="readDB">
+		select cs.course_student_id,c.course_id,c.course_name,c.experiment_name,c.class_id,c.class_name,cs.student_id,cs.student_name,
+			   c.begin_time,c.end_time,cs.example_checked,cs.example_score,cs.example_comment,cs.example_content,cs.state
+		from 
+			lab_course_student cs
+		left join 
+			lab_course c on cs.course_id = c.course_id  
+		where 
+			cs.course_student_id = #{course_student_id} 
+	</selectOne>
+	
+	<!--教师 ：批改 报告列表 -->
+	<sql-service id="studentCourseReportlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(cs.course_student_id) 
+			from 
+				lab_course_student cs
+			left join 
+				lab_course c on cs.course_id = c.course_id  
+			where 
+				1 = 1
+			<include ref="wms-courseservices.studentCourseCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select cs.course_student_id,c.course_id,c.course_name,c.experiment_name,c.class_id,c.class_name,cs.student_id,cs.student_name,
+					   c.begin_time,c.end_time,cs.experiment_checked,cs.experiment_score
+				from 
+					lab_course_student cs
+				left join 
+					lab_course c on cs.course_id = c.course_id  
+				where 
+					1 = 1
+				<include ref="wms-courseservices.studentCourseCon"/>
+				order by 
+		    		cs.course_student_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!--教师： 查询单个作业的批改结果 -->
+	<selectOne id="reportById" txRef="tx_01" dsKey="readDB">
+		select cs.course_student_id,c.course_id,c.course_name,c.experiment_name,c.class_id,c.class_name,cs.student_id,cs.student_name,
+			   c.begin_time,c.end_time,cs.experiment_checked,cs.example_score,cs.example_comment,cs.example_content,cs.state
+		from 
+			lab_course_student cs
+		left join 
+			lab_course c on cs.course_id = c.course_id  
+		where 
+			cs.course_student_id = #{course_student_id}
+	</selectOne>
+	
+	<selectSet id="selectSet" txRef="tx_01" dsKey="readDB">
+		select distinct student_id,student_name
+		from
+			lab_course_student
+		where 
+			1 = 1
+		<if test="{course_id}!=null">
+			and course_id = #{course_id}
+		</if>
+	</selectSet>
+	
+	<update id="updateBeginTime" txRef="tx_01" dsKey="readDB">
+		update lab_course_student 
+		set
+			example_state = 20,
+			begin_time = now()
+		where 
+			course_student_id = #{course_student_id}
+	</update>
+	
+	<!-- 标记为完成 -->
+	<update id="updateStudentCourse30" txRef="tx_01" dsKey="readDB">
+		update lab_course_student 
+		set
+			state = 30
+		where 
+			course_student_id = #{course_student_id}
+	</update>
+	
+	<!-- 更新课程为开始 -->
+	<update id="updateCourseStart" txRef="tx_01" dsKey="readDB">
+		update lab_course 
+		set
+			state = 20
+		where 
+			course_id = #{course_id}
+	</update>
+	
+	<!-- 教师预约 实验室课时 -->
+	<sql-service id="insertOrderRoomTime" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_room_order(
+				time_id,room_id, room_code, room_name, room_day, time_name, begin_time, end_time, 
+				teacher_id, teacher_name, shenhe_id, audit_state, state, remark, operator, create_time
+			) VALUES(
+				#{time_id},#{room_id}, #{room_code}, #{room_name}, #{room_day}, #{time_name}, #{begin_time}, #{end_time}, 
+				#{teacher_id}, #{teacher_name}, #{shenhe_id|0}, 10, #{state|1}, #{remark|''}, #{operator|''}, 
+				#{create_time|now()}
+			)
+		</insert>
+		<!-- 更新该时间段位不可预约 -->
+		<update>
+			update lab_room_time set
+				check_state = 2,
+				update_time = now()
+			where
+				time_id = #{time_id} and
+				check_state = 1
+		</update>
+		<return value="{ID}" />
+	</sql-service>
+	
+	
+	<!-- 查询批改作业列表条件-->
+	<sql id="studentyuyueCon">
+		<if test="{teacher_id} != null">
+	    	and c.teacher_id = #{teacher_id}
+	    </if>
+	    <if test="{class_id} != null">
+	    	and c.class_id = #{class_id}
+	    </if>
+	    <if test="{endd_time} != null">
+	    	and c.end_time &gt; #{endd_time}
+	    </if>
+	    <if test="{room_day} != null">
+	    	and c.room_day = #{room_day};
+	    </if>
+	</sql> 
+	
+	<!-- 查找教师预约教室列表 -->
+	<sql-service id="courseyuyuelist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_course c
+			where 
+				1 = 1 
+			<include ref="wms-courseservices.studentyuyueCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select c.*,e.experiment_name ename 
+				from 
+					lab_course c
+				left join lab_experiment e on c.experiment_id = e.experiment_id
+				where
+					1 = 1
+				<include ref="wms-courseservices.studentyuyueCon"/>
+				order by 
+		    		course_id desc 
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	
+	<update id="deleteOrderCourseByOptId" txRef="tx_02" dsKey="writeDB">
+		delete from lab_course_order 
+		where course_id = #{course_id} and class_id = #{class_id} and operator_id = #{operator_id} and time_id = #{time_id} and student_id = #{user_id}
+	</update>
+	
+	<!-- 添加课程预约 -->
+	<sql-service id="insertOrderCourse" txRef="tx_02" dsKey="writeDB">
+		<insert>
+			INSERT INTO lab_course_order(
+				course_id, class_id, student_id,time_id, student_name, remark, state, operator_id ,operator, create_time
+			) VALUES(
+				#{course_id}, #{class_id}, #{student_id},#{time_id}, #{student_name}, #{remark|''}, #{state|1}, #{operator_id},#{operator}, #{create_time|now()}
+			)
+		</insert>
+	</sql-service>
+	
+	<!-- 查找课程预约个数 -->
+	<sql-service id="selectOrderCourseCount" txRef="tx_02" dsKey="readDB">
+		<selectVar resultKey="{ncount}">
+			select count(1) from lab_course_order
+			where course_id = #{course_id} and class_id = #{class_id} and operator_id = #{operator_id}
+		</selectVar>
+		<return>
+			<property value="{ncount}" name="{ncount}"/>
+		</return>
+	</sql-service>
+	
+	<!-- 学生预约课程列表 -->
+	<selectSet id="selectCourseOrderSet" txRef="tx_01" dsKey="readDB">
+		select distinct student_id,student_name
+		from
+			lab_course_order
+		where 
+			1 = 1
+		<if test="{course_id}!=null">
+			and course_id = #{course_id}
+		</if>
+		<if test="{class_id}!=null">
+			and class_id = #{class_id}
+		</if>
+	</selectSet>
+	
+	<!-- 查询课程列表条件-->
+	<sql id="courseCon3">
+		<if test="{teacher_id} != null">
+	    	and c.teacher_id = #{teacher_id}
+	    </if>
+		<if test="{room_id} != null">
+	    	and c.room_id = #{course_name}
+	    </if>
+	    <if test="{room_day} != null">
+	    	and c.room_day = #{room_day}
+	    </if>
+	    <if test="{endd_time} != null">
+	    	and c.end_time &gt; #{endd_time}
+	    </if>
+	</sql> 
+	
+	<!-- 学生预约后，看到到课程 进行上课列表 -->
+	<sql-service id="studentyuyuelist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_course_order co
+			left join 
+				lab_course c
+			on co.course_id = c.course_id
+			where 
+				1 = 1
+				<if test="{student_id}!=null">
+					and co.student_id = #{student_id}
+				</if>
+			<include ref="wms-courseservices.courseCon3"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select co.*,c.*,r.room_name roomname,e.experiment_name ename
+				from 
+					lab_course_order co
+				left join lab_course c on co.course_id = c.course_id
+				left join lab_room r on r.room_id = c.room_id
+				left join lab_experiment e on c.experiment_id = e.experiment_id
+				where
+					1 = 1
+					<if test="{student_id}!=null">
+						and co.student_id = #{student_id}
+					</if>
+				<include ref="wms-courseservices.courseCon3"/>
+				order by 
+		    		co.course_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 学生点击 上课签到  更新考勤状态-->
+	<sql-service id="updateCheckWorkState" txRef="tx_02" dsKey="writeDB">
+		<update rowCount="{ID}">
+			update lab_course_order
+			set
+				check_work = 1,
+				update_time = now()
+			where
+				order_id = #{order_id}
+		</update>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!--查找单个预约教室 -->
+	<selectOne id="selectOrderRoomById" txRef="tx_01" dsKey="readDB">
+		select *
+		from 
+			lab_course_order 
+		where 
+			order_id = #{order_id}
+	</selectOne>
+	
+	<!-- 查询课程列表条件-->
+	<sql id="orderCon">
+		<if test="{room_day} != null and {room_day} != ''">
+	    	and left(c.begin_time,10) = #{room_day}
+	    </if>
+	    <if test="{user_name} != null and {user_name} != ''">
+	    	and u.user_name like concat('%',#{user_name},'%')
+	    </if>
+	    <if test="{real_name} != null and {real_name} != ''">
+	    	and u.real_name like concat('%',#{real_name},'%')
+	    </if>
+	    <if test="{class_name} != null and {class_name} != ''">
+	    	and u.class_id  = #{class_name}
+	    </if>
+		<if test="{check_work} != null and {check_work} != ''">
+	    	and o.check_work = #{check_work}
+	    </if>
+	</sql> 
+		
+	<!-- 学生考勤列表 -->
+	<sql-service id="kaoqinlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_course_order o
+			join lab_user u on u.user_id = o.student_id
+			join lab_course c on c.course_id = o.course_id
+			<if test="{teacher_id}!=null">
+				and c.teacher_id = #{teacher_id}
+			</if>
+			where 
+				1 = 1 
+			<include ref="wms-courseservices.orderCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select o.order_id,o.check_work,u.user_id,u.user_name,u.real_name,c.room_id,c.room_name,c.begin_time,c.end_time,c.experiment_name
+				from 
+					lab_course_order o
+				join lab_user u on u.user_id = o.student_id
+				join lab_course c on c.course_id = o.course_id
+				<if test="{teacher_id}!=null">
+					and c.teacher_id = #{teacher_id}
+				</if>
+				where
+				 	1 = 1
+				<include ref="wms-courseservices.orderCon"/>
+				order by 
+		    		o.order_id 
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 更新课位和学生之间的关系 -->
+	<sql-service id="updateLCSS" txRef="tx_01" dsKey="writeDB">
+		<update>
+			update lab_course_student_station set 
+				student_id = 0,
+				student_name = "",
+				operator_id = 0,
+				operator = "",
+				update_time = #{update_time|now()}
+			where 
+				time_id = #{time_id} and student_id = #{student_id}
+		</update>
+		<update>
+			update lab_course_student_station set 
+				student_id = #{student_id},
+				student_name = #{student_name},
+				operator_id = #{operator_id},
+				operator = #{operator},
+				update_time = #{update_time|now()}
+			where 
+				station_id = #{station_id} and time_id = #{time_id}
+		</update>
+	</sql-service>
+</sqlservices>

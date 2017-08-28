@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-messageservices">
+	
+	
+	<!-- 查询用户列表条件-->
+	<sql id="msgCon">
+		<if test="{sender} != null">
+	    	and sender = #{sender}
+	    </if>
+	    <if test="{receiver} != null">
+	    	and receiver = #{receiver}
+	    </if>
+	    <if test="{message_name} != null">
+	    	and message_name like concat('%',#{message_name},'%')
+	    </if>
+	</sql> 
+		
+	<!-- 查找学生教师列表 -->
+	<sql-service id="msglist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_message
+			where 
+				1 = 1 
+			<include ref="wms-messageservices.msgCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_message 
+				where 
+					1 = 1 
+				<include ref="wms-messageservices.msgCon"/>
+				order by 
+		    		message_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加消息 -->
+	<sql-service id="insertMsg" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_message(
+				message_name, message_content, sender, receiver, looked, state, 
+				operator, create_time, update_time
+			) VALUES(
+				#{message_name}, #{message_content}, #{sender}, #{receiver}, #{looked|0}, #{state|1}, 
+				#{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 添加消息 -->
+	<sql-service id="insertMsgOne" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_message_one(
+				message_name, message_content, sender, receiver, looked, state, 
+				operator, create_time, update_time
+			) VALUES(
+				#{message_name}, #{message_content}, #{sender}, #{receiver}, #{looked|0}, #{state|1}, 
+				#{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新消息 -->
+	<update id="updateMsg" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_message set 
+			message_name = #{message_name},
+			message_content = #{message_content},
+			sender = #{sender},
+			receiver = #{receiver},
+			update_time = #{update_time|now()}
+		where 
+			message_id = #{message_id}
+	</update>
+	
+	<!-- 删除消息 -->
+	<update id="deleteMsg" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from
+			lab_message
+		where 
+			message_id = #{message_id}
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectMsgById" txRef="tx_01" dsKey="readDB">
+		select * from lab_message where message_id = #{message_id} 
+	</selectOne>
+	
+</sqlservices>

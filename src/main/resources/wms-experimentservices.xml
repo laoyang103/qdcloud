@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-experimentservices">
+	
+	
+	<!-- 查询实验室列表条件-->
+	<sql id="expCon">
+		<if test="{experiment_name} != null">
+	    	and t.experiment_name like concat('%',#{experiment_name},'%') 
+	    </if>
+		<if test="{type_name} != null">
+	    	and t.type_name like concat('%',#{type_name},'%') 
+	    </if>
+	    <if test="{operator} != null">
+	    	and t.operator = #{operator}
+	    </if>
+	</sql> 
+		
+	<!-- 查找教室列表 -->
+	<sql-service id="explist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_experiment t
+			left join 
+				lab_user u on u.user_name = t.operator
+			where 
+				1 = 1
+			<include ref="wms-experimentservices.expCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select t.*,u.real_name 
+				from 
+					lab_experiment t
+				left join 
+				lab_user u on u.user_name = t.operator
+				where 1 = 1
+				<include ref="wms-experimentservices.expCon"/>
+				order by 
+		    		experiment_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 判断该实验编码是否重复 -->
+	<selectVar id="checkDupExp" txRef="tx_02" dsKey="readDB">
+		select count(1) from lab_experiment where experiment_code = #{experiment_code}
+	</selectVar>
+	
+	<!-- 判断该实验编码是否重复 -->
+	<selectOne id="checkDupExp2" txRef="tx_02" dsKey="readDB">
+		select * from lab_experiment where experiment_code = #{experiment_code} limit 1
+	</selectOne>
+	
+	<!-- 添加实验 -->
+	<sql-service id="insertExp" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_experiment(
+				experiment_code, experiment_name, type_id, type_name, 
+				student_type, person_count, study_time, experiment_book, check_type, 
+				experiment_count, remark, require_content, file_name, file_url, file_size, 
+				file_name2, file_url2,file_name3, file_url3, state, operator, create_time
+			) VALUES(
+				#{experiment_code}, #{experiment_name}, #{type_id|0}, #{type_name|''}, 
+				#{student_type|''}, #{person_count|0}, #{study_time|0}, #{experiment_book|''}, #{check_type|''}, 
+				#{experiment_count|''}, #{remark}, #{require_content|''}, #{file_name|''}, #{file_url|''}, 
+				#{file_size|0}, #{file_name2|''}, #{file_url2|''},#{file_name3|''}, #{file_url3|''}, #{state|1}, #{operator}, #{create_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新实验 -->
+	<update id="updateExp" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_experiment set 
+			<if test="{experiment_code} != null">
+				experiment_code = #{experiment_code},
+			</if>
+			<if test="{experiment_name} != null">
+				experiment_name = #{experiment_name},
+			</if>
+			<if test="{type_id} != null">
+				type_id = #{type_id},
+			</if>
+			<if test="{type_name} != null">
+				type_name = #{type_name},
+			</if>
+			<if test="{student_type} != null">
+				student_type = #{student_type},
+			</if>
+			<if test="{person_count} != null">
+				person_count = #{person_count},
+			</if>
+			<if test="{study_time} != null">
+				study_time = #{study_time},
+			</if>
+			<if test="{experiment_book} != null">
+				experiment_book = #{experiment_book},
+			</if>
+			<if test="{check_type} != null">
+				check_type = #{check_type},
+			</if>
+			<if test="{experiment_count} != null">
+				check_type = #{check_type},
+			</if>
+			<if test="{remark} != null">
+				remark = #{remark},
+			</if>
+			<if test="{require_content} != null">
+				require_content = #{require_content},
+			</if>
+			<if test="{file_name} != null">
+				file_name = #{file_name},
+			</if>
+			<if test="{file_url} != null">
+				file_url = #{file_url},
+			</if>
+			<if test="{file_size} != null">
+				file_size = #{file_size},
+			</if>
+			<if test="{file_name2} != null">
+				file_name2 = #{file_name2},
+			</if>
+			<if test="{file_url2} != null">
+				file_url2 = #{file_url2},
+			</if>
+			<if test="{file_name3} != null">
+				file_name3 = #{file_name3},
+			</if>
+			<if test="{file_url3} != null">
+				file_url3 = #{file_url3},
+			</if>
+			update_time = #{update_time|now()}
+		where 
+			experiment_id = #{experiment_id}
+	</update>
+	
+	<!-- 删除实验 -->
+	<update id="deleteExp1" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_experiment set 
+			state = 0,
+			update_time = #{update_time|now()}
+		where 
+			experiment_id = #{experiment_id}
+	</update>
+	
+	<!-- 删除实验 -->
+	<update id="deleteExp" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from 
+			lab_experiment 
+		where 
+			experiment_id = #{experiment_id}
+	</update>
+	
+	<!-- 查找单个实验 -->
+	<selectOne id="selectExpById" txRef="tx_01" dsKey="readDB">
+		select * from lab_experiment where experiment_id = #{experiment_id} and state = 1
+	</selectOne>
+	
+	<!-- 查找实验室类型下拉框 -->
+	<selectSet id="typeSelect" txRef="tx_01" dsKey="readDB">
+		select type_id,type_name from lab_experiment_type where state = 1
+	</selectSet>
+	
+	<!-- 查找习题列表 下拉框 -->
+	<selectSet id="experimentSelect" txRef="tx_01" dsKey="readDB">
+		select experiment_id,experiment_name from lab_experiment where state = 1 
+		<if test="{operator}!=null and {operator}!=''">
+			and operator = #{operator}
+		</if>
+	</selectSet>
+	
+</sqlservices>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-userservices">
+	
+	
+	<!-- 查询用户列表条件-->
+	<sql id="userCon">
+		<if test="{user_name} != null">
+	    	and user_name like concat('%',#{user_name},'%')
+	    </if>
+		<if test="{real_name} != null">
+	    	and real_name like concat('%',#{real_name},'%')
+	    </if>
+	    <if test="{sex} != null">
+	    	and sex = #{sex}
+	    </if> 
+	    <if test="{class_id} != null">
+	    	and class_id = #{class_id}
+	    </if>
+	</sql> 
+		
+	<!-- 查找学生教师列表 -->
+	<sql-service id="userlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_user
+			where 
+				type=#{type} 
+			<include ref="wms-userservices.userCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_user 
+				where type=#{type}
+				<include ref="wms-userservices.userCon"/>
+				order by 
+		    		user_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	
+	<!-- 查询用户列表条件-->
+	<sql id="personCon">
+		<if test="{user_name} != null">
+	    	and user_name = #{user_name}
+	    </if>
+	    <if test="{type} != null">
+	    	and type = #{type}
+	    </if>
+		<if test="{real_name} != null">
+	    	and real_name like concat('%',#{real_name},'%')
+	    </if>
+	</sql> 
+		
+	<!-- 查找人员列表 -->
+	<sql-service id="personlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_user
+			where 
+				1 = 1
+			<include ref="wms-userservices.personCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_user 
+				where 
+					1 = 1
+				<include ref="wms-userservices.personCon"/>
+				order by 
+		    		user_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 查找某个班级下所有的学生 -->
+	<selectSet  id="studentbyclassid" txRef="tx_01" dsKey="readDB">
+		select 
+			*
+		from 
+			lab_user
+		where 
+			1 = 1 and state = 1
+		<if test="{type}!=null">
+			and type = #{type}
+		</if>
+		<if test="{group_id}!=null">
+			and group_id = #{group_id}
+		</if>
+		<if test="{class_id}!=null">
+			and class_id = #{class_id}
+		</if>
+		order by 
+    		user_id desc
+	</selectSet>
+	
+	
+	<!-- 查找某个班级下所有的学生2 -->
+	<selectSet  id="studentbyclassid2" txRef="tx_01" dsKey="readDB">
+		select 
+			*
+		from 
+			lab_user
+		where 
+			1 = 1 and state = 1
+		<if test="{type}!=null">
+			and type = #{type}
+		</if>
+		<if test="{class_id}!=null">
+			and class_id = #{class_id}
+		</if>
+		and user_id not in(select student_id from lab_course_order where class_id = #{class_id})
+		order by 
+    		user_id desc
+	</selectSet>
+	
+	<!-- 添加用户 -->
+	<sql-service id="insertUser" txRef="tx_02" dsKey="writeDB">
+		<!-- 序列查询 -->
+		<if test="{type} == 0">
+			<selectVar resultKey="{user_num}">
+				SELECT nextval_string('student', '01', 4)
+			</selectVar>
+		</if>
+		<elseif test="{type} == 1">
+			<selectVar resultKey="{user_num}">
+				SELECT nextval_string('teacher', '02', 4)
+			</selectVar>
+		</elseif>
+		<elseif test="{type} == 2">
+			<selectVar resultKey="{user_num}">
+				SELECT nextval_string('admin', '02', 4)
+			</selectVar>
+		</elseif>
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_user(
+				user_num, user_name, real_name, password, sex, class_id, class_name, 
+				type, role_id, state, operator, create_time, update_time
+			) VALUES(
+				#{user_num|''}, #{user_name}, #{real_name}, #{password}, #{sex|0}, #{class_id}, #{class_name}, 
+				#{type|0}, #{type|0}, #{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!--判断用户账号是否重复  -->
+	<selectVar id="studentbyUserName" txRef="tx_01" dsKey="readDB">
+		select count(1) from lab_user where binary user_name = #{user_name}
+	</selectVar>
+	
+	<!-- 更新用户 -->
+	<update id="updateUser" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_user set 
+			user_name = #{user_name},
+			real_name = #{real_name},
+			sex = #{sex},
+			class_name = #{class_name},
+			class_id = #{class_id},
+			type = #{type},
+			update_time = #{update_time|now()}
+		where 
+			user_id = #{user_id}
+	</update>
+	
+	<!-- 停用用户 -->
+	<update id="deleteUser" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update  lab_user set
+			state = 0
+		where 
+			user_id = #{user_id} and state = 1
+	</update>
+	
+	<!-- 启用用户 -->
+	<update id="startUser" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update  lab_user set
+			state = 1
+		where 
+			user_id = #{user_id} and state = 0
+	</update>
+	
+	<!-- 彻底删除用户 -->
+	<update id="deletedUser" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from lab_user
+		where 
+			user_id = #{user_id}
+	</update>
+	<!-- 重置用户密码 -->
+	<update id="resetPwd" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_user set
+			password = #{password}
+		where 
+			user_id = #{user_id}
+	</update>
+	<!-- 查找单个对象 -->
+	<selectOne id="selectUserByUserId" txRef="tx_01" dsKey="readDB">
+		select * from lab_user where user_id = #{user_id} and state = 1
+	</selectOne>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectUserByUserId2" txRef="tx_01" dsKey="readDB">
+		select * from lab_user where user_id = #{user_id}
+	</selectOne>
+	
+	<!-- 查找用户列表 下拉框 -->
+	<selectSet id="userSelect" txRef="tx_01" dsKey="readDB">
+		select user_id,user_name,real_name from lab_user where type = #{type}
+	</selectSet>
+	
+</sqlservices>

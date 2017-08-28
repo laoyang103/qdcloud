@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/aop
+ 	  	http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+
+	<context:component-scan base-package="cn.gatherlife.wms.business.service"/>
+	<bean class="cn.gatherlife.rpc.SpringContextSupport" />
+	<bean id="tangyuanAop" class="org.xson.tangyuan.spring.AopBean" lazy-init="false"/>
+	<bean id="tangyuan" class="org.xson.tangyuan.spring.InitBean" init-method="init" destroy-method="destroy" lazy-init="false">
+		<property name="resource" value="tangyuan-configuration.xml" />
+	</bean>
+	<!-- <bean id="msg2role" class="cn.gatherlife.wms.business.util.InitBean" init-method="init" destroy-method="destroy" lazy-init="false">
+		<property name="msgResource" value="/msg2role.properties" />
+	</bean> -->
+	
+    <aop:config>
+        <aop:aspect id="tangyuanAspect" ref="tangyuanAop" order="0">
+            <aop:pointcut id="service_pointcut" expression="execution(* cn.gatherlife.wms.business.service.*.*(..))" />
+            <aop:before method="before" pointcut-ref="service_pointcut"/>
+            <aop:after-returning method="after" pointcut-ref="service_pointcut"/>
+            <aop:after-throwing method="onException" pointcut-ref="service_pointcut" throwing="e"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

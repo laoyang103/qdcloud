@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-roleservices">
+	
+	
+	<!-- 查询角色列表条件-->
+	<sql id="roleCon">
+		<if test="{role_name} != null">
+	    	and role_name like concat('%',#{role_name},'%')
+	    </if>
+	    and state = 0
+	</sql> 
+		
+	<!-- 查找角色列表 -->
+	<sql-service id="rolelist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_role
+			where 
+				1 = 1
+			<include ref="wms-roleservices.roleCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_role 
+				where 1 = 1 
+				<include ref="wms-roleservices.roleCon"/>
+				order by 
+		    		role_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 根据角色查询 菜单 -->
+	<selectSet id="selectModel" txRef="tx_01" dsKey="readDB">
+		select distinct m.* from lab_module m
+		left join lab_module_role mr on m.module_id = mr.module_id
+		where 1 = 1
+		<if test="{level} != null">
+	    	and m.level = #{level}
+	    </if>
+		<if test="{f_id} != null">
+	    	and m.f_id = #{f_id}
+	    </if>
+	    <if test="{role_id} != null">
+	    	and mr.role_id = #{role_id}
+	    </if>		
+	
+	</selectSet>
+	
+	
+	
+	<!-- 添加角色 -->
+	<sql-service id="insertRole" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_role(
+				role_name, role_description, state, create_time, update_time
+			) VALUES(
+				#{role_name}, #{role_description}, #{state|0}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 保存某角色下的权限菜单 -->
+	<sql-service id="saveModel" txRef="tx_02" dsKey="writeDB">
+		<selectOne resultKey="{fone}">
+			select * from lab_module where module_id = #{module_id}
+		</selectOne>
+		<selectVar resultKey="{f_module}">
+			select distinct module_id from lab_module_role where module_id = #{fone.f_id} and role_id = #{role_id}
+		</selectVar>
+		
+		<if test="{f_module} == null">
+			<insert>
+				INSERT INTO lab_module_role(
+					module_id, role_id, state, create_time, update_time
+				) VALUES(
+					#{fone.f_id}, #{role_id}, #{state|1}, #{create_time|now()}, #{update_time|now()}
+				)
+			</insert>
+		</if>
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_module_role(
+				module_id, role_id, state, create_time, update_time
+			) VALUES(
+				#{module_id}, #{role_id}, #{state|1}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新角色 -->
+	<update id="updateRoleState" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_role set 
+			state = #{rolestate},
+			update_time = #{update_time|now()}
+		where 
+			role_id = #{role_id}
+	</update>
+	
+	<!-- 更新角色 -->
+	<update id="updateRole" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_role set 
+			role_name = #{role_name},
+			role_description = #{role_description},
+			update_time = #{update_time|now()}
+		where 
+			role_id = #{role_id}
+	</update>
+	
+	<!-- 删除某角色下的所有菜单 -->
+	<update id="deleteRoleModel" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from lab_module_role
+		where 
+			role_id = #{role_id}
+	</update>
+	
+	<!-- 删除用户 -->
+	<update id="deleteRole" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_role set 
+			state = 0,
+			update_time = #{update_time|now()}
+		where 
+			role_id = #{role_id} and state = 1
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectRoleById" txRef="tx_01" dsKey="readDB">
+		select * from lab_role where role_id = #{role_id}  and state = 0
+	</selectOne>
+	
+	<!-- 查找菜单 -->
+	<selectSet id="modleList" txRef="tx_01" dsKey="readDB">
+		select * from lab_module where state = 0
+	</selectSet>
+	
+	<!-- 查找改角色下的菜单 -->
+	<selectSet id="modleListByRoleId" txRef="tx_01" dsKey="readDB">
+		select m.* from lab_module m 
+		left join lab_module_role mr on m.module_id = mr.module_id 
+		where 1 = 1 and mr.role_id = #{role_id} and mr.state = 0
+	</selectSet>
+	
+	<!-- 保存 角色菜单项 -->
+	<sql-service id="insertModleRole" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_module_role(
+				module_id, role_id, state, create_time, update_time
+			) VALUES(
+				#{module_id}, #{role_id}, #{state|1}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	
+	<!-- 查询多个角色的所有模块ID-->
+	<selectSet id="queryModuleByRole" txRef="tx_01" dsKey="readDB">
+		<![CDATA[
+			select * from lab_module where module_id in (
+				select distinct module_id from lab_module_role where role_id = #{role_id}
+			) ORDER BY sort,module_id
+		]]>
+	</selectSet>
+	
+</sqlservices>

@@ -1,0 +1,240 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0027)http://zb.mydoc.io/ -->
+<!DOCTYPE html PUBLIC "" "">
+<HTML>
+
+	<HEAD>
+		<META content="IE=10.000" http-equiv="X-UA-Compatible">
+
+		<META charset="utf-8">
+		<TITLE>实验教学统一管理系统说明书</TITLE>
+		<META name="description" content="实验教学统一管理系统说明书">
+		<meta name="viewport" content="width=device-width, initial-scale=0.1, maximum-scale=1.0, user-scalable=yes">
+		<LINK href="/img/32logo_green.ico?t=1451961935000" rel="shortcut icon" type="image/x-icon">
+		<LINK href="style/document.css" rel="stylesheet">
+		<LINK href="style/font-awesome.min.css" rel="stylesheet">
+		<LINK href="style/style.css" rel="stylesheet" type="text/css">
+		<LINK href="style/docco.css" rel="stylesheet">
+		<SCRIPT src="style/jquery-1.7.1.min.js" type="text/javascript"></SCRIPT>
+
+		<SCRIPT src="style/highlight.pack.js"></SCRIPT>
+
+		<SCRIPT src="style/marked.js" type="text/javascript"></SCRIPT>
+
+		<META name="GENERATOR" content="MSHTML 10.00.9200.17556">
+	</HEAD>
+
+	<BODY>
+		<HEADER id="header">
+			<DIV class="outer">
+				<DIV class="inner">
+					<DIV class="navi_icon icon_no_active" id="navi_icon">
+						<I class="fa fa-list"></I>
+					</DIV>
+					<H1 id="logo-wrap" style="font-size: 30px;">实验教学统一管理系统说明书</H1>
+					<SPAN class="version_s">V1.0.0	      	 </SPAN>
+
+					<DIV><span style="margin-left:100px;">（本系统仅支持firefox和IE9及以上浏览器操作）</span></DIV>
+				</DIV>
+			</DIV>
+		</HEADER>
+		<SCRIPT type="text/javascript">
+			$("#main-nav").on("keydown", function(e) {
+				if(e.keyCode == 13) {
+					$("#s_btn").trigger("click");
+				}
+			});
+			$("#s_btn").on("click", function() {
+				var q = $("input[name='s_q']").val();
+				if(q == "") {
+					alert("请输入搜索词");
+					return;
+				}
+				q = encodeURI(q);
+				$("input[name='q']").val(q);
+				$("#s_form").submit();
+			});
+
+			$("#navi_icon").on("click", function() {
+				if($("#sidebar").hasClass("navi_show")) {
+					$("#sidebar").removeClass("navi_show");
+					$("#sidebar").addClass("navi_hidden");
+					$("#navi_icon").removeClass("icon_active");
+					$("#navi_icon").addClass("icon_no_active");
+				} else {
+					$("#sidebar").removeClass("navi_hidden");
+					$("#sidebar").addClass("navi_show");
+					$("#navi_icon").addClass("icon_active");
+					$("#navi_icon").removeClass("icon_no_active");
+				}
+			});
+		</SCRIPT>
+		<ARTICLE class="page">
+			<DIV class="outer">
+				<DIV id="mobile-menu-wrap"></DIV>
+				<ASIDE class="navi_hidden" id="sidebar">
+					<STRONG class="sidebar-title">系统登录</STRONG>
+					<A class="sidebar-link" id="text_67859" style="margin-left: 3px;" href="beginner_guide.html"> 用户界面
+					</A>
+					<STRONG class="sidebar-title">后台管理</STRONG>
+					<A class="sidebar-link" id="text_77988" style="margin-left: 3px;" href="release_rule.html">实验上课流程</A>
+					<A class="sidebar-link" id="text_67879" style="margin-left: 3px;" href="reward_technological.html">学生管理 </A>
+					<A class="sidebar-link" id="text_67853" style="margin-left: 3px;" href="reward_rewarder.html"> 教师管理
+					</A>
+					<A class="sidebar-link" id="text_67857" style="margin-left: 3px;" href="reward_development.html">班级管理 </A>
+					<A class="sidebar-link" id="text_72300" style="margin-left: 3px;" href="package_release.html"> 实验室管理 </A>
+					<A class="sidebar-link" id="text_72302" style="margin-left: 3px;" href="package_development.html">考勤管理 </A>
+					<A class="sidebar-link" id="text_69647" style="margin-left: 3px;" href="part_time_process_description.html">系统管理
+					</A>
+					<A class="sidebar-link" id="text_69650" style="margin-left: 3px;" href="part_time_reservation.html"> 老师管理 </A>
+					<A class="sidebar-link" id="text_69665" style="margin-left: 3px;" href="part_time_development.html">学生应用 </A>
+				</ASIDE>
+				<DIV class="page-content" id="article_area">
+					<DIV style="padding: 20px 0px; border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: dashed;">
+						<H1 id="page-title" itemprop="name">学生管理</H1>
+					</DIV>
+					<DIV class="page-entry" itemprop="articleBody">
+						<H3 id="widget_2073088">学生列表</H3>
+						<IMG src="imgs/xuesheng1.png" style="margin-top: 10px;">
+						<H3 id="widget_2073088">新增学生</H3>
+						<IMG src="imgs/xuesheng2.png" style="margin-top: 10px;">
+						<H3 id="widget_2073088">编辑学生</H3>
+						<IMG src="imgs/xuesheng3.png" style="margin-top: 10px;">
+						<H3 id="widget_2073088">删除学生</H3>
+						<IMG src="imgs/xuesheng4.png" style="margin-top: 10px;">
+					</DIV>
+					<SCRIPT type="text/javascript">
+						$('#article_area').on("click", "img", function() {
+							var url = $(this).attr("src");
+							if(url != "") {
+								window.open(url, "_blank");
+							}
+						});
+						$('#article_area a').each(function() {
+							var url = $(this).attr("href");
+							if(url.indexOf("://") > -1) {
+								if(url.indexOf("mydoc.io") > -1 || url.indexOf("doc.oschina") > -1) {
+									return;
+								}
+								$(this).attr('target', '_blank');
+							}
+						});
+					</SCRIPT>
+
+					<SCRIPT src="style/document_version.js" defer="defer" type="text/javascript"></SCRIPT>
+				</DIV>
+			</DIV>
+		</ARTICLE>
+		<FOOTER id="footer">
+			<DIV class="outer">
+				<DIV id="footer-copyright">
+					<DIV> 版权归：北京飞瑞现实科技有限公司
+						<DIV></DIV>
+					</DIV>
+				</DIV>
+			</DIV>
+		</FOOTER>
+		<SCRIPT>
+			$(document).ready(function() {
+				var md = $("#foot_src").val();
+				if(md) { $("#foot_show").html(marked(md)); }
+			});
+		</SCRIPT>
+		<SPAN class="up_btn" id="up_btn"><img src="imgs/dingbu.png" title="回到顶部"/>
+	 </SPAN>
+		<SCRIPT src="style/d.js" type="text/javascript"></SCRIPT>
+
+		<SCRIPT type="text/javascript">
+			share({
+				text: document.title,
+				url: window.location.href,
+				desc: '快来分享吧'
+			});
+			var currentTextId = 67879;
+			$("#text_" + currentTextId).addClass("current");
+
+			//回到顶部按钮
+			$(window).scroll(function() {
+				if($(window).scrollTop() > 100) {
+					$("#up_btn").show();
+				} else {
+					$("#up_btn").hide();
+				}
+			});
+
+			//当点击跳转链接后，回到页面顶部位置
+			$("#up_btn").click(function() {
+				$('body,html').animate({ scrollTop: 0 }, 200);
+				return false;
+			});
+
+			$(window).resize(function() {
+				resizePicF();
+			});
+
+			//md2Html的配置
+			hljs.configure({ useBR: false });
+			hljs.initHighlightingOnLoad();
+
+			marked.setOptions({
+				renderer: new marked.Renderer(),
+				gfm: true,
+				emoji: true,
+				tables: true,
+				breaks: false,
+				pedantic: false,
+				sanitize: true,
+				smartLists: true,
+				smartypants: false,
+				highlight: function(code, lang) {
+					try {
+						if(lang)
+							return hljs.highlight(lang, code).value;
+					} catch(e) {
+						return hljs.highlightAuto(code).value;
+					}
+					return hljs.highlightAuto(code).value;
+				}
+			});
+			$(".noshow").each(function() {
+				var index = $(this).data("index");
+				var md = $(this).val();
+				if(md) { $("#show_" + index).html(marked(md)); }
+			});
+
+			var resizePicWidth = function(selector, pic_width) {
+				$(selector + " img").each(function() {
+					var img = $(this);
+					var realWidth; //真实的宽度
+					var realHeight; //真实的高度
+					//这里做下说明，$("<img/>")这里是创建一个临时的img标签，类似js创建一个new Image()对象！
+					$("<img/>").attr("src", $(img).attr("src")).load(function() {
+						/*
+		              如果要获取图片的真实的宽度和高度有三点必须注意
+		              1、需要创建一个image对象：如这里的$("<img/>")
+		              2、指定图片的src路径
+		              3、一定要在图片加载完成后执行如.load()函数里执行
+		             */
+						realWidth = this.width;
+						realHeight = this.height;
+						//如果真实的宽度大于规定的宽度就按照100%显示
+						if(realWidth >= pic_width) {
+							$(img).css("width", (pic_width) + "px");
+						} else { //如果小于浏览器的宽度按照原尺寸显示
+							$(img).css("width", realWidth + 'px');
+						}
+					});
+				});
+			}
+
+			var resizePicF = function() {
+				var cw = $(".page-entry")[0];
+				if(cw) { resizePicWidth(".page-entry", cw.clientWidth); }
+			}
+			resizePicF();
+			$("code").css("background-color", "transparent");
+		</SCRIPT>
+	</BODY>
+
+</HTML>
+<!-- Generated by OsChina.NET (init:0[ms],page:11[ms],ip:218.5.237.110) -->

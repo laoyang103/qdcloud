@@ -1,0 +1,438 @@
+.document a {
+	color: rgb(102, 102, 102);
+}
+.document a:hover {
+	color: rgb(16, 175, 136);
+}
+.document h4 {
+	font-size: 16px; font-weight: bold;
+}
+.document select {
+	height: 34px;
+}
+.document select option {
+	font-size: 14px;
+}
+.d_document_navi {
+	padding: 25px 30px; width: 320px; color: rgb(102, 102, 102); overflow: auto; font-size: 15px; position: absolute;
+}
+.d_document_list {
+	padding: 25px 30px; height: 100%; overflow: auto; margin-left: 301px; border-left-color: rgb(204, 204, 204); border-left-width: 1px; border-left-style: solid; background-color: rgb(255, 255, 255);
+}
+.d_navi {
+	padding: 25px 30px; width: 313px; color: rgb(102, 102, 102); float: left; z-index: 1; -ms-overflow-y: scroll;
+}
+.d_navi ul li {
+	margin: 12px 0px 0px;
+}
+.d_navi ul li a {
+	color: rgb(102, 102, 102);
+}
+.d_navi ul li a:hover {
+	color: rgb(16, 175, 136);
+}
+.d_navi h3 {
+	width: 250px;
+}
+.d_navi .d_tree_btns {
+	width: 250px; line-height: 30px;
+}
+.d_document_title {
+	width: 160px; overflow: hidden; white-space: nowrap; -ms-text-overflow: ellipsis;
+}
+.d_tree {
+	width: 250px;
+}
+.d_tree ul li {
+	margin: 12px 0px 0px 10px;
+}
+.d_tree_node {
+	float: left; cursor: pointer;
+}
+.d_tree_node_text {
+	overflow: hidden; float: left; display: block; white-space: nowrap; -ms-text-overflow: ellipsis;
+}
+.d_tree_node_text .fa-caret-down {
+	width: 10px;
+}
+.d_tree_node_text .fa-caret-right {
+	width: 10px;
+}
+.d_tree_node:hover {
+	color: rgb(16, 175, 136);
+}
+.d_delete:hover {
+	color: red;
+}
+.d_current_node {
+	color: rgb(16, 175, 136);
+}
+.d_current_a span {
+	color: rgb(16, 175, 136); font-weight: bold;
+}
+.d_current_a i {
+	color: rgb(16, 175, 136); font-weight: bold;
+}
+.d_content {
+	background: rgb(255, 255, 255); overflow: auto; margin-left: -17px; border-left-color: rgb(221, 221, 221); border-left-width: 1px; border-left-style: solid; float: left; z-index: 2;
+}
+#d_content_area {
+	-ms-overflow-y: scroll;
+}
+#d_preview_area table {
+	width: 100%; margin-bottom: 10px; border-bottom-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); border-bottom-width: 1px; border-left-width: 1px; border-bottom-style: solid; border-left-style: solid; border-spacing: 0;
+}
+#d_preview_area table th {
+	padding: 6px 12px; border-top-color: rgb(204, 204, 204); border-right-color: rgb(204, 204, 204); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid; background-color: rgb(238, 238, 238);
+}
+#d_preview_area table td {
+	padding: 6px 12px; border-top-color: rgb(204, 204, 204); border-right-color: rgb(204, 204, 204); border-top-width: 1px; border-right-width: 1px; border-top-style: solid; border-right-style: solid;
+}
+#d_preview_area ul {
+	padding-left: 30px;
+}
+#d_preview_area ul li {
+	line-height: 22px;
+}
+#d_preview_area ol {
+	padding-left: 30px;
+}
+#d_preview_area ol li {
+	line-height: 22px;
+}
+.d_oneword_code {
+	margin: 0px 2px; padding: 2px 4px; border-radius: 4px; color: rgb(199, 37, 78); display: inline; white-space: nowrap; background-color: rgb(249, 242, 244);
+}
+.d_line {
+	margin: 15px 0px; border-bottom-color: rgb(221, 221, 221); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.d_add {
+	padding: 0px; font-size: 16px; float: right; display: block;
+}
+.d_project {
+	width: 100%; margin-bottom: 10px;
+}
+.d_button {
+	border-radius: 4px; border: 0px currentColor; height: 40px; color: rgb(255, 255, 255); padding-right: 15px; padding-left: 15px; display: inline-block; background-color: rgb(17, 167, 130);
+}
+.d_disable_btn {
+	border-radius: 4px; border: 0px currentColor; height: 40px; color: rgb(255, 255, 255); padding-right: 15px; padding-left: 15px; display: inline-block; background-color: rgb(221, 221, 221);
+}
+.d_button:hover {
+	background-color: rgb(19, 187, 146);
+}
+.d_edit_part_d {
+	padding-bottom: 10px; float: left;
+}
+.d_edit_area .d_input_text {
+	border: currentColor; width: 100%;
+}
+.d_edit_area textarea {
+	padding: 10px; width: 100%; line-height: 21px; overflow: hidden; font-size: 14px;
+}
+.simple_text {
+	border-width: 1px 1px 1px 4px; border-style: solid; border-color: rgb(255, 255, 255) rgb(255, 255, 255) rgb(255, 255, 255) rgb(204, 204, 204); width: 100%;
+}
+.table_text {
+	border: 1px solid rgb(255, 255, 255); width: 100%;
+}
+.d_edit_item_area {
+	width: 180px;
+}
+.d_edit_item_area {
+	width: 180px; height: 280px; display: none;
+}
+.d_edit_item_area_n {
+	float: left;
+}
+.d_edit_item_area_m {
+	top: 80px; position: fixed;
+}
+.d_edit_item {
+	background: rgb(255, 255, 255); margin: 0px 0px 10px 10px; border-radius: 5px; border: 1px solid rgb(213, 212, 212); width: 80px; height: 80px; text-align: center; color: rgb(171, 169, 169); float: left; cursor: move;
+}
+.d_edit_item:hover {
+	border: 1px solid rgb(16, 175, 136); color: rgb(16, 175, 136);
+}
+.d_edit_item i {
+	line-height: 32px; padding-top: 15px; font-size: 32px;
+}
+.d_edit_item span {
+	font-size: 12px;
+}
+.d_callout {
+	margin-bottom: 10px;
+}
+.d_callout_info {
+	background: rgb(244, 248, 250); padding: 10px; border-left-color: rgb(91, 192, 222); border-left-width: 4px; border-left-style: solid;
+}
+.d_callout_warn {
+	background: rgb(252, 248, 242); padding: 10px; border-left-color: rgb(240, 173, 78); border-left-width: 4px; border-left-style: solid;
+}
+.d_callout_danger {
+	background: rgb(253, 247, 247); padding: 10px; border-left-color: rgb(217, 83, 79); border-left-width: 4px; border-left-style: solid;
+}
+.d_callout_success {
+	background: rgb(243, 248, 243); padding: 10px; border-left-color: rgb(80, 175, 81); border-left-width: 4px; border-left-style: solid;
+}
+.d_callout input {
+	padding: 10px 5px 0px 10px; font-size: 15px; margin-bottom: 5px; background-color: transparent;
+}
+.d_callout textarea {
+	background-color: transparent;
+}
+.d_callout_icons a {
+	color: rgb(170, 170, 170); margin-left: 10px;
+}
+a.d_callout_icon_info {
+	color: rgb(91, 192, 222);
+}
+a.d_callout_icon_warn {
+	color: rgb(240, 173, 78);
+}
+a.d_callout_icon_danger {
+	color: rgb(217, 83, 79);
+}
+a.d_callout_icon_success {
+	color: rgb(80, 175, 81);
+}
+.d_p_list_area {
+	padding: 25px 30px;
+}
+.d_project1 {
+	background: rgb(238, 238, 238); margin: 0px 10px 10px 0px; border: 1px solid rgb(204, 204, 204); width: 200px; height: 100px; float: left; cursor: pointer;
+}
+.d_project1_row {
+	padding: 8px 8px 0px; height: 33%;
+}
+.d_project1_title {
+	color: rgb(51, 51, 51); font-size: 16px;
+}
+.d_project1_info {
+	color: rgb(102, 102, 102); font-size: 12px;
+}
+.d_edit_part hr {
+	margin-top: 10px; margin-bottom: 10px;
+}
+.d_line_n {
+	border: 1px solid rgb(204, 204, 204);
+}
+.d_line_n_arrow {
+	border-top-color: transparent; border-bottom-color: transparent; border-left-color: rgb(204, 204, 204); border-top-width: 7px; border-bottom-width: 7px; border-left-width: 10px; border-top-style: solid; border-bottom-style: solid; border-left-style: solid;
+}
+.d_line_c {
+	border: 1px solid rgb(17, 167, 130);
+}
+.d_line_c_arrow {
+	border-top-color: transparent; border-bottom-color: transparent; border-left-color: rgb(17, 167, 130); border-top-width: 7px; border-bottom-width: 7px; border-left-width: 10px; border-top-style: solid; border-bottom-style: solid; border-left-style: solid;
+}
+.d_clear_button {
+	text-align: center; color: rgb(136, 136, 136); cursor: pointer;
+}
+.d_clear_button:hover {
+	color: rgb(16, 175, 136);
+}
+.d_main_version {
+	font-weight: bold;
+}
+.d_beta_version {
+	font-weight: bold;
+}
+.d_public_version {
+	font-weight: bold;
+}
+.d_c_menu {
+	background: rgb(255, 255, 255); padding: 5px; border: 1px solid rgb(204, 204, 204); width: 84px; text-align: center; display: none; position: absolute; z-index: 2;
+}
+.d_c_menu a {
+	line-height: 30px;
+}
+.d_c_menu span {
+	line-height: 30px;
+}
+.d_c_menu span:hover {
+	color: rgb(16, 175, 136);
+}
+.d_c_menu_arrow1 {
+	border-width: 8px; border-style: solid; border-color: transparent transparent rgb(204, 204, 204); width: 0px; height: 0px; line-height: 0; font-size: 0px; margin-top: -22px; margin-left: 49px;
+}
+.d_c_menu_arrow2 {
+	border-width: 8px; border-style: solid; border-color: transparent transparent rgb(255, 255, 255); width: 0px; height: 0px; line-height: 0; font-size: 0px; margin-top: -15px; margin-bottom: 3px; margin-left: 49px;
+}
+.d_pointer {
+	cursor: pointer;
+}
+.d_show_category {
+	padding: 0px 15px; font-size: 18px; font-weight: bold;
+}
+.d_warn {
+	background: rgb(242, 222, 222); padding: 14px; border-radius: 4px; border: 1px solid rgb(238, 211, 215); color: rgb(185, 74, 72);
+}
+.d_info {
+	background: rgb(255, 255, 204); margin: 0px 0px 10px 10px; padding: 14px; border-radius: 4px; border: 1px solid rgb(213, 212, 212); color: rgb(153, 153, 153); font-size: 12px;
+}
+.d_list_chose_btn {
+	padding-bottom: 10px; display: block; cursor: pointer;
+}
+.d_list_chose_btn_on {
+	color: rgb(16, 175, 136);
+}
+.d_list_chose_btn:hover {
+	color: rgb(16, 175, 136);
+}
+.d_list_info {
+	font-size: 12px; margin-left: 10px; float: right;
+}
+.d_input_tips {
+	color: rgb(153, 153, 153);
+}
+.d_enter_tips {
+	color: rgb(170, 170, 170); line-height: 40px; margin-left: 5px;
+}
+.d_theme_one {
+	text-align: center; float: left;
+}
+.d_theme_pic {
+	padding: 2px; border: 1px solid rgb(204, 204, 204); height: 250px; margin-top: 2px; cursor: pointer;
+}
+.d_theme_pic:hover {
+	padding: 1px; border: 2px solid rgb(16, 175, 136);
+}
+.d_time_user {
+	color: rgb(153, 153, 153); font-size: 12px; margin-top: 10px;
+}
+.d_tit_ri_btns {
+	width: 170px; color: rgb(136, 136, 136); line-height: 40px; float: right;
+}
+.d_page li a {
+	padding: 3px 6px; border-radius: 0px; text-align: center; color: rgba(0, 0, 0, 0.7); font-family: Courier New, Arial; font-size: 12pt; text-decoration: none; margin-right: 5px; float: left; display: block;
+}
+.d_page li.current a {
+	background: 0px 0px rgb(16, 175, 136); border-radius: 40px; color: rgb(255, 255, 255); font-weight: bold;
+}
+.d_page li.current a:hover {
+	background: 0px 0px rgb(16, 175, 136); border-radius: 40px; color: rgb(255, 255, 255); font-weight: bold;
+}
+.d_page li a:hover {
+	color: rgb(16, 175, 136);
+}
+pre code {
+	white-space: pre-wrap;
+}
+.d_fullbg {
+	left: 0px; top: 0px; position: absolute; z-index: 3; opacity: 0.5; background-color: gray; -moz-opacity: 0.5; -khtml-opacity: 0.5;
+}
+.d_content_fullbg {
+	left: 362px; top: 60px; position: absolute; z-index: 3; opacity: 0.5; background-color: gray; -moz-opacity: 0.5; -khtml-opacity: 0.5;
+}
+.d_dialog {
+	padding: 12px 20px; border-radius: 4px; border: 1px solid rgb(136, 136, 136); left: 50%; top: 35%; width: 480px; margin-left: -240px; display: none; position: fixed !important; z-index: 5; box-shadow: 0px 0px 30px #444; background-color: rgb(255, 255, 255); -webkit-box-shadow: 0 0 30px #444; -moz-box-shadow: 0 0 30px #444;
+}
+.d_dialog p {
+	margin: 0px 0px 12px;
+}
+.d_dialog p.d_close {
+	text-align: right;
+}
+.d_doc_dec {
+	font-size: 12px;
+}
+.d_widget_btn_nvs {
+	margin: 0px 0px 10px 10px; font-size: 16px; border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.d_widget_btn_nvs i {
+	padding-bottom: 2px;
+}
+.d_widget_btn_nv {
+	padding: 0px 5px; cursor: pointer;
+}
+.d_widget_btn_nv:hover {
+	color: rgb(17, 167, 130); border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.d_widget_btn_nv_on {
+	color: rgb(17, 167, 130); border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.d_num_refresh_btn {
+	float: right; cursor: pointer;
+}
+.d_num_refresh_btn:hover {
+	color: rgb(17, 167, 130);
+}
+.d_widget_content_part {
+	padding-left: 10px; margin-bottom: 10px;
+}
+.d_widget_content_num {
+	margin: 0px 2px; color: rgb(17, 167, 130); font-size: 17px;
+}
+.d_widget_content_little_title {
+	color: rgb(17, 167, 130); border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: dashed;
+}
+.d_widget_content_select {
+	width: 100%; margin-top: 5px;
+}
+.noshow {
+	display: none;
+}
+.d_navi_icon {
+	width: 15px; text-align: center;
+}
+.d_type_menu {
+	background: rgb(255, 255, 255); padding: 5px; border: 1px solid rgb(204, 204, 204); text-align: center; right: 0px; display: none; position: absolute; z-index: 2;
+}
+.d_type_menu li {
+	margin: 0px 5px; line-height: 25px; font-size: 12px; cursor: pointer;
+}
+.d_type_menu li:hover {
+	color: rgb(16, 175, 136);
+}
+.d_type_more_menu {
+	background: rgb(255, 255, 255); margin: 10px; padding: 10px 10px 0px; border: 1px solid rgb(204, 204, 204); top: -12px; display: none; position: absolute; z-index: 2;
+}
+.d_type_more_menu li {
+	margin: 0px 5px; line-height: 30px; font-size: 16px; cursor: pointer;
+}
+.d_type_more_menu li:hover {
+	color: rgb(16, 175, 136);
+}
+.d_list_chose_btn .fa-times:hover {
+	color: red;
+}
+.d_type_more_menu li .fa-times {
+	margin-left: 10px; float: right;
+}
+.d_type_more_menu li .fa-pencil {
+	margin-left: 10px; float: right;
+}
+.d_type_more_menu li .fa-times:hover {
+	color: red;
+}
+.d_type_more_menu li .fa-pencil:hover {
+	color: red;
+}
+.d_detail_update_time {
+	left: 0px; bottom: -55px; color: rgb(153, 153, 153); font-size: 13px; position: absolute;
+}
+.d_del_part {
+	border: 1px dashed red !important; margin-top: -2px !important;
+}
+table tbody tr td[class=d_table_del_btn] {
+	padding: 0px; width: 24px; text-align: center; vertical-align: middle; cursor: pointer; background-color: rgb(221, 221, 221);
+}
+table tbody tr td[class=d_table_del_btn] i {
+	color: rgb(255, 255, 255);
+}
+table tbody tr td[class=d_table_del_btn]:hover {
+	background-color: rgb(16, 175, 136);
+}
+@media all and (min-width:1050px)
+{
+.d_doc_dec {
+	width: 800px;
+}
+}
+.highlight {
+	color: rgb(255, 64, 64);
+}
+#d_preview_area p {
+	white-space: pre-wrap;
+}

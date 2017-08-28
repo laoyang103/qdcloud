@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <dataSource id="readDB" type="DBCP">
+        <property name="username" value="root"/>
+        <property name="password" value="wmsdb_7796_!"/>
+        <property name="url" value="jdbc:mysql://readwms.gatherlife.mysql:3306/lab_db?Unicode=true&amp;characterEncoding=utf8"/>
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+         <!--maxActive: 最大连接数量-->    
+        <property name="maxActive" value="50"/>  
+        <!--minIdle: 最小空闲连接-->    
+        <property name="minIdle" value="10"/>  
+        <!--maxIdle: 最大空闲连接-->    
+        <property name="maxIdle" value="50"/>  
+        <!--initialSize: 初始化连接-->    
+        <property name="initialSize" value="10"/>   
+        <!--maxWait: 超时等待时间以毫秒为单位 1000等于60秒-->  
+        <property name="maxWait" value="20000"/> 
+        <!-- sql 心跳检查 -->
+        <property name="validationQuery" value="SELECT 1"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="3600000"></property>
+		<property name="numTestsPerEvictionRun" value="50"></property>
+		<property name="minEvictableIdleTimeMillis" value="120000"></property>
+		<property name="removeAbandoned" value="true"/>
+		<property name="removeAbandonedTimeout" value="6000000"/>  
+    </dataSource>
+    
+    <dataSource id="writeDB" type="DBCP" isDefault="true">
+        <property name="username" value="root"/>
+        <property name="password" value="wmsdb_7796_!"/>
+        <property name="url" value="jdbc:mysql://readwms.gatherlife.mysql:3306/lab_db?Unicode=true&amp;characterEncoding=utf8"/>
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+         <!--maxActive: 最大连接数量-->    
+        <property name="maxActive" value="50"/>  
+        <!--minIdle: 最小空闲连接-->    
+        <property name="minIdle" value="10"/>  
+        <!--maxIdle: 最大空闲连接-->    
+        <property name="maxIdle" value="50"/>  
+        <!--initialSize: 初始化连接-->    
+        <property name="initialSize" value="10"/>   
+        <!--maxWait: 超时等待时间以毫秒为单位 1000等于60秒-->  
+        <property name="maxWait" value="20000"/> 
+        <!-- sql 心跳检查 -->
+        <property name="validationQuery" value="SELECT 1"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="3600000"></property>
+		<property name="numTestsPerEvictionRun" value="50"></property>
+		<property name="minEvictableIdleTimeMillis" value="120000"></property>
+		<property name="removeAbandoned" value="true"/>
+		<property name="removeAbandonedTimeout" value="6000000"/>
+    </dataSource>
+    
+    <transaction id="tx_01" behavior="required" isolation="default" timeout="200" readOnly="false"/>
+    <transaction id="tx_02" behavior="required" isolation="read_uncommitted" timeout="200" readOnly="false"/>
+	<transaction id="tx_03" behavior="required" isolation="serializable" timeout="200" readOnly="false"/>
+	<transaction id="tx_04" behavior="requires_new" isolation="default" timeout="200" readOnly="false"/>
+	
+    <setDefaultTransaction type="method">
+        <property name="select*" value="tx_01"/>
+        <property name="get*" value="tx_01"/>
+        <property name="find*" value="tx_01"/>
+        <property name="update*" value="tx_02"/>
+        <property name="insert*" value="tx_02"/>
+        <property name="delete*" value="tx_02"/>
+        <property name="service*" value="tx_02"/>
+        <property name="bind*" value="tx_02"/>
+        <property name="unbind*" value="tx_02"/>
+        <property name="check*" value="tx_02"/>
+        <property name="complete*" value="tx_02"/>
+    </setDefaultTransaction>
+
+    <mapper resource="tangyuan-mapper.xml"/>
+    <plugin resource="wms-importexcelservices.xml"/>
+	<plugin resource="wms-loginservices.xml"/>
+	<plugin resource="wms-userservices.xml"/>
+	<plugin resource="wms-classservices.xml"/>
+	<plugin resource="wms-roomservices.xml"/>
+	<plugin resource="wms-roleservices.xml"/>
+	<plugin resource="wms-messageservices.xml"/>
+	<plugin resource="wms-discussservices.xml"/>
+	<plugin resource="wms-experimentservices.xml"/>
+	<plugin resource="wms-exampleservices.xml"/>
+	<plugin resource="wms-courseservices.xml"/>
+	<plugin resource="wms-groupservices.xml"/>
+	<plugin resource="wms-newsservices.xml"/>
+	<plugin resource="wms-indexservices.xml"/>
+</configuration>

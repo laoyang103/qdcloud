@@ -1,0 +1,30 @@
+/* 说明： 收银台改版
+ * 开发时间： 2016-04-28
+ * 开发者： meme   
+ * 版本时间： 2016-04-28
+ * 注意事项： 模块样式,如果此样式未对网页产生影响尽量不要修改
+ */
+body{font-family:"Microsoft YaHei UI","Microsoft YaHei","微软雅黑","宋体", Arial, sans-serif; font-size:12px;line-height:20px;color:#666; background:#0083d5;min-width:1200px; font-size:24px; width:100%;}
+.header,.footer{/*min-width:1200px; width:100%;*/}
+.header{ padding:33px 0 0 123px; background:#fff;}
+.wrapper{width:963px; margin:0 auto;}
+.footer{ height:95px; width:100%; background:#fff; font-family:"宋体"; color:#cbe3ff; position:fixed; left:0; bottom:0;}
+.footer1{ padding:20px 125px 0 0;}
+/*.content{ min-height:735px;}*/
+.menu{ position:absolute; left:123px; top:50%; margin-top:-150px;}
+.menu li{ line-height:40px; margin-top:33px; color:#fff; font-weight:bold; padding-left:50px; background:url(../images/circle.png) left 5px no-repeat; cursor:pointer; font-size:18px;}
+.menu li.current{ color:#ffbe00;}
+.mapBox{ width:726px; height:500px; background:url(../images/map.jpg) no-repeat; margin:10px auto; padding:15px 0 5px 0;}
+.showList li{float:left; display:inline; width:97px; height:133px; overflow:hidden; margin-left:19px;}
+.showList li img{ display:block; width:100%;}
+.showList li:first-child{ margin-left:0;}
+.showList li.show1{ margin-top:165px;}
+.showList li.show2{ margin-top:114px;}
+.showList li.show3{ margin-top:60px;}
+.showList li.show4{ margin-top:60px;}
+.showList li.show5{ margin-top:114px;}
+.showList li.show6{ margin-top:165px;}
+.showList li.show0{ margin:0; left:135px; top:295px; position:absolute;}
+.showList li.show7{ margin:0; left:483px; top:295px;position:absolute;}
+.content{ left:0; top:127px; right:0; bottom:95px;}
+.content .inner{ padding-left:123px;min-height:500px;}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:javaee="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:application_context.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+
+<!-- spring mvc配置开始 -->
+    <servlet>
+        <servlet-name>spring_mvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring_mvc.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>spring_mvc</servlet-name>
+        <url-pattern>*.jhtml</url-pattern>
+    </servlet-mapping>
+    <!-- spring mvc配置结束 -->
+	
+	<servlet>
+		<servlet-name>jcaptcha</servlet-name>
+		<servlet-class>cn.gatherlife.wms.business.servlet.XImageCaptchaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>uploadImage</servlet-name>
+		<servlet-class>cn.gatherlife.wms.business.servlet.uploadLoadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadImage</servlet-name>
+		<url-pattern>/upload/uploadImage</url-pattern>
+	</servlet-mapping>
+	 
+	 
+	 <error-page>  
+    	<error-code>404</error-code>  
+    	<location>/404.jsp</location>  
+	</error-page>
+</web-app>

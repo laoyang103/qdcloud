@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-indexservices">
+	
+	<!-- 查找图片列表 -->
+	<sql-service id="photolist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_index_photo
+			where 
+				photo_type = #{photo_type}
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_index_photo 
+				where photo_type = #{photo_type}
+				order by id
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加图片 -->
+	<sql-service id="insertPhoto" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_index_photo(
+				photo_title, photo_src,photo_name,photo_link,photo_type,state, operator, create_time
+			) VALUES(
+				#{photo_title}, #{photo_src},#{photo_name},#{photo_link|''},#{photo_type|0},#{state|1}, #{operator|''}, #{create_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新教室 -->
+	<sql-service id="updatePhoto" txRef="tx_01" dsKey="writeDB">
+		<update rowCount="{count}">
+			update lab_index_photo set
+				photo_title = #{photo_title},
+				photo_name = #{photo_name},
+				photo_src = #{photo_src},
+				photo_link = #{photo_link},
+				photo_type = #{photo_type},
+				update_time = #{update_time|now()}
+			where 
+				id = #{id}
+		</update>
+		<return>
+			<property value="{count}"/>
+		</return>
+	</sql-service>
+	
+</sqlservices>

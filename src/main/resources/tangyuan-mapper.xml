@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper>
+
+	<!-- 数据类型映射-->
+	<dataTypeMapping>
+		<relation jdbcType="TINYINT" javaType="int"/>
+	</dataTypeMapping> 
+<!-- 		
+		register(JdbcType.TINYINT, byteTypeHandler);
+		register(JdbcType.SMALLINT, shortTypeHandler);
+		register(JdbcType.REAL, bigDecimalTypeHandler);
+		register(JdbcType.DECIMAL, bigDecimalTypeHandler);
+		register(JdbcType.NUMERIC, bigDecimalTypeHandler);
+	java:
+		byte, short, int, long, float, double, BigDecimal
+ -->	
+
+</mapper>

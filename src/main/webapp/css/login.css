@@ -1,0 +1,9 @@
+body{ background:url(../img/logo/login-bg.jpg) left bottom no-repeat; background-size:cover;}
+.login-box-plain{ width:460px; right:60px; top:50%; margin-top:-230px;}
+.login-box-plain .form-group{ position:relative; margin-bottom:20px;}
+.login-box-plain h2,.login-box-plain .bd{ background:#fff;}
+.login-box-plain h2{ color:#4797f1; font-size:24px; border-radius:4px 4px 0 0; line-height:70px; margin:0 0 1px 0;}
+.login-box-plain .bd{ border-radius:0 0 4px 4px; padding:10px 75px 60px 30px;}
+.login-box-plain .bd label{ padding-right:0;}
+.login-box-plain .col-sm-8{ padding-left:0;}
+.login-box-plain .help-block{ line-height:18px; left:0; top:36px; font-size:12px; padding:0;}

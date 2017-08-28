@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-classservices">
+	
+	
+	<!-- 查询班级列表条件-->
+	<sql id="classCon">
+		<if test="{class_code} != null">
+	    	and class_code like concat('%',#{class_code},'%') 
+	    </if>
+		<if test="{class_name} != null">
+	    	and class_name like concat('%',#{class_name},'%') 
+	    </if>
+	    <if test="{department_name} != null">
+	    	and department_name like concat('%',#{department_name},'%') 
+	    </if> 
+	</sql> 
+		
+	<!-- 查找学生教师列表 -->
+	<sql-service id="classlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_class
+			where 
+				1 = 1 
+			<include ref="wms-classservices.classCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_class 
+				where 1 = 1
+				<include ref="wms-classservices.classCon"/>
+				order by 
+		    		class_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加用户 -->
+	<sql-service id="insertClass" txRef="tx_02" dsKey="writeDB">
+		<!-- 序列查询 
+		<selectVar>
+			SELECT nextval_string('class', '03', 4)
+		</selectVar>-->
+		
+		<selectVar resultKey="{count}">
+			select count(1) from lab_class where class_code = #{class_code}
+		</selectVar>
+		
+		<if test="{count}==0">
+			<insert>
+				INSERT INTO lab_class(
+					class_code, class_name, department_id, department_name, state, 
+					operator, create_time, update_time
+				) VALUES(
+					#{class_code}, #{class_name}, #{department_id|0}, #{department_name}, #{state|1}, 
+					#{operator|''}, #{create_time|now()}, #{update_time|now()}
+				)
+			</insert>
+		</if>
+		<return value="{count}" />
+	</sql-service>
+	
+	<!-- 更新用户 -->
+	<update id="updateClass" rowCount="{rowCount}" txRef="tx_01" dsKey="readDB">
+		update lab_class set 
+			class_code = #{class_code},
+			class_name = #{class_name},
+			department_id = #{department_id},
+			department_name = #{department_name},
+			update_time = #{update_time|now()}
+		where 
+			class_id = #{class_id}
+	</update>
+	
+	<!-- 删除用户 -->
+	<update id="deleteClass" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from
+			lab_class 
+		where 
+			class_id = #{class_id}
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectClassById" txRef="tx_01" dsKey="readDB">
+		select * from lab_class where class_id = #{class_id}
+	</selectOne>
+	
+	<!-- 查找班级列表 下拉框 -->
+	<selectSet id="classSelect" txRef="tx_01" dsKey="readDB">
+		select class_id,class_name from lab_class
+	</selectSet>
+	
+	<!-- 查找院系列表 下拉框 -->
+	<selectSet id="departSelect" txRef="tx_01" dsKey="readDB">
+		select department_id,department_name from lab_department
+	</selectSet>
+	
+</sqlservices>

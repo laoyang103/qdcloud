@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-exampleservices">
+	
+	
+	<!-- 查询习题列表条件-->
+	<sql id="exaCon">
+		<if test="{example_id} != null">
+	    	and example_id = #{example_id}
+	    </if>
+		<if test="{example_name} != null">
+	    	and example_name like concat('%',#{example_name},'%')
+	    </if>
+	    <if test="{operator} != null">
+	    	and operator = #{operator}
+	    </if>
+	    and state = 1
+	</sql> 
+		
+	<!-- 查找习题列表 -->
+	<sql-service id="exalist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_example
+			where 
+				1 = 1
+			<include ref="wms-exampleservices.exaCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_example
+				where 1 = 1
+				<include ref="wms-exampleservices.exaCon"/>
+				order by 
+		    		example_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加习题 -->
+	<sql-service id="insertExa" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_example(
+				example_name, example_content, example_use, looked, 
+				state, operator, create_time, update_time
+			) VALUES(
+				#{example_name}, #{example_content}, #{example_use}, #{looked|0}, 
+				#{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新习题 -->
+	<update id="updateExa" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		update lab_example set 
+			<if test="{example_name}!=null">
+				example_name = #{example_name},
+			</if>
+			<if test="{example_content}!=null">
+				example_content = #{example_content},
+			</if>
+			<if test="{example_use}!=null">
+				example_use = #{example_use},
+			</if>
+			<if test="{looked}!=null">
+				looked = #{looked},
+			</if>
+			update_time = #{update_time|now()}
+		where 
+			example_id = #{example_id}
+	</update>
+	
+	<!-- 删除习题 -->
+	<update id="deleteExa" rowCount="{rowCount}" txRef="tx_02" dsKey="writeDB">
+		delete from 
+			lab_example
+		where 
+			example_id = #{example_id}
+	</update>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectExaById" txRef="tx_01" dsKey="readDB">
+		select * from lab_example where example_id = #{example_id} and state = 1
+	</selectOne>
+	
+	<!-- 查找习题列表 下拉框 -->
+	<selectSet id="exampleSelect" txRef="tx_01" dsKey="readDB">
+		select example_id,example_name from lab_example where state = 1 
+		<if test="{operator}!=null and {operator}!=''">
+			and operator = #{operator}
+		</if>
+	</selectSet>
+	
+
+</sqlservices>

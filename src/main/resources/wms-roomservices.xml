@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-roomservices">
+	
+	
+	<!-- 查询教室列表条件-->
+	<sql id="roomCon">
+		<if test="{room_code} != null">
+	    	and room_code like concat('%',#{room_code},'%')
+	    </if>
+		<if test="{room_name} != null">
+	    	and room_name like concat('%',#{room_name},'%')
+	    </if>
+	    <if test="{department} != null">
+	    	and department like concat('%',#{department},'%')
+	    </if>
+	</sql> 
+		
+	<!-- 查找教室列表 -->
+	<sql-service id="roomlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_room
+			where 
+				1 = 1
+			<include ref="wms-roomservices.roomCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_room 
+				where 1 = 1
+				<include ref="wms-roomservices.roomCon"/>
+				order by 
+		    		room_id desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 添加教室 -->
+	<sql-service id="insertRoom" txRef="tx_02" dsKey="writeDB">
+		<!-- 序列查询 -->
+		<!-- 
+		<selectVar resultKey="{room_code}">
+			SELECT nextval_string('room', '04', 4)
+		</selectVar>
+		 -->
+		
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_room(
+				room_code, room_name,department,measure_area,area,place_count,leader,room_rows,room_cols,
+				state, operator, create_time, update_time
+			) VALUES(
+				#{room_code}, #{room_name},#{department|''},#{measure_area|''},#{area|''},#{place_count|0}, 
+				#{leader},#{room_rows|0},#{room_cols|0},#{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 添加教室 -->
+	<sql-service id="insertStation" txRef="tx_02" dsKey="writeDB">
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_room_station(
+				room_id, room_row, room_col, station_name, state, operator, create_time
+			) VALUES(
+				#{room_id}, #{room_row}, #{room_col}, #{station_name}, #{state|1}, #{operator|''}, #{create_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 更新教室 -->
+	<sql-service id="updateRoom" txRef="tx_01" dsKey="writeDB">
+		<update rowCount="{count}">
+			update lab_room set
+				room_code = #{room_code},
+				room_name = #{room_name},
+				department = #{department},
+				measure_area = #{measure_area},
+				area = #{area},
+				leader = #{leader},
+				place_count = #{place_count|0},
+				state = #{state|1},
+				update_time = #{update_time|now()}
+			where 
+				room_id = #{room_id}
+		</update>
+		<return>
+			<property value="{count}"/>
+		</return>
+	</sql-service>
+	
+	<sql-service id="updateRoom1" txRef="tx_01" dsKey="writeDB">
+		<update>
+			update lab_room_time set
+				room_name = #{room_name}
+			where
+				room_id = #{room_id}
+		</update>
+	</sql-service>
+	
+	<sql-service id="updateRoom2" txRef="tx_01" dsKey="writeDB">
+		<update>
+			update lab_room_order set
+				room_name = #{room_name}
+			where
+				room_id = #{room_id}
+		</update>
+	</sql-service>
+	
+	<sql-service id="updateRoom3" txRef="tx_01" dsKey="writeDB">
+		<update>
+			update lab_course set
+				room_name = #{room_name},
+				place_count = #{place_count|0}
+			where
+				room_id = #{room_id}
+		</update>
+	</sql-service>
+	
+	
+	<!-- 删除教室 -->
+	<sql-service id="deleteRoom" txRef="tx_02" dsKey="writeDB">
+		<!-- 删除实验室 -->
+		<update >
+			delete from
+				lab_room 
+			where 
+				room_id = #{room_id}
+		</update>
+		<!-- 删除 该实验室的时间 -->
+		<update >
+			delete from
+				lab_room_time 
+			where 
+				room_id = #{room_id}
+		</update>
+		
+		<!-- 删除 该实验室的教师预约情况-->
+		<update >
+			delete from
+				lab_room_order 
+			where 
+				room_id = #{room_id}
+		</update>
+	</sql-service>
+	
+	<!-- 查找单个对象 -->
+	<selectOne id="selectRoomById" txRef="tx_01" dsKey="readDB">
+		select * from lab_room where room_id = #{room_id} 
+	</selectOne>
+	
+	<!-- 查找教室列表 下拉框 -->
+	<selectSet id="roomSelect" txRef="tx_01" dsKey="readDB">
+		select room_id,room_name from lab_room
+	</selectSet>
+	
+	<!-- 添加实验室预设时间 -->
+	<sql-service id="insertRoomTime" txRef="tx_02" dsKey="writeDB">
+		<!-- 序列查询 -->
+		<!-- 
+		<selectVar resultKey="{room_code}">
+			SELECT nextval_string('room', '04', 4)
+		</selectVar>
+		 -->
+		
+		<insert incrementKey="{ID}">
+			INSERT INTO lab_room_time(
+				room_id, room_code, room_name, room_day, time_name, begin_time, end_time, 
+				room_time_type, state, check_state, operator, create_time, update_time
+			) VALUES(
+				#{room_id}, #{room_code}, #{room_name}, #{room_day}, #{time_name}, #{begin_time}, #{end_time}, 
+				#{room_time_type}, #{state|1}, #{check_state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
+			)
+		</insert>
+		<return value="{ID}" />
+	</sql-service>
+	
+	<!-- 查询 实验室预约信息-->
+	<selectSet id="roomTimeListSelect" txRef="tx_01" dsKey="readDB">
+		select * from lab_room_time where 1 = 1
+		<if test="{check_state} !=null and {check_state} != ''">
+			and check_state = #{check_state}
+		</if>
+		<if test="{room_id} !=null and {room_id} != ''">
+			and room_id = #{room_id}
+		</if>
+		<if test="{begin_time} !=null and {begin_time} != ''">
+			and begin_time &gt; #{begin_time}
+		</if>
+		<if test="{end_time} !=null and {end_time} != ''">
+			and end_time &lt; #{end_time}
+		</if>
+		<if test="{endd_time} !=null and {endd_time} != ''">
+			and end_time &gt; #{endd_time}
+		</if>
+	</selectSet>
+	
+	<!-- 删除某个教师的预约时间 -->
+	<update id="delRoomTime" txRef="tx_02" dsKey="writeDB">
+		delete from lab_room_time where room_id = #{room_id} and room_day = #{room_day}
+	</update>
+	<!-- 查询某个教师的预约时间 -->
+	<selectVar id="getRoomTime" txRef="tx_01" dsKey="readDB">
+		select count(1) from lab_room_time where room_id = #{room_id} and room_day = #{room_day}
+	</selectVar>
+	<!-- 查询教室预设时间条件-->
+	<sql id="roomTimeCon">
+		<if test="{room_id} != null and {room_id} != ''">
+	    	and room_id = #{room_id}
+	    </if>
+		<if test="{room_day} != null and {room_day} != ''">
+	    	and room_day = #{room_day}
+	    </if>
+	    <if test="{endd_time} !=null and {endd_time} != ''">
+			and end_time &gt; #{endd_time}
+		</if>
+		<if test="{begin_time} !=null and {begin_time} != ''">
+			and begin_time &gt; #{begin_time}
+		</if>
+		<if test="{end_time} !=null and {end_time} != ''">
+			and end_time &lt; #{end_time}
+		</if>
+	</sql>
+	
+	<!-- 查找教室预设时间列表 -->
+	<sql-service id="roomtimelist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_room_time
+			where 
+				1 = 1
+			<include ref="wms-roomservices.roomTimeCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_room_time 
+				where 1 = 1
+				<include ref="wms-roomservices.roomTimeCon"/>
+				order by 
+		    		CONVERT(room_code,SIGNED) desc ,begin_time desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 删除单个个教室的预约时间 -->
+	<sql-service id="checkdelRoomTimeById" txRef="tx_02" dsKey="writeDB">
+		<selectOne resultKey="{time}">
+			select * from lab_room_time where time_id = #{time_id}
+		</selectOne>
+		<return>
+			<property name="{time}" value="{time}"/>
+		</return>
+	</sql-service>
+	
+	<!-- 删除单个个教室的预约时间 -->
+	<sql-service id="delRoomTimeById" txRef="tx_02" dsKey="writeDB">
+		<update rowCount="{rowCount}">
+			delete from lab_room_time where time_id = #{time_id}
+		</update>
+		<return>
+			<property name="{rowCount}" value="{rowCount}"/>
+		</return>
+	</sql-service>
+	
+	
+	<!-- 查询实验室预约审核列表条件-->
+	<sql id="roomTimeOrderCon">
+		<if test="{room_id} != null and {room_id} != ''">
+	    	and room_id = #{room_id}
+	    </if>
+		<if test="{room_day} != null and {room_day} != ''">
+	    	and room_day = #{room_day}
+	    </if>
+	    <if test="{teacher_id} != null and {teacher_id} != ''">
+	    	and teacher_id = #{teacher_id}
+	    </if>
+	</sql>
+	
+	<!-- 实验室预约审核列表-->
+	<sql-service id="roomtimeorderlist" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(1) 
+			from 
+				lab_room_order
+			where 
+				1 = 1
+			<include ref="wms-roomservices.roomTimeOrderCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select * 
+				from 
+					lab_room_order 
+				where 1 = 1
+				<include ref="wms-roomservices.roomTimeOrderCon"/>
+				order by 
+		    		order_id desc,begin_time
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 查询单个时间 -->
+	<selectOne id="selectRoomTimeByTimeId" txRef="tx_01" dsKey="readDB">
+		select * from lab_room_time where time_id = #{time_id}
+	</selectOne>
+	
+	<!-- 查询单个预约号的时间 -->
+	<selectOne id="selectOrderOneByTimeId" txRef="tx_01" dsKey="readDB">
+		select * from lab_room_order where time_id = #{time_id} order by order_id desc limit 1 
+	</selectOne>
+	
+	<!-- 管理员实验室预约审核操作-->
+	<sql-service id="checkOrderById" txRef="tx_01" dsKey="writeDB">
+		<selectOne resultKey="{order}">
+			select * from lab_room_order where order_id = #{order_id}
+		</selectOne>
+		
+		<selectOne resultKey="{time}">
+			select * from lab_room_time where time_id = #{order.time_id}
+		</selectOne>
+		<!-- 审核通过 -->
+		<if test="{through} == 1">
+			<update rowCount="{rowCount}">
+				update lab_room_order set
+					audit_state = 100,
+					update_time = now()
+				where
+					order_id = #{order_id} and
+					audit_state = 10
+			</update>
+			<update>
+				update lab_room_time set
+					audit_state = 2,
+					update_time = now()
+				where
+					time_id = #{order.time_id} 
+			</update>
+			<selectSet resultKey="{stationlist}">
+				select * from lab_room_station where room_id = #{order.room_id} and state = 1
+			</selectSet>
+			<insert>
+				INSERT INTO lab_course_student_station(
+						 station_id, time_id, student_id,student_name,operator_id,operator,create_time
+				) VALUES
+				<foreach collection="{stationlist}" index="{i}" separator=",">
+					(#{stationlist[i].station_id},#{order.time_id} ,0,'',0,'',#{create_time|now()})
+				</foreach>
+			</insert>
+		</if>
+		<!-- 审核不通过 -->
+		<else>
+			<update rowCount="{rowCount}">
+				update lab_room_order set
+					audit_state = 30,
+					remark = #{remark},
+					update_time = now()
+				where
+					order_id = #{order_id} and
+					audit_state = 10
+			</update>
+			<update>
+				update lab_room_time set
+					audit_state = 1,
+					check_state = 1,
+					update_time = now()
+				where
+					time_id = #{order.time_id}
+			</update>
+		</else>
+		<return>
+			<property name="{rowCount}" value="{rowCount}"/>
+		</return> 
+	</sql-service>
+	
+	
+	<!-- 查询单个教师预约信息 -->
+	<selectOne id="selectOrderRoomTimeById" txRef="tx_01" dsKey="readDB">
+		select * from lab_room_order where order_id = #{order_id}
+	</selectOne>
+	
+	
+	<!-- 教室占用情况条件-->
+	<sql id="zhanyongCon">
+		<if test="{room_id} != null and {room_id} != ''">
+	    	and a.room_id = #{room_id}
+	    </if>
+		<if test="{room_day} != null and {room_day} != ''">
+	    	and a.room_day = #{room_day}
+	    </if>
+	</sql>
+	
+	<!-- 教室占用情况-->
+	<sql-service id="roomZhanyongList" txRef="tx_01" dsKey="readDB">
+		<selectVar resultKey="{total}">
+			select count(a.room_id) 
+			 from (
+				select room_id,room_name,room_day,count(time_id) time_id from lab_room_time group by room_id,room_day ) a
+				left join (
+				select room_id,room_name,room_day,count(check_state) check_state from lab_room_time where check_state = 2  group by room_id,room_day ) b
+			on a.room_id = b.room_id and a.room_day = b.room_day
+				where 1 = 1
+			<include ref="wms-roomservices.zhanyongCon"/>
+		</selectVar>
+		<if test="{total} != 0">
+			<selectSet  resultKey="{data}">
+				select a.*,case when b.check_state is null then 0 else  b.check_state end as check_state from (
+				select room_id,room_name,room_day,count(time_id) time_id from lab_room_time group by room_id,room_day ) a
+				left join (
+				select room_id,room_name,room_day,count(check_state) check_state from lab_room_time where check_state = 2  group by room_id,room_day ) b
+				on a.room_id = b.room_id and a.room_day = b.room_day
+				where 1 = 1
+				<include ref="wms-roomservices.zhanyongCon"/>
+				order by 
+		    		a.room_day desc
+			    <if test="{start} != null">
+			    	limit #{start},#{pageSize}
+			    </if>
+			</selectSet>
+		</if>
+		<return>
+			<property name="{total}" value="{total}"/>
+			<property name="{data}" value="{data}"/>
+		</return> 
+	</sql-service>
+	
+	<!-- 查询某个实验室 某个 时间段 课位占用情况-->
+	<selectSet id="kwTimeIdRoomId" txRef="tx_01" dsKey="readDB">
+		select a.*,b.room_row,b.room_col,b.station_name from lab_course_student_station a 
+		join lab_room_station b on a.station_id = b.station_id and b.room_id = #{room_id} and a.time_id = #{time_id}
+	</selectSet>
+
+</sqlservices>

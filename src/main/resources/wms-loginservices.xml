@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-loginservices">
+	
+	<!-- 插入excel导入的数据  :陈海燕-->
+	<selectOne id="queryUser" txRef="tx_01" dsKey="readDB">
+		select * from 
+			lab_user 
+		where 
+			binary user_name=#{user_name}  and
+			password=#{password} 
+			<if test="{type}!=null">
+				and type = #{type}
+			</if>
+	</selectOne>
+	
+	<!-- 修改密码 -->
+	<sql-service id="updatePassword" txRef="tx_01" dsKey="readDB">
+		<update rowCount="{count}">
+			update lab_user set
+				password = #{newpassword},
+				update_time = now()
+			where 
+				user_id = #{user_id}
+		</update>
+		<return>
+			<property value="{count}" />
+		</return>
+	</sql-service >
+</sqlservices>

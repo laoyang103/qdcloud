@@ -1,0 +1,15 @@
+* {margin:0; padding:0;}
+#focusc133652 {overflow:hidden; position:relative;}
+#focusc133652 ul {height:380px; position:absolute;}
+#focusc133652 ul li {float:left; overflow:hidden; position:relative; background:#000;}
+#focusc133652 ul li div {position:absolute; overflow:hidden;}
+#focusc133652 .btnBgc133652 {position:absolute; width:800px; height:20px; left:0; bottom:0; background:#000;}
+#focusc133652 .btnc133652 {position:absolute; width:780px; height:10px; padding:5px 10px; right:0; bottom:0; text-align:right;}
+#focusc133652 .btnc133652 span {display:inline-block; _display:inline; _zoom:1; width:25px; height:10px; _font-size:0; margin-left:5px; cursor:pointer; background:#fff;}
+#focusc133652 .btnc133652 span.on {background:#fff;}
+#focusc133652 .preNextc133652 {width:45px; height:100px; position:absolute; top:90px; background:url(system/resource/js/news/img/sprite.png) no-repeat 0 0; cursor:pointer;}
+#focusc133652 .prec133652 {left:0;}
+#focusc133652 .nextc133652 {right:0; background-position:right top;}.titlestyle133374{ font-size: 9pt; color: #222222; text-decoration: none ;}
+.titlestyle133375{ font-size: 9pt; color: #222222; text-decoration: none ;}
+.winstyle133375{ height:190px ;}
+.titlestyle133604{ font-size: 9pt; color: #222222; line-height: 200%; text-decoration: none ;}
