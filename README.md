@@ -50,6 +50,4 @@
 
 公司官网：<http://www.gatherlife.cn>
 
-联系电话：13810252420
-
 公司邮箱：<cs@gatherlife.cn>
