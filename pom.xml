@@ -127,6 +127,24 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.xson</groupId>
+			<artifactId>common-object</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>be.cyberelf.nanoxml</groupId>
+			<artifactId>lite</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>

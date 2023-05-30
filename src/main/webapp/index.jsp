@@ -10,14 +10,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9">
 <meta name="renderer" content="webkit"/>
-<title>XX大学教育学院</title>
+<title>觉行IT教育</title>
 <meta name="Keywords" content="">
 <meta name="Description" content="">
 <link href="img/style18.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="head">
-<img width="1280" height="230" src="/img/pp.png"/>
+<img width="1280" height="150" src="/img/pp.png"/>
 </div>
 
 <div class="menu">    
@@ -25,6 +25,8 @@
 <li class="hover"><a href="index.jsp">网站首页</a></li> 
 <li><a href="cgzslist.jsp">成果展示</a></li>
 <li><a href="jxdtlist.jsp">教学动态</a></li>
+<li><a href="http://dl.jxit.net.cn">公共资源</a></li>
+<li><a href="http://chat.jxit.net.cn">人工智能</a></li>
 <li><a href="zytzlist.jsp">重要通知</a></li>
 </ul>    
 </div>
@@ -140,8 +142,8 @@
 
 <div class="fenline"></div>
 <div class="foot">
-<p>版权所有Copyright © 2017 XXXX教育学院 All Rights Reserved </p>
-<p>院办电话：000-00000000 学工办电话：000-00000000  
+<p>版权所有Copyright © 2023 觉行IT教育 All Rights Reserved </p>
+<p>咨询电话：13141402442（微信同号）  
 </p>
 </div>
 
