@@ -613,10 +613,10 @@ CREATE TABLE `lab_index_photo` (
 -- ----------------------------
 INSERT INTO `lab_index_photo` VALUES ('1', '科研方向', 'zss.jpg', 'img/zss.jpg', 'http://www.jxit.net.cn/jxcginfo.jsp?id=5', '0', '1', '', '2017-02-16 18:29:27', '2017-08-28 14:55:07');
 INSERT INTO `lab_index_photo` VALUES ('2', '学术交流', 'zs.png', 'img/zs.png', 'http://www.jxit.net.cn/jxcginfo.jsp?id=4', '0', '1', '', '2017-02-16 18:29:36', '2017-08-28 14:55:07');
-INSERT INTO `lab_index_photo` VALUES ('3', '综合实验中心', 'a3.jpg', 'img/a3.jpg', 'http://www.jxit.net.cn/jxcginfo.jsp?id=8', '0', '1', '', '2017-02-16 18:29:41', '2017-08-28 14:55:07');
-INSERT INTO `lab_index_photo` VALUES ('4', '轮播电源', 'zss.jpg', 'img/zss.jpg', 'http://www.jxit.net.cn', '1', '1', '', '2017-02-16 18:56:45', '2017-08-28 14:56:09');
-INSERT INTO `lab_index_photo` VALUES ('5', '轮播2', 'zs.png', 'img/zs.png', 'http://www.jxit.net.cn', '1', '1', '', '2017-02-16 18:56:45', '2017-08-28 14:56:09');
-INSERT INTO `lab_index_photo` VALUES ('6', '轮播3', 'a3.jpg', 'img/a3.jpg', 'http://www.jxit.net.cn', '1', '1', '', '2017-02-16 18:56:45', '2017-08-28 14:56:09');
+INSERT INTO `lab_index_photo` VALUES ('3', '综合实验中心', 'syzx.jpg', 'img/syzx.jpg', 'http://www.jxit.net.cn/jxcginfo.jsp?id=8', '0', '1', '', '2017-02-16 18:29:41', '2017-08-28 14:55:07');
+INSERT INTO `lab_index_photo` VALUES ('4', '项目实战', 'zss.jpg', 'img/zss.jpg', 'http://www.jxit.net.cn', '1', '1', '', '2017-02-16 18:56:45', '2017-08-28 14:56:09');
+INSERT INTO `lab_index_photo` VALUES ('5', '学术讲座', 'zs.png', 'img/zs.png', 'http://www.jxit.net.cn', '1', '1', '', '2017-02-16 18:56:45', '2017-08-28 14:56:09');
+INSERT INTO `lab_index_photo` VALUES ('6', '学校前台', 'a3.jpg', 'img/a3.jpg', 'http://www.jxit.net.cn', '1', '1', '', '2017-02-16 18:56:45', '2017-08-28 14:56:09');
 
 -- ----------------------------
 -- Table structure for `lab_message`
