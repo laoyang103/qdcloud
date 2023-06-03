@@ -48,7 +48,7 @@ public class LoginController {
 			}
 			
 			// TODO 这里不能返回密码
-			xco.setStringValue("password", MD5Util.MD5(xco.getStringValue("password")).trim());
+			xco.setStringValue("password", xco.getStringValue("password"));
 			result = loginService.dologin(xco);
 			if (null == result) {
 				return XCOUtil.getResultXCO(2, "该用户不存在");
@@ -113,7 +113,7 @@ public class LoginController {
 		XCO userInfo = (XCO) request.getSession().getAttribute("userInfo");
 		XCO param = new XCO();
 		param.setLongValue("user_id", userInfo.getLongValue("user_id"));
-		param.setStringValue("newpassword", MD5Util.MD5(xco.getStringValue("new_password1").trim()));
+		param.setStringValue("newpassword", xco.getStringValue("new_password1"));
 		XCO result = loginService.dologin(xco);
 		long count = 0;
 		if(null == result){

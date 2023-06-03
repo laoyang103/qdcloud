@@ -19,7 +19,6 @@ import org.xson.common.object.XCO;
 import org.xson.tangyuan.executor.SqlServiceActuator;
 import org.xson.tangyuan.executor.SqlServiceException;
 
-import cn.gatherlife.wms.business.util.MD5Util;
 import cn.gatherlife.wms.business.util.XCOUtil;
 
 @Service("importExcelService")
@@ -91,7 +90,7 @@ public class ImportExcelService {
 					}else{
 						XCO xco = new XCO();
 						xco.setStringValue("user_name", user_name.toString().trim());
-						xco.setStringValue("password", MD5Util.MD5(password.toString().trim()));
+						xco.setStringValue("password", password.toString());
 						xco.setStringValue("real_name", real_name.toString().trim());
 						xco.setLongValue("class_id", class_id);
 						if(sex.toString().trim().equals("女")){

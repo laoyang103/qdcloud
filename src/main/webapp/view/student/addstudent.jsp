@@ -149,8 +149,8 @@ String subpage = "studentlist";
 			 
 			
 			$("#user_name").change(function() {
-				var user_num = $("#user_name").val();
-				if (user_num == null) {
+				var user_name = $("#user_name").val();
+				if (user_name == null) {
 					$("#user_name_msg").show();
 					$("#user_name_msg").parent().parent().addClass("has-error");
 				} else {

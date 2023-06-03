@@ -2,67 +2,13 @@
 <sqlservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://xson.org/tangyuan/sqlservices.xsd" ns="wms-importexcelservices">
 	
-	<!-- 插入excel正确数据 -->
-	<!--<sql-service id="insertExcel" txRef="tx_01" dsKey="readDB">
-		<foreach collection="{xcolist}" index="{i}" separator=",">
-			<selectVar resultKey="{count}">
-				select count(1) from lab_user where binary user_name =#{xcolist[i].user_name} and type = 1 and role_id = 1  
-			</selectVar>
-			<if test="{count} == 0">
-				<selectVar resultKey="{user_num}">
-					SELECT nextval_string('student', '01', 4)
-				</selectVar>
-				<selectVar resultKey="{class_id}">
-					SELECT class_id from lab_class where class_name = #{xcolist[i].class_name}
-				</selectVar>
-				<exception test="{class_id}==null" code="119" message="excel中有不存在的班级！"/>
-				<insert>
-					INSERT INTO lab_user(
-						user_num, user_name, real_name, password, sex, class_id, class_name, 
-						type, role_id, state, operator, create_time, update_time
-					) VALUES(
-						#{user_num}, #{xcolist[i].user_name}, #{xcolist[i].real_name}, #{xcolist[i].password}, #{xcolist[i].sex|0}, #{class_id}, #{xcolist[i].class_name}, 
-						1, 1, #{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
-					)
-				</insert>
-			</if>
-			<else>
-				<selectVar resultKey="{class_id1}">
-					SELECT class_id from lab_class where class_name = #{xcolist[i].class_name}
-				</selectVar>
-				<exception test="{class_id1}==null" code="119" message="excel中有不存在的班级！"/>
-				<update>
-					update lab_user set
-						real_name = #{xcolist[i].real_name},
-						password = #{xcolist[i].password},
-						sex = #{xcolist[i].sex|0},
-						class_id = #{class_id1},
-						class_name = #{xcolist[i].class_name},
-						operator = #{operator|''},
-						update_time = #{update_time|now()},
-						state = 1
-					where
-						binary user_name = #{xcolist[i].user_name} AND
-						type = 1 AND
-						role_id = 1
-				</update>
-			</else>
-		</foreach>
-		<return>
-			<property value="{pid}"/>
-		</return>
-	</sql-service>-->
 	<sql-service id="insertExcel" txRef="tx_01" dsKey="readDB">
-		<selectVar resultKey="{user_num}">
-			SELECT nextval_string('student', '01', 4)
-		</selectVar>
-		
 		<insert>
 			INSERT INTO lab_user(
-				user_num, user_name, real_name, password, sex, class_id, class_name, 
+				user_name, real_name, password, sex, class_id, class_name, 
 				type, role_id, state, operator, create_time, update_time
 			) VALUES(
-				#{user_num}, #{user_name}, #{real_name}, #{password}, #{sex|0}, #{class_id}, #{class_name}, 
+				#{user_name}, #{real_name}, #{password}, #{sex|0}, #{class_id}, #{class_name}, 
 				1, 1, #{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
 			)
 		</insert>

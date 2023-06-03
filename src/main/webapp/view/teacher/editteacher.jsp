@@ -62,7 +62,6 @@ String subpage = "teacherlist";
                         <div class="s-pannel margin-top-50">
                         	
                            <div role="form" class="form-horizontal font-14">
-                              <input type="hidden" value="" id="user_num" class="form-control w210 pull-left">
                               <div class="form-group">
                                 <label class="col-sm-3 control-label">账号：</label>
                                 <div class="col-sm-9">
@@ -149,7 +148,6 @@ String subpage = "teacherlist";
 		
 		//渲染单个对象
 		function manage(xco){
-			$("#user_num").val(xco.getStringValue("user_num"));
 			$("#user_name").val(xco.getStringValue("user_name"));
 			$("#real_name").val(xco.getStringValue("real_name"));
 			$("#class_name").val(xco.getIntegerValue("class_id"));
@@ -171,8 +169,8 @@ String subpage = "teacherlist";
 			$("#real_name_msg").hide();
 			
 			$("#user_name").change(function() {
-				var user_num = $("#user_name").val();
-				if (user_num == null) {
+				var user_name = $("#user_name").val();
+				if (user_name == null) {
 					$("#user_name_msg").show();
 					$("#user_name_msg").parent().parent().addClass("has-error");
 				} else {

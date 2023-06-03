@@ -138,27 +138,12 @@
 	<!-- 添加用户 -->
 	<sql-service id="insertUser" txRef="tx_02" dsKey="writeDB">
 		<!-- 序列查询 -->
-		<if test="{type} == 0">
-			<selectVar resultKey="{user_num}">
-				SELECT nextval_string('student', '01', 4)
-			</selectVar>
-		</if>
-		<elseif test="{type} == 1">
-			<selectVar resultKey="{user_num}">
-				SELECT nextval_string('teacher', '02', 4)
-			</selectVar>
-		</elseif>
-		<elseif test="{type} == 2">
-			<selectVar resultKey="{user_num}">
-				SELECT nextval_string('admin', '02', 4)
-			</selectVar>
-		</elseif>
 		<insert incrementKey="{ID}">
 			INSERT INTO lab_user(
-				user_num, user_name, real_name, password, sex, class_id, class_name, 
+				user_name, real_name, password, sex, class_id, class_name, 
 				type, role_id, state, operator, create_time, update_time
 			) VALUES(
-				#{user_num|''}, #{user_name}, #{real_name}, #{password}, #{sex|0}, #{class_id}, #{class_name}, 
+				#{user_name}, #{real_name}, #{password}, #{sex|0}, #{class_id}, #{class_name}, 
 				#{type|0}, #{type|0}, #{state|1}, #{operator|''}, #{create_time|now()}, #{update_time|now()}
 			)
 		</insert>

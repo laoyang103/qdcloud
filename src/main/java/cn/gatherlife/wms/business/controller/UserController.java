@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.xson.common.object.XCO;
 
 import cn.gatherlife.wms.business.service.UserService;
-import cn.gatherlife.wms.business.util.MD5Util;
 import cn.gatherlife.wms.business.util.XCOUtil;
 
 @Controller
@@ -73,8 +72,6 @@ public class UserController {
 		if(flag > 0){
 			return XCOUtil.getResultXCO(2, "用户名重复");
 		}else{
-			String password = MD5Util.MD5(xco.getStringValue("password"));
-			xco.setStringValue("password", password);
 			count = userService.insertUser(xco);
 			if(count == 0){
 				return XCOUtil.getResultXCO(0, "保存失败");

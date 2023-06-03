@@ -67,7 +67,6 @@ String subpage = "studentlist";
                                 <label class="col-sm-3 control-label">账号：</label>
                                 <div class="col-sm-9">
                                     <input type="text" id="user_name" disabled class="form-control w210 pull-left">
-                                    <input type="hidden" value="" id="user_num" class="form-control w210 pull-left">
                                     <span id="user_name_msg" class="help-block pull-left ml10">账号不能为空！</span>
                                 </div>
                               </div>
@@ -159,7 +158,6 @@ String subpage = "studentlist";
 		
 		//渲染单个对象
 		function manage(xco){
-			$("#user_num").val(xco.getStringValue("user_num"));
 			$("#user_name").val(xco.getStringValue("user_name"));
 			//$("#password").val(xco.getStringValue("password"));
 			$("#real_name").val(xco.getStringValue("real_name"));
@@ -181,8 +179,8 @@ String subpage = "studentlist";
 			$("#real_name_msg").hide();
 			
 			$("#user_name").change(function() {
-				var user_num = $("#user_name").val();
-				if (user_num == null) {
+				var user_name = $("#user_name").val();
+				if (user_name == null) {
 					$("#user_name_msg").show();
 					$("#user_name_msg").parent().parent().addClass("has-error");
 				} else {

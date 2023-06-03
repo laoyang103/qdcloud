@@ -159,7 +159,7 @@ public class UserService {
 	 * @return
 	 */
 	public int resetPwd(XCO xco){
-		xco.setStringValue("password", MD5Util.MD5("123456"));
+		xco.setStringValue("password", "123456");
 		int count = SqlServiceActuator.execute("wms-userservices.resetPwd", xco);
 		return count;
 	}
