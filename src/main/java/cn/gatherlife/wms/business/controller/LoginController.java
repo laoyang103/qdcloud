@@ -113,7 +113,8 @@ public class LoginController {
 		XCO userInfo = (XCO) request.getSession().getAttribute("userInfo");
 		XCO param = new XCO();
 		param.setLongValue("user_id", userInfo.getLongValue("user_id"));
-		param.setStringValue("newpassword", xco.getStringValue("new_password1"));
+		param.setStringValue("user_name", userInfo.getStringValue("user_name"));
+		param.setStringValue("new_password", xco.getStringValue("new_password1"));
 		XCO result = loginService.dologin(xco);
 		long count = 0;
 		if(null == result){

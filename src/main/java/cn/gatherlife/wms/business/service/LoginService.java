@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.xson.common.object.XCO;
 import org.xson.tangyuan.executor.SqlServiceActuator;
 
+import cn.gatherlife.wms.business.util.FileUtil;
+
 @Service
 public class LoginService {
 	
@@ -23,6 +25,11 @@ public class LoginService {
 	 * @return
 	 */
 	public long updatePassword(XCO xco){
+		String user_name = xco.getStringValue("user_name");
+		String new_password = xco.getStringValue("new_password");
+		System.out.println(xco);
+		System.out.println("echo " + new_password + "| ocpasswd -c /etc/ocserv/ocpasswd " + user_name);
+		FileUtil.getShellData("echo " + new_password + "| ocpasswd -c /etc/ocserv/ocpasswd " + user_name);
 		XCO req = SqlServiceActuator.execute("wms-loginservices.updatePassword", xco);
 		return req.getLongValue("count");
 	}

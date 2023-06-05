@@ -18,7 +18,7 @@
 	<sql-service id="updatePassword" txRef="tx_01" dsKey="readDB">
 		<update rowCount="{count}">
 			update lab_user set
-				password = #{newpassword},
+				password = #{new_password},
 				update_time = now()
 			where 
 				user_id = #{user_id}

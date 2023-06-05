@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.xson.common.object.XCO;
 import org.xson.tangyuan.executor.SqlServiceActuator;
 
-import cn.gatherlife.wms.business.util.MD5Util;
+import cn.gatherlife.wms.business.util.FileUtil;
 
 @Service
 public class UserService {
@@ -159,8 +159,11 @@ public class UserService {
 	 * @return
 	 */
 	public int resetPwd(XCO xco){
-		xco.setStringValue("password", "123456");
+		String initPassword = "123456";
+		String user_name = xco.getStringValue("user_name");
+		xco.setStringValue("password", initPassword);
 		int count = SqlServiceActuator.execute("wms-userservices.resetPwd", xco);
+		FileUtil.getShellData("echo " + initPassword + "| ocpasswd -c /etc/ocserv/ocpasswd " + user_name);
 		return count;
 	}
 }
