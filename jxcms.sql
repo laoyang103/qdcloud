@@ -1,24 +1,77 @@
--- MySQL dump 10.19  Distrib 10.3.28-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: jxcms
--- ------------------------------------------------------
--- Server version	10.3.28-MariaDB
+-- Table structure for table `lab_hpv`
+--
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `lab_hpv`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab_hpv` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '宿主机编号',
+  `name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '宿主机名称',
+  `ipaddr` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '宿主机IP',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='虚拟机表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lab_hpv`
+--
+
+LOCK TABLES `lab_hpv` WRITE;
+/*!40000 ALTER TABLE `lab_hpv` DISABLE KEYS */;
+INSERT INTO `lab_hpv` VALUES (1 ,'jxkvm1' ,'10.16.255.1');
+INSERT INTO `lab_hpv` VALUES (2 ,'jxkvm2' ,'10.16.255.2');
+INSERT INTO `lab_hpv` VALUES (3 ,'jxkvm3' ,'10.16.255.3');
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lab_vm`
+--
+DROP TABLE IF EXISTS `lab_vm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab_vm` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '虚拟机编号',
+  `name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '虚拟机名称',
+  `ipaddr` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '虚拟机IP',
+  `vmdisk` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '磁盘文件名',
+  `cpu` int unsigned NOT NULL DEFAULT 0 COMMENT 'CPU核心数',
+  `mem` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '内存字节数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='虚拟机表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lab_vm`
+--
+
+LOCK TABLES `lab_vm` WRITE;
+/*!40000 ALTER TABLE `lab_vm` DISABLE KEYS */;
+INSERT INTO `lab_vm` VALUES (1 ,'jx-nginx-11' ,'10.10.10.11','jx-nginx-11.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (2 ,'jx-nginx-12' ,'10.10.10.12','jx-nginx-12.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (3 ,'jx-nginx-13' ,'10.10.10.13','jx-nginx-13.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (4 ,'jx-apache-21','10.10.10.21','jx-apache-21.qcow2',2, 2097152);
+INSERT INTO `lab_vm` VALUES (5 ,'jx-apache-22','10.10.10.22','jx-apache-22.qcow2',2, 2097152);
+INSERT INTO `lab_vm` VALUES (6 ,'jx-redis-26' ,'10.10.10.26','jx-redis-26.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (7 ,'jx-redis-27' ,'10.10.10.27','jx-redis-27.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (8 ,'jx-redis-28' ,'10.10.10.28','jx-redis-28.qcow2' ,2, 2097152);
+
+INSERT INTO `lab_vm` VALUES (9 ,'jx-mysql-proxy-31'  ,'10.10.10.31','jx-mysql-proxy-31.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (10,'jx-mysql-proxy-32'  ,'10.10.10.32','jx-mysql-proxy-32.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (11,'jx-mysql-master-36' ,'10.10.10.36','jx-mysql-master-36.qcow2',2, 2097152);
+INSERT INTO `lab_vm` VALUES (12,'jx-mysql-slave-37'  ,'10.10.10.37','jx-mysql-slave-37.qcow2' ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (13,'jx-mysql-slave-38'  ,'10.10.10.38','jx-mysql-slave-38.qcow2' ,2, 2097152);
+
+INSERT INTO `lab_vm` VALUES (14,'jx-pxeboot-51' ,'10.10.10.51' ,'jx-pxeboot-51.qcow2',2, 2097152);
+INSERT INTO `lab_vm` VALUES (15,'jx-pxeboot-52' ,'10.10.10.52' ,'jx-pxeboot-52.qcow2',2, 2097152);
+INSERT INTO `lab_vm` VALUES (16,'jx-dev-71'     ,'10.10.10.71' ,'jx-dev-71.qcow2'    ,2, 2097152);
+INSERT INTO `lab_vm` VALUES (17,'jx-gitlab-76'  ,'10.10.10.76' ,'jx-gitlab-76.qcow2' ,2, 6097152);
+INSERT INTO `lab_vm` VALUES (18,'jx-ops-81'     ,'10.10.10.81' ,'jx-ops-81.qcow2'    ,2, 2097152);
+UNLOCK TABLES;
 
 --
 -- Table structure for table `lab_module`
 --
-
 DROP TABLE IF EXISTS `lab_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -198,7 +251,7 @@ INSERT INTO `lab_class` VALUES (5, 'jx2204','jx2204',0,'觉行IT教育',1,'admin
 INSERT INTO `lab_class` VALUES (6, 'jx2210','jx2210',0,'觉行IT教育',1,'admin','2022-10-19 09:52:09','2022-10-19 09:52:09');
 INSERT INTO `lab_class` VALUES (7, 'jx2211','jx2211',0,'觉行IT教育',1,'admin','2022-11-18 10:43:00','2022-11-18 10:43:00');
 INSERT INTO `lab_class` VALUES (8, 'jx2301','jx2301',0,'觉行IT教育',1,'admin','2023-01-31 15:36:44','2023-01-31 15:36:44');
-INSERT INTO `lab_class` VALUES (9, 'jx2302','jx2302',0,'觉行IT教育',1,'admin','2023-02-31 15:37:00','2023-02-31 15:37:00');
+INSERT INTO `lab_class` VALUES (9, 'jx2302','jx2302',0,'觉行IT教育',1,'admin','2023-02-01 15:37:00','2023-02-01 15:37:00');
 /*!40000 ALTER TABLE `lab_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -493,7 +546,7 @@ CREATE TABLE `lab_course_student_station` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='学生预约课位表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='学生预约课位表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1058,14 +1111,3 @@ LOCK TABLES `lab_room_time` WRITE;
 /*!40000 ALTER TABLE `lab_room_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2023-06-03 14:56:21
