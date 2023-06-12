@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /etc/openvpn/head.sh
+source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
 
 stuno=$1
 stuname=$($mysqllogin "select user_name from lab_user where user_id=$stuno" | grep -v user_name)
@@ -39,6 +39,13 @@ sed -i "s/_VMR_LAN_BR/br-$stuname/g" $vdiskdir/$stuname/$stuname.xml
 sed -i "s/_VMR_LAN_MAC/$lanmac/g" $vdiskdir/$stuname/$stuname.xml
 sed -i "s/_VMRDISK/\/var\/lib\/libvirt\/images\/$stuname\/$stuname.qcow2/g" $vdiskdir/$stuname/$stuname.xml
 
+# 在所有宿主机节点定义该路由器，但最后只有一台开启
+for hpv in ${hpvList[@]}; do
+  virsh -c qemu+tcp://$hpv/system destroy $stuname
+  virsh -c qemu+tcp://$hpv/system undefine $stuname
+  virsh -c qemu+tcp://$hpv/system define $vdiskdir/$stuname/$stuname.xml
+done
+
 # 所有虚拟机的xml定义文件
 vmlist=$($mysqllogin "select name,cpu,mem,vmdisk from lab_vm" | grep -v name | sed "s/\t/@/g")
 for vm in ${vmlist[@]}; do
@@ -54,4 +61,9 @@ for vm in ${vmlist[@]}; do
   sed -i "s/_VMBR/br-$stuname/g" $vdiskdir/$stuname/$vmname.xml
   sed -i "s/_VMMAC/$vmmac/g" $vdiskdir/$stuname/$vmname.xml
   sed -i "s/_VMDISK/\/var\/lib\/libvirt\/images\/$stuname\/$vmdisk/g" $vdiskdir/$stuname/$vmname.xml
+  for hpv in ${hpvList[@]}; do
+    virsh -c qemu+tcp://$hpv/system destroy $vmname
+    virsh -c qemu+tcp://$hpv/system undefine $vmname
+    virsh -c qemu+tcp://$hpv/system define $vdiskdir/$stuname/$vmname.xml
+  done
 done
