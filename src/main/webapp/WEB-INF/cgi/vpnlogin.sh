@@ -2,7 +2,7 @@
 
 source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
 
-# username="jx21080001"
+# username="jx00000010"
 # password="123456"
  
 mysqllogin="mysql -uroot -p123456 jxcms -e "
