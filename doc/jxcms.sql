@@ -190,6 +190,7 @@ INSERT INTO `lab_module_role` VALUES (NULL,21,2,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,22,2,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,23,2,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,36,2,0,NULL,NULL);
+INSERT INTO `lab_module_role` VALUES (NULL,37,2,0,NULL,NULL);
 -- 管理员可用模块
 INSERT INTO `lab_module_role` VALUES (NULL,1 ,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,2 ,3,0,NULL,NULL);
@@ -210,6 +211,7 @@ INSERT INTO `lab_module_role` VALUES (NULL,32,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,33,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,34,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,35,3,0,NULL,NULL);
+INSERT INTO `lab_module_role` VALUES (NULL,37,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,38,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,39,3,0,NULL,NULL);
 INSERT INTO `lab_module_role` VALUES (NULL,40,3,0,NULL,NULL);
