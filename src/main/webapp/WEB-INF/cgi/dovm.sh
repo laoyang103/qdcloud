@@ -1,23 +1,28 @@
 #!/bin/bash 
 
-# REMOTE_ADDR="10.32.1.146"
-# QUERY_STRING="name=jx21080001-redis-27&action=reset"
+# QUERY_STRING="user_id=102&user_name=jx21080002&name=jx21080002-nginx-11&action=start"
 echo "HTTP/1.1 200 OK"
 echo "Content-Type: text/html;charset=utf-8"
 echo ""
 
 source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
 
-name=$(echo $QUERY_STRING | sed "s/\&/=/g" | awk -F "=" '{print $2}')
-action=$(echo $QUERY_STRING | sed "s/\&/=/g" | awk -F "=" '{print $4}')
+user_id=$(echo $QUERY_STRING | awk -F "&" '{print $1}' | awk -F "=" '{print $2}')
+user_name=$(echo $QUERY_STRING | awk -F "&" '{print $2}' | awk -F "=" '{print $2}')
+vmname=$(echo $QUERY_STRING | awk -F "&" '{print $3}' | awk -F "=" '{print $2}')
+action=$(echo $QUERY_STRING | awk -F "&" '{print $4}' | awk -F "=" '{print $2}')
 
 if [ "$action" == "start" ]; then
-  startvm $name
+  vmnametmp=$vmname
+  startvm $user_id $user_name $user_name
+  startvm $user_id $user_name $vmnametmp
 elif [ "$action" == "destroy" ]; then
-  destroyvm $name
+  destroyvm $vmname
 elif [ "$action" == "reset" ]; then
-  resetvm $name
+  resetvm $vmname
+elif [ "$action" == "connect" ]; then
+  connectvm $vmname
 fi
 
 echo "</br>"
-echo "<a href="/cgi-bin/listvm.sh">返回列表</a>"
+echo "<a href="/view/studenttask/vmlist.jsp">返回列表</a>"

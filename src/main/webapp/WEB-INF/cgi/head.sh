@@ -31,22 +31,6 @@ function ip2num() {
   $mysqllogin "select inet_aton(\"$1\")" | grep -v inet_aton
 }
 
-# 如果远程地址不为空获取操作学生的ID
-if [ -n "$REMOTE_ADDR" ]; then
-  ipnum=$(ip2num $REMOTE_ADDR)
-  user_id=$(echo "($ipnum - $vpnbase + 2)/4" | bc)
-  if [ -z "$user_id" ]; then
-    echo "bad REMOTE_ADDR $REMOTE_ADDR"
-    exit
-  fi
-  sql="select user_name from lab_user where user_id=\"$user_id\""
-  user_name=$($mysqllogin "$sql" | grep -v user_name)
-  if [ -z "$user_name" ]; then
-    echo "bad REMOTE_ADDR $REMOTE_ADDR"
-    exit
-  fi
-fi
-
 function addrule() {
   stuipn=$1
   stuvpn=$2
@@ -57,8 +41,31 @@ function addrule() {
   done
 }
 
+function addvxlan() {
+  # 去所有宿主机检查学生vxlan网桥
+  user_id=$1
+  user_name=$2
+  echo "check stu id $user_id name $user_name ..."
+  for hpv in ${hpvList[@]}; do
+    havebr=$(ssh root@$hpv "brctl show br-$user_name | grep vx-$user_name | head -n 1")
+    if [ -z "$havebr" ]; then
+      ssh root@$hpv "ip link add vx-$user_name type vxlan id $user_id dstport 4789 group 239.1.1.1 dev br-vmr"
+      ssh root@$hpv "brctl addbr br-$user_name"
+      ssh root@$hpv "brctl addif br-$user_name vx-$user_name"
+      ssh root@$hpv "ip l set vx-$user_name up"
+      ssh root@$hpv "ip l set dev br-$user_name up"
+    fi
+  done
+}
+
 function startvm() {
-  vmname=$1
+  user_id=$1
+  user_name=$2
+  vmname=$3
+  # 开启之前先检查vxlan网桥
+  addvxlan $user_id $user_name
+
+  # 确定该虚拟机是否已经开启
   for hpv in ${hpvList[@]}; do
     state=$(virsh -c qemu+tcp://$hpv/system dominfo $vmname | grep State| awk '{print $2}')
     if [ "running" == "$state" ]; then
@@ -67,6 +74,7 @@ function startvm() {
     fi
   done
 
+  # 寻找一台最空闲宿主机启动该虚拟机
   minhpv=$hpvFirst
   mincnt=$(virsh -c qemu+tcp://$hpvFirst/system list | wc -l)
   for hpv in ${hpvList[@]}; do
@@ -108,4 +116,18 @@ function resetvm() {
   vmdisk=$(echo $vmname | sed "s/jx[0-9]\{8\}-/jx-/g" | sed "s/$/.qcow2/g")
   rm $vdiskdir/$user_name/$vmdisk
   cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk
+  echo "rm $vdiskdir/$user_name/$vmdisk"
+  echo "cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk"
+}
+
+function connectvm() {
+  vmname=$1
+  for hpv in ${hpvList[@]}; do
+    vncport=$(virsh -c qemu+tcp://$hpv/system vncdisplay $vmname | head -n 1 | sed "s/://g")
+    if [ -n "$vncport" -a -n "$(echo $vncport | grep [0-9])" ]; then
+      echo "<h1>虚拟机：$vmname</h1>"
+      echo "<h1>VNC地址：$hpv:$(echo $vncport + 5900 | bc)</h1>"
+      break;
+    fi
+  done
 }
