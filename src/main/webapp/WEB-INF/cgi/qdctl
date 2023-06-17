@@ -1,0 +1,30 @@
+#!/bin/bash 
+
+source head.sh
+
+action=$1
+
+if [ "list" == "$action" ]; then
+  for hpv in ${hpvList[@]}; do
+    echo "======================= vm in $hpv ============================="
+    virsh -c qemu+tcp://$hpv/system list | grep -v Name | grep -v "\-\-\-"
+  done
+elif [ "stu" == "$action" ]; then
+  rm /tmp/stu.pcap
+  timeout 5 tcpdump -i tun0 net 10.32.0.0/16 -w /tmp/stu.pcap
+  iplist=$(tshark -q -r /tmp/stu.pcap -z conv,ip | awk '{print $3}' | sort | uniq | grep 10.32)
+  for ip in ${iplist[@]}; do
+    ipnum=$(ip2num $ip)
+    id=$(echo "($ipnum+2-$vpnbase)/4" | bc)
+    real_name=$($mysqllogin "select real_name from lab_user where user_id=$id" | grep -v real_name)
+    echo "$ip: $real_name"
+  done
+elif [ "destroy" == "$action" ]; then
+  for hpv in ${hpvList[@]}; do
+    echo "======================= vm in $hpv ============================="
+    vmlist=$(virsh -c qemu+tcp://$hpv/system list | grep -v Name | grep -v "\-\-\-" | awk '{print $2}')
+    for vm in ${vmlist[@]}; do
+      virsh -c qemu+tcp://$hpv/system destroy $vm
+    done
+  done
+fi

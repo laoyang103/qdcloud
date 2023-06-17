@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# QUERY_STRING="user_id=102&user_name=jx21080002&name=jx21080002-nginx-11&action=start"
+# QUERY_STRING="user_id=3&user_name=jx00000003&name=jx00000003-mysql-master-36&action=start"
 echo "HTTP/1.1 200 OK"
 echo "Content-Type: text/html;charset=utf-8"
 echo ""

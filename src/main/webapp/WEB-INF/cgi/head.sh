@@ -81,9 +81,9 @@ function startvm() {
     vcnt=$(virsh -c qemu+tcp://$hpv/system list | wc -l)
     if [ $vcnt -lt $mincnt ]; then
       minhpv=$hpv
-      break
     fi
   done
+  minhpv="10.16.255.5"
   echo "starting $vmname on $minhpv ..."
   echo "virsh -c qemu+tcp://$minhpv/system start $vmname"
   virsh -c qemu+tcp://$minhpv/system start $vmname
@@ -126,8 +126,11 @@ function connectvm() {
     vncport=$(virsh -c qemu+tcp://$hpv/system vncdisplay $vmname | head -n 1 | sed "s/://g")
     if [ -n "$vncport" -a -n "$(echo $vncport | grep [0-9])" ]; then
       echo "<h1>虚拟机：$vmname</h1>"
-      echo "<h1>VNC地址：$hpv:$(echo $vncport + 5900 | bc)</h1>"
+      echo -n "<h1>以下需要通过VPN连接，<a href="/view/manual/jxvpn-wan.pdf">VPN安装教程</a></h1>"
+      echo -n "<h2>IP地址：10.10.10.$(echo $vmname | awk -F "-" '{print $NF}')</h2>"
+      echo "<h2>VNC地址：$hpv:$(echo $vncport + 5900 | bc)</h2>"
       break;
     fi
   done
 }
+

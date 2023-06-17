@@ -1,6 +1,5 @@
 #!/bin/bash 
 
-# REMOTE_ADDR="10.32.1.146"
 echo "HTTP/1.1 200 OK"
 echo "Connection: keep-alive"
 echo "Content-Type: text/xml;charset=utf-8"
