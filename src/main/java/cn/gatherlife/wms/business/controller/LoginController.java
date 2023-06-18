@@ -38,8 +38,8 @@ public class LoginController {
 		XCO result = new XCO();
 		try {
 			
-			String verifyCode = xco.getStringValue("verifyCode").trim();
 			HttpSession session = request.getSession();
+			String verifyCode = xco.getStringValue("verifyCode").trim();
 			
 			// 得到验证码
 			String code = (String) session.getAttribute("authcode");
@@ -104,7 +104,7 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		session.removeAttribute("userInfo");
 		// 清除COOKIE TODO
-		return "redirect:/index.jsp";
+		return "redirect:/login.jsp";
 	}
 	
 	@RequestMapping("updatePassword")
