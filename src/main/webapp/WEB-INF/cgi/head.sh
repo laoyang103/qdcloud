@@ -83,7 +83,6 @@ function startvm() {
       minhpv=$hpv
     fi
   done
-  minhpv="10.16.255.5"
   echo "starting $vmname on $minhpv ..."
   echo "virsh -c qemu+tcp://$minhpv/system start $vmname"
   virsh -c qemu+tcp://$minhpv/system start $vmname
