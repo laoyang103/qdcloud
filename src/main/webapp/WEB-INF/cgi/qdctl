@@ -9,6 +9,8 @@ if [ "list" == "$action" ]; then
     echo "======================= vm in $hpv ============================="
     virsh -c qemu+tcp://$hpv/system list | grep -v Name | grep -v "\-\-\-"
   done
+elif [ "log" == "$action" ]; then
+  $mysqllogin "select from_unixtime(lab_log.time), lab_user.user_name, lab_user.real_name, lab_log.ipaddr from lab_log join lab_user on lab_log.user_id=lab_user.user_id;"
 elif [ "stu" == "$action" ]; then
   rm /tmp/stu.pcap
   timeout 5 tcpdump -i tun0 net 10.32.0.0/16 -w /tmp/stu.pcap
@@ -16,8 +18,9 @@ elif [ "stu" == "$action" ]; then
   for ip in ${iplist[@]}; do
     ipnum=$(ip2num $ip)
     id=$(echo "($ipnum+2-$vpnbase)/4" | bc)
+    user_name=$($mysqllogin "select user_name from lab_user where user_id=$id" | grep -v user_name)
     real_name=$($mysqllogin "select real_name from lab_user where user_id=$id" | grep -v real_name)
-    echo "$ip: $real_name"
+    echo "$ip: $user_name $real_name"
   done
 elif [ "destroy" == "$action" ]; then
   for hpv in ${hpvList[@]}; do

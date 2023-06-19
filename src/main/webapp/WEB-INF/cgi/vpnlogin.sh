@@ -4,6 +4,7 @@ source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
 
 # username="jx00000010"
 # password="123456"
+# untrusted_ip=10.64.1.136
  
 mysqllogin="mysql -uroot -p123456 jxcms -e "
 sql="select user_id from lab_user where user_name=\"$username\" and password=\"$password\""
@@ -31,4 +32,6 @@ if [ -z "$haverule" ]; then
   addrule $ipvmr $ipstr
 fi
 
+# 登录日志写入数据库
+$mysqllogin "INSERT INTO lab_log VALUES(NULL, $user_id, \"$untrusted_ip\", $(date +%s))"
 exit 0

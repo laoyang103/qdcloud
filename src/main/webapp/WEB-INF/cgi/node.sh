@@ -31,7 +31,7 @@ systemctl disable firewalld
 setenforce 0
 
 # 挂载存储服务器的虚拟磁盘目录
-echo "10.16.255.254:/data/vdisk/\t/var/lib/libvirt/images\tnfs\tdefaults\t0\t0" >> /etc/fstab 
+echo -e "10.16.255.254:/data/vdisk/\t/var/lib/libvirt/images\tnfs\tdefaults\t0\t0" >> /etc/fstab 
 mount -a
 # 将所有学生的所有虚拟机定义出来（不开启）
 find /var/lib/libvirt/images/ -name jx*.xml -exec virsh define {} \;
@@ -63,4 +63,4 @@ PERSISTENT_DHCLIENT="1"
 BRIDGE=br-vmr
 EOF
 
-read -p "请重启配置的网卡$3
+read -p "请重启配置的网卡$3"
