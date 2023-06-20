@@ -200,9 +200,9 @@ String title = "实验教学统一管理系统";
 			if(xco.getCode() == 0){
 				var type = xco.getObjectValue("data").getObjectValue("type");
 				if(type == 1){
-					window.location.href="/view/message/msglist.jsp";
+					window.location.href="/view/studenttask/vmlist.jsp";
 				}else if(type == 2){
-					window.location.href="/view/message/msglist.jsp";
+					window.location.href="/view/studenttask/vmlist.jsp";
 				}else{
 					window.location.href="/view/message/sendmsg.jsp";
 				}

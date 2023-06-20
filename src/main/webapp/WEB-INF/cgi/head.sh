@@ -69,7 +69,7 @@ function startvm() {
   for hpv in ${hpvList[@]}; do
     state=$(virsh -c qemu+tcp://$hpv/system dominfo $vmname | grep State| awk '{print $2}')
     if [ "running" == "$state" ]; then
-      echo "domain $vmname is running on $hpv ..."
+      echo "domain $vmname is running on $hpv ... </br>"
       return
     fi
   done
@@ -83,8 +83,8 @@ function startvm() {
       minhpv=$hpv
     fi
   done
-  echo "starting $vmname on $minhpv ..."
-  echo "virsh -c qemu+tcp://$minhpv/system start $vmname"
+  echo "starting $vmname on $minhpv ... </br>"
+  echo "virsh -c qemu+tcp://$minhpv/system start $vmname </br>"
   virsh -c qemu+tcp://$minhpv/system start $vmname
 }
 
@@ -115,8 +115,8 @@ function resetvm() {
   vmdisk=$(echo $vmname | sed "s/jx[0-9]\{8\}-/jx-/g" | sed "s/$/.qcow2/g")
   rm $vdiskdir/$user_name/$vmdisk
   cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk
-  echo "rm $vdiskdir/$user_name/$vmdisk"
-  echo "cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk"
+  echo "rm $vdiskdir/$user_name/$vmdisk </br>"
+  echo "cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk </br>"
 }
 
 function connectvm() {
