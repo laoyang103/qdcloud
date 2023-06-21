@@ -1,36 +1,83 @@
 #!/bin/bash
 
+# 环境变量编码类型、命令路径
 export LANG="en_US.UTF-8"
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 
+# 当前时间和日志文件路径
 time_stamp=`date "+%Y-%m-%d %T"`
 log_file="/var/log/messages"
+
+# 检查iptables规则的临时文件
 currfile="/tmp/iptables-curr.txt"
+
+# 每个客户端的VPN配置目录
 ccddir="/etc/openvpn/ccd/"
+
+# 计算节点虚拟磁盘目录（NFS映射到管理节点的/data/vdisk）
 hpvdiskdir="/var/lib/libvirt/images/"
+
+# 管理节点数据库的登陆信息
 mysqllogin="mysql -uroot -p123456 jxcms -e "
+
+# 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
+
+# 所有虚拟机MAC地址的前三个十六进制
 vmmacpre="92:10:25"
+
+# 管理节点的对内IP地址，10.16.255.254/16，是所有计算节点和学生路由器的网关
 vmrgate=10.16.255.254 
-vmrbase=168820736 # 10.16.0.0   10.16.0.2/10.16.0.6/10.16.0.10/10.16.0.14/10.16.0.18/...
-vpnbase=169869312 # 10.32.0.0   10.32.0.2/10.32.0.6/10.32.0.10/10.32.0.14/10.32.0.18/...
+
+# 学生路由器的WAN口起始IP地址，网段为10.16.0.0/16，通过计算节点的br-vmr接入计算集群交换机
+# 学生路由器的LAN口IP地址固定为10.10.10.254，作为后面jx-nginx-11（10.10.10.11）...的网关
+# 学生路由器的WAN口的IP地址根据学生再数据库中的ID来固定分配，具体算法为
+# vmrip=$(num2ip $(echo $vmrbase + $stuid*4 - 2 | bc))
+# 10.16.0.0   10.16.0.2/10.16.0.6/10.16.0.10/10.16.0.14/10.16.0.18/...
+vmrbase=168820736
+
+# 学生连接到管理节点VPN后分配的固定IP，根据学生ID磊固定分配，具体算法为
+# vpnip=$(num2ip $(echo $vpnbase + $stuid*4 - 2 | bc))
+# 10.32.0.0   10.32.0.2/10.32.0.6/10.32.0.10/10.32.0.14/10.32.0.18/...
+vpnbase=169869312
+
+# 学生路由器后面的虚拟机列表jx-nginx-11、jx-nginx-12.....
 vmList=$($mysqllogin "select name from lab_vm" | grep -v name)
+
+# 学生路由器后面的虚拟机的IP列表10.10.10.11、10.10.10.12.....
 vmipList=$($mysqllogin "select ipaddr from lab_vm" | grep -v ipaddr)
+
+# 计算节点的IP列表，第一个计算节点的IP，管理节点要被所有计算节点ssh信任
 hpvList=$($mysqllogin "select ipaddr from lab_hpv" | grep -v ipaddr)
 hpvFirst=$($mysqllogin "select ipaddr from lab_hpv limit 1" | grep -v ipaddr)
 
+# 管理节点存放所有虚拟机虚拟磁盘的目录
 vdiskdir="/data/vdisk/"
+
+# 管理节点存放学生路由器虚拟磁盘的目录，所有学生路由器也是虚拟机
+# 生成某个学生路由器时，会拷贝磁盘并根据学生ID修改其WAN口IP
+# vmrip=$(num2ip $(echo $vmrbase + $stuid*4 - 2 | bc))
 vdiskvmr="$vdiskdir/mbvmr.qcow2"
+
+# 学生路由器WAN口IP的配置文件路径
 vdiskipcfg="/etc/sysconfig/network-scripts/ifcfg-eth1"
 
+# 将整数IP地址转为点分十进制
 function num2ip() {
   $mysqllogin "select inet_ntoa(\"$1\")" | grep -v inet_ntoa
 }
 
+# 将点分十进制IP地址转为整数
 function ip2num() {
   $mysqllogin "select inet_aton(\"$1\")" | grep -v inet_aton
 }
 
+# 在管理节点根据某个学生的路由器WAN口IP和VPN客户端IP生成端口映射
+# 目前只映射所有虚拟机的80和22端口，比如jx-nginx-11的22端口：
+# 10.32.0.2（VPN客户端） -> 10.10.10.11:22（VPN隧道口）
+# ->              管理节点iptables 端口映射         ->
+# 10.32.0.2（VPN客户端） -> 10.16.0.2:1122（路由器WAN口）
+# 10.32.0.2（VPN客户端） -> 10.10.10.11:22（路由器LAN口）
 function addrule() {
   stuipn=$1
   stuvpn=$2
@@ -41,14 +88,18 @@ function addrule() {
   done
 }
 
+# 在所有计算节点添加某个学生的VXLAN跨界点网桥，传递学生ID和用户名
+# 网桥的名字格式为br-[学生用户名], vxlan口名字格式为vx-[学生用户名]
 function addvxlan() {
   # 去所有宿主机检查学生vxlan网桥
   user_id=$1
   user_name=$2
   echo "check stu id $user_id name $user_name ..."
   for hpv in ${hpvList[@]}; do
+    # 检查是否已经存在vxlan网桥
     havebr=$(ssh root@$hpv "brctl show br-$user_name | grep vx-$user_name | head -n 1")
     if [ -z "$havebr" ]; then
+      # vxlan的隧道ID就是学生的ID
       ssh root@$hpv "ip link add vx-$user_name type vxlan id $user_id dstport 4789 group 239.1.1.1 dev br-vmr"
       ssh root@$hpv "brctl addbr br-$user_name"
       ssh root@$hpv "brctl addif br-$user_name vx-$user_name"
@@ -58,6 +109,7 @@ function addvxlan() {
   done
 }
 
+# 寻找一台最空闲的计算节点开启虚拟机，传递学生ID、学生用户名
 function startvm() {
   user_id=$1
   user_name=$2
@@ -74,7 +126,7 @@ function startvm() {
     fi
   done
 
-  # 寻找一台最空闲宿主机启动该虚拟机
+  # 寻找一台最空闲（虚拟机运行数最小）宿主机启动该虚拟机
   minhpv=$hpvFirst
   mincnt=$(virsh -c qemu+tcp://$hpvFirst/system list | wc -l)
   for hpv in ${hpvList[@]}; do
@@ -88,6 +140,7 @@ function startvm() {
   virsh -c qemu+tcp://$minhpv/system start $vmname
 }
 
+# 查询某个虚拟机的状态，传递虚拟机名字
 function statevm() {
   vmname=$1
   state="shut"
@@ -100,6 +153,7 @@ function statevm() {
   echo $state
 }
 
+# 关闭某个虚拟机，传递虚拟机名字
 function destroyvm() {
   vmname=$1
   for hpv in ${hpvList[@]}; do
@@ -107,6 +161,7 @@ function destroyvm() {
   done
 }
 
+# 重置某个虚拟机，实际是关闭后覆盖虚拟磁盘，传递虚拟机名字
 function resetvm() {
   vmname=$1
   for hpv in ${hpvList[@]}; do
@@ -119,6 +174,7 @@ function resetvm() {
   echo "cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk </br>"
 }
 
+# VNC连接某个虚拟机，会显示虚拟机所在计算节点IP和VNC监听端口
 function connectvm() {
   vmname=$1
   for hpv in ${hpvList[@]}; do

@@ -4,24 +4,16 @@ source head.sh
 
 action=$1
 
+# 查看所有计算节点的虚拟机列表
 if [ "list" == "$action" ]; then
   for hpv in ${hpvList[@]}; do
     echo "======================= vm in $hpv ============================="
     virsh -c qemu+tcp://$hpv/system list | grep -v Name | grep -v "\-\-\-"
   done
+# 查看学生使用VPN登录的记录
 elif [ "log" == "$action" ]; then
   $mysqllogin "select from_unixtime(lab_log.time), lab_user.user_name, lab_user.real_name, lab_log.ipaddr from lab_log join lab_user on lab_log.user_id=lab_user.user_id;"
-elif [ "stu" == "$action" ]; then
-  rm /tmp/stu.pcap
-  timeout 5 tcpdump -i tun0 net 10.32.0.0/16 -w /tmp/stu.pcap
-  iplist=$(tshark -q -r /tmp/stu.pcap -z conv,ip | awk '{print $3}' | sort | uniq | grep 10.32)
-  for ip in ${iplist[@]}; do
-    ipnum=$(ip2num $ip)
-    id=$(echo "($ipnum+2-$vpnbase)/4" | bc)
-    user_name=$($mysqllogin "select user_name from lab_user where user_id=$id" | grep -v user_name)
-    real_name=$($mysqllogin "select real_name from lab_user where user_id=$id" | grep -v real_name)
-    echo "$ip: $user_name $real_name"
-  done
+# 关闭掉所有路由器和虚拟机
 elif [ "destroy" == "$action" ]; then
   for hpv in ${hpvList[@]}; do
     echo "======================= vm in $hpv ============================="

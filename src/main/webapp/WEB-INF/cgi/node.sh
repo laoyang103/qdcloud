@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 计算节点安装脚本，主机名、IP地址、网卡名
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
   echo "使用方法：node.sh [hostname] [ipaddr] [nicname]"
   exit
@@ -33,6 +34,7 @@ setenforce 0
 # 挂载存储服务器的虚拟磁盘目录
 echo -e "10.16.255.254:/data/vdisk/\t/var/lib/libvirt/images\tnfs\tdefaults\t0\t0" >> /etc/fstab 
 mount -a
+
 # 将所有学生的所有虚拟机定义出来（不开启）
 find /var/lib/libvirt/images/ -name jx*.xml -exec virsh define {} \;
 
@@ -51,6 +53,7 @@ GATEWAY=10.16.255.254
 DNS1=8.8.8.8
 EOF
 
+# 配置桥接IP地址和物理网卡
 cat > /etc/sysconfig/network-scripts/ifcfg-$3 << EOF
 DEVICE="$3"
 BOOTPROTO="static"

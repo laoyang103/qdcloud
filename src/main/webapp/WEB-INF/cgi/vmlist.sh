@@ -7,15 +7,18 @@ echo ""
 
 source head.sh
 
+# 以XCO格式返回虚拟机状态列表
 echo -n '<?xml version="1.0" encoding="UTF-8"?>'
 echo -n '<X><L K="total" V="18"/><XL K="data">'
 
+# 接收学生ID，查询用户名
 user_id=$(echo $QUERY_STRING | awk -F "=" '{print $2}')
 user_name=$($mysqllogin "select user_name from lab_user where user_id=$user_id" | grep -v user_name)
 
 for vm in ${vmList[@]}; do
   vm=$(echo $vm | sed "s/jx-//g" | sed "s/^/$user_name-/g")
   state=$(statevm $vm)
+  # 以XCO格式拼接数据
   echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"state\" V=\"$state\"/></X>"
 done
 
