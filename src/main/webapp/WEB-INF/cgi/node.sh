@@ -10,7 +10,7 @@ fi
 hostnamectl set-hostname $1
 
 # 安装kvm和常用工具
-yum -y install vim net-tools br-utils psmisc epel-release tcpdump net-tools psmisc
+yum -y install vim net-tools bridge-utils psmisc epel-release tcpdump net-tools psmisc
 yum -y install qemu-kvm qemu-img libvirt libvirt-python python-virtinst libvirt-client virt-install
 
 # 配置kvm网络访问，ssh取消DNS验证，永久关闭selinux
