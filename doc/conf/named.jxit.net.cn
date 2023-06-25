@@ -1,0 +1,15 @@
+$TTL 1D
+@	IN SOA	@ rname.invalid. (
+					0	; serial
+					1D	; refresh
+					1H	; retry
+					1W	; expire
+					3H )	; minimum
+	NS	@
+	A	127.0.0.1
+dl	A	10.16.255.254
+oa	A	10.16.255.254
+stu	A	10.16.255.254
+chat	A	10.16.255.254
+www	A	10.16.255.254
+frp	A	59.110.222.156

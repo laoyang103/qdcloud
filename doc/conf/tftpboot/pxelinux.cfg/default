@@ -1,0 +1,6 @@
+DEFAULT menu.c32
+TIMEOUT 30
+
+LABEL HotPE
+  KERNEL memdisk
+  APPEND initrd=ftp://${next-server}/pub/HotPE.iso iso raw
