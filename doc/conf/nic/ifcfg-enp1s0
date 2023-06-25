@@ -1,0 +1,9 @@
+DEVICE=enp1s0
+BOOTPROTO="static"
+ONBOOT="yes"
+TYPE="Ethernet"
+USERCTL="yes"
+PEERDNS="yes"
+IPV6INIT="no"
+PERSISTENT_DHCLIENT="1"
+BRIDGE=br-vmr
