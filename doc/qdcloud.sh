@@ -36,6 +36,8 @@ yum -y install nfs-utils rpcbind ansible openvpn java-1.8.0-openjdk-devel mariad
 # 安装dhcp、tftp、dns、ftp、httpd、nginx用于客户端网启和代理访问
 yum -y install dhcp-server tftp-server bind vsftpd httpd nginx
 
+systemctl restart libvirtd && systemctl enable libvirtd
+
 read -p "请按任意键继续"
 
 echo "                                      部署存储目录和虚拟磁盘模板                                          "
