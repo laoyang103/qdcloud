@@ -67,10 +67,10 @@ read -p "请按任意键继续"
 echo "                                      部署管理系统数据库                                                  "
 echo "=========================================================================================================="
 
-# 克隆管理系统的代码到/root/laboratory
+# 克隆管理系统的代码到/root/qdcloud
 cd /root
-git clone https://gitee.com/laoyang103/laboratory
-cd laboratory/
+git clone https://gitee.com/laoyang103/qdcloud
+cd qdcloud/
 
 # 导入管理系统数据库文件
 systemctl restart mariadb
@@ -114,13 +114,13 @@ sed -i "s/port=\"80\"/port=\"888\"/g" /opt/tomcat8/conf/server.xml
 echo "/opt/tomcat8/bin/startup.sh" >> /etc/rc.local
 
 # 编译管理系统源码，拷贝到tomcat
-cd /root/laboratory/
+cd /root/qdcloud/
 mvn install:install-file -Dfile=lib/tangyuan-0.9.0.jar -DgroupId=org.xson -DartifactId=tangyuan -Dversion=0.9.0 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/rpc-util-1.0.jar -DgroupId=cn.gatherlife -DartifactId=rpc-util -Dversion=1.0 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/patchca-0.5.0-SNAPSHOT.jar -DgroupId=net.pusuo -DartifactId=patchca -Dversion=0.5.0-SNAPSHOT -Dpackaging=jar
 mvn install:install-file -Dfile=lib/common-object-0.0.1-SNAPSHOT.jar -DgroupId=org.xson -DartifactId=common-object -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
 mvn package -Dmaven.test.skip=true
-cp target/laboratory_demo.war /opt/tomcat8/webapps/ROOT.war
+cp target/qdcloud_demo.war /opt/tomcat8/webapps/ROOT.war
 
 # 启动tomcat
 /opt/tomcat8/bin/startup.sh
@@ -135,7 +135,7 @@ read -p "请按任意键继续"
 
 echo "                                    部署httpd资源网站和nginx代理                                          "
 echo "=========================================================================================================="
-cd /root/laboratory/doc/conf/
+cd /root/qdcloud/doc/conf/
 
 # 删除Httpd默认欢迎文件，资源网站根目录为/var/www/html/
 sed -i "8,12d" /etc/httpd/conf.d/welcome.conf
@@ -152,7 +152,7 @@ read -p "请按任意键继续"
 
 echo "                                    部署OpenVPN服务端                                                     "
 echo "=========================================================================================================="
-cd /root/laboratory/doc/conf/
+cd /root/qdcloud/doc/conf/
 
 # 删除OpenVPN的默认配置目录，拷贝密钥配置文件等过去
 rm /etc/openvpn/ -rf && cp -r openvpn/ /etc/
@@ -168,7 +168,7 @@ read -p "请按任意键继续"
 
 echo "                                    配置教室无盘客户端网启服务                                            "
 echo "=========================================================================================================="
-cd /root/laboratory/doc/conf
+cd /root/qdcloud/doc/conf
 
 # 拷贝DHCP配置文件，里面包含教室（10.64.1.254/24）网段的分配
 cp dhcpd.conf /etc/dhcp/dhcpd.conf 
@@ -215,7 +215,7 @@ echo "                                    用ansible与计算集群建立免密�
 echo "=========================================================================================================="
 
 # 将预先生成的公钥和私钥拷贝到管理节点
-cp /root/laboratory/doc/conf/ssh-key/id_rsa* ~/.ssh/
+cp /root/qdcloud/doc/conf/ssh-key/id_rsa* ~/.ssh/
 chmod 600 ~/.ssh/id_rsa*
 # 与所有计算节点建立信任，这里需要输入密码
 for hpv in ${hpvList[@]}; do
@@ -290,7 +290,7 @@ echo "                   拷贝网卡和网桥配置样例文件到所有计算�
 echo "                   配置好后用 systemctl restart network重启生效，远程操作有风险！                         "
 echo "=========================================================================================================="
 
-cd /root/laboratory/
+cd /root/qdcloud/
 ansible jxkvm -m copy -a "src=doc/conf/nic/ifcfg-br-vmr dest=/tmp/ifcfg-br-vmr"
 ansible jxkvm -m copy -a "src=doc/conf/nic/ifcfg-enp1s0 dest=/tmp/ifcfg-nic"
 
