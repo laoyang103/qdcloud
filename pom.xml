@@ -3,11 +3,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.xson</groupId>
-	<artifactId>laboratory_demo</artifactId>
+	<artifactId>qdcloud</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>laboratory_demo</name>
+	<name>qdcloud</name>
 
 	<properties>
 		<org.apache.logging.log4j.version>2.0.2</org.apache.logging.log4j.version>
@@ -219,7 +219,7 @@
 
 
 	<build>
-		<finalName>laboratory_demo</finalName>
+		<finalName>qdcloud</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
