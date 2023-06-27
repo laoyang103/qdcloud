@@ -23,18 +23,17 @@ read -p "请按任意键继续"
 echo "                                                安装控制节点软件                                          "
 echo "=========================================================================================================="
 
-# 安装epel软件仓库，基础工具
-yum -y install epel-release 
-yum -y install net-tools psmisc wget unzip vim bc git tree nload rsync lrzsz tcpdump
+# 安装基础工具
+yum -y install wget
+
+# 下载软件包
+wget http://stu.jxit.net.cn:88/qdcloud/rpm-vpn.tar.gz -O /opt/rpm-vpn.tar.gz
+tar -zxf /opt/rpm-vpn.tar.gz -C /opt
 
 # 安装kvm虚拟化软件包，用于更改虚拟磁盘
-yum -y install qemu-img libvirt virt-install qemu-kvm guestfs-tools libvirt-client 
-
 # 安装NFS存储、OpenVPN、JDK、数据库，用于运行存储和管理
-yum -y install nfs-utils rpcbind ansible openvpn java-1.8.0-openjdk-devel mariadb-server 
-
 # 安装dhcp、tftp、dns、ftp、httpd、nginx用于客户端网启和代理访问
-yum -y install dhcp-server tftp-server bind vsftpd httpd nginx
+yum -y install /opt/rpm-vpn/*.rpm
 
 systemctl restart libvirtd && systemctl enable libvirtd
 
@@ -237,14 +236,16 @@ read -p "请按任意键继续"
 echo "                                    用ansible安装计算集群软件                                             "
 echo "=========================================================================================================="
 
-# 所有计算节点安装epel软件仓库
-ansible jxkvm -m shell -a "yum -y install epel-release"
+# 下载计算节点软件包
+wget http://stu.jxit.net.cn:88/qdcloud/rpm-kvm.tar.gz -O /opt/rpm-kvm.tar.gz
+
+# 拷贝到所有计算节点
+ansible jxkvm -m copy -a "src=/opt/rpm-kvm.tar.gz dest=/opt/rpm-kvm.tar.gz"
+ansible jxkvm -m shell -a "tar -zxf /opt/rpm-kvm.tar.gz -C /opt/"
 
 # 所有计算节点安装常用工具
-ansible jxkvm -m shell -a "yum -y install net-tools psmisc wget unzip vim bc git tree nload rsync lrzsz tcpdump"
-
 # 所有计算节点安装KVM虚拟化软件
-ansible jxkvm -m shell -a "yum -y install qemu-kvm qemu-img libvirt libvirt-python python-virtinst libvirt-client virt-install"
+ansible jxkvm -m shell -a "yum -y install /opt/rpm-kvm/*.rpm"
 
 read -p "请按任意键继续"
 
