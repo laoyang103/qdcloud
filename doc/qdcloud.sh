@@ -29,11 +29,8 @@ read -p "请按任意键继续"
 echo "                                                安装控制节点软件                                          "
 echo "=========================================================================================================="
 
-# 安装基础工具
-yum -y install wget
-
 # 下载软件包
-wget http://stu.jxit.net.cn:88/qdcloud/rpm-vpn.tar.gz -O /opt/rpm-vpn.tar.gz
+curl http://stu.jxit.net.cn:88/qdcloud/rpm-vpn.tar.gz -o /opt/rpm-vpn.tar.gz
 tar -zxf /opt/rpm-vpn.tar.gz -C /opt
 
 # 安装kvm虚拟化软件包，用于更改虚拟磁盘
@@ -60,9 +57,9 @@ ln -sf /data/vdisk/ images
 
 # 下载路由器和虚拟机的模板虚拟磁盘
 cd /data/vdisk
-wget http://stu.jxit.net.cn:88/qdcloud/mbvm.tar.gz
-wget http://stu.jxit.net.cn:88/qdcloud/stuvm.zip
-wget http://stu.jxit.net.cn:88/qdcloud/stuenv.tar.gz
+curl http://stu.jxit.net.cn:88/qdcloud/mbvm.tar.gz   -o mbvm.tar.gz
+curl http://stu.jxit.net.cn:88/qdcloud/stuvm.zip     -o stuvm.zip
+curl http://stu.jxit.net.cn:88/qdcloud/stuenv.tar.gz -o stuenv.tar.gz
 tar -zxf mbvm.tar.gz && tar -zxf stuenv.tar.gz && unzip stuvm.zip 
 # 虚拟磁盘模板文件和虚拟机定义（xml）模板文件要放到存储根目录
 mv mbvm/mbvm* . && rm mbvm -rf
@@ -100,7 +97,7 @@ echo "==========================================================================
 
 # 安装maven编译管理系统源码，打war包
 cd /opt/
-wget http://stu.jxit.net.cn:88/jxfiles/apache-maven-3.6.3.tar.gz
+curl http://stu.jxit.net.cn:88/jxfiles/apache-maven-3.6.3.tar.gz -o apache-maven-3.6.3.tar.gz
 tar -zxf apache-maven-3.6.3.tar.gz 
 rm apache-maven-3.6.3.tar.gz -rf
 echo "export PATH=\$PATH:/opt/apache-maven-3.6.3/bin/" >> /etc/profile
@@ -108,7 +105,7 @@ source /etc/profile
 
 # 安装tomcat用于运行管理系统
 cd /opt/
-wget http://stu.jxit.net.cn:88/k8s/tomcat8-cgi.tar.gz
+curl http://stu.jxit.net.cn:88/k8s/tomcat8-cgi.tar.gz -o tomcat8-cgi.tar.gz
 tar -zxf tomcat8-cgi.tar.gz 
 rm tomcat8-cgi.tar.gz -rf
 
@@ -185,7 +182,7 @@ systemctl restart tftp && systemctl enable tftp
 
 # 拷贝FTP配置文件（匿名访问呢），下载客户端PE镜像
 cp vsftpd.conf /etc/vsftpd/
-wget http://stu.jxit.net.cn:88/qdcloud/HotPE.iso -O /var/ftp/pub/HotPE.iso
+curl http://stu.jxit.net.cn:88/qdcloud/HotPE.iso -o /var/ftp/pub/HotPE.iso
 systemctl restart vsftpd && systemctl enable vsftpd
 
 # 配置DNS服务，增加jxit.net.cn的域名定义
@@ -243,7 +240,7 @@ echo "                                    用ansible安装计算集群软件    
 echo "=========================================================================================================="
 
 # 下载计算节点软件包
-wget http://stu.jxit.net.cn:88/qdcloud/rpm-kvm.tar.gz -O /opt/rpm-kvm.tar.gz
+curl http://stu.jxit.net.cn:88/qdcloud/rpm-kvm.tar.gz -o /opt/rpm-kvm.tar.gz
 
 # 拷贝到所有计算节点
 ansible jxkvm -m copy -a "src=/opt/rpm-kvm.tar.gz dest=/opt/rpm-kvm.tar.gz"
