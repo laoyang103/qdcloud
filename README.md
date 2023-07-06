@@ -2,10 +2,11 @@
 
 #### 介绍
 起点教学云，纯脚本+KVM+Mysql实现，每个学生固定分配20台虚拟机和一个路由，可以自由开启、关闭、重置、搭建出各种运维环境
+体验地址：oa.jxit.net.cn 账号：jx21080001 密码：qdcloud 进入后点击视频或文字教程，通过VPN连接
 
 #### 软件架构
 软件架构说明
-![系统架构图](doc/qdcloud.png)
+![架构图](http://stu.jxit.net.cn:88/qdcloud/qdcloud.png "架构图")
 
 
 #### 安装教程
