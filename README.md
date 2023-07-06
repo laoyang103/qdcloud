@@ -5,7 +5,7 @@
 
 #### 软件架构
 软件架构说明
-![架构图](http://stu.jxit.net.cn:88/qdcloud/qdcloud.png "架构图")
+![系统架构图](doc/qdcloud.png)
 
 
 #### 安装教程
