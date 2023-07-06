@@ -36,6 +36,17 @@
 1.  对于每个学生都需要执行mkstu.sh [学生ID]进行创建虚拟磁盘
 2.  部署完毕后本机数据库已经自带200个学生，数据库root密码123456，学生的ID在lab_user表，字段为user_id
 
+```
+[root@jxvpn qdcloud]# mysql -uroot -p123456 jxcms -e "select user_id,user_name,real_name from lab_user limit 3"
++---------+------------+-----------+
+| user_id | user_name  | real_name |
++---------+------------+-----------+
+|       1 | jx00000001 | 滕文超    |
+|       2 | jx00000002 | 韩磊      |
+|       3 | jx00000003 | 杨佳楠    |
++---------+------------+-----------+
+```
+
 ## 日常维护命令
 ### 查看虚拟机分配
 ```
