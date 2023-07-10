@@ -35,7 +35,6 @@
 ### 创建学生虚拟磁盘
 1.  对于每个学生都需要执行mkstu.sh [学生ID]进行创建虚拟磁盘
 2.  部署完毕后本机数据库已经自带200个学生，数据库root密码123456，学生的ID在lab_user表，字段为user_id
-
 ```
 [root@jxvpn qdcloud]# mysql -uroot -p123456 jxcms -e "select user_id,user_name,real_name from lab_user limit 3"
 +---------+------------+-----------+
@@ -45,6 +44,24 @@
 |       2 | jx00000002 | 韩磊      |
 |       3 | jx00000003 | 杨佳楠    |
 +---------+------------+-----------+
+```
+3.  下面以创建2号学生虚拟磁盘为例，其中guestmount那一步就是挂在学生路由器虚拟硬盘，修改WAN口IP地址位10.16.0.6
+
+```
+[root@jxvpn 01-linux-all]# bash -x /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/mkstu.sh 2
++ source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
+++ export LANG=en_US.UTF-8
+...
++ guestmount -a /data/vdisk//jx00000002/jx00000002.qcow2 -m /dev/sda1 /tmp/jx00000002
++++ echo 168820736 + '2*4' - 2
++++ bc
+++ num2ip 168820742
+++ mysql -uroot -p123456 jxcms -e 'select inet_ntoa("168820742")'
+++ grep -v inet_ntoa
++ vmrip=10.16.0.6
++ sed -i 's/IPADDR=..*$/IPADDR=10.16.0.6/g' /tmp/jx00000002//etc/sysconfig/network-scripts/ifcfg-eth1
++ sed -i 's/NETMASK=..*$/NETMASK=255.255.0.0/g' /tmp/jx00000002//etc/sysconfig/network-scripts/ifcfg-eth1
++ sed -i 's/GATEWAY=..*$/GATEWAY=10.16.255.254/g' /tmp/jx00000002//etc/sysconfig/network-scripts/ifcfg-eth1
 ```
 
 ## 日常维护命令
