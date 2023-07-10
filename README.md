@@ -33,8 +33,7 @@
 3.  执行安装脚本：bash -x doc/qdcloud.sh（建议先阅读一下脚本，每一步都有注释）
 
 ### 创建学生虚拟磁盘
-1.  对于每个学生都需要执行mkstu.sh [学生ID]进行创建虚拟磁盘
-2.  部署完毕后本机数据库已经自带200个学生，数据库root密码123456，学生的ID在lab_user表，字段为user_id
+1.  部署完毕后本机数据库已经自带200个学生，数据库root密码123456，学生的ID在lab_user表，字段为user_id
 ```
 [root@jxvpn qdcloud]# mysql -uroot -p123456 jxcms -e "select user_id,user_name,real_name from lab_user limit 3"
 +---------+------------+-----------+
@@ -45,7 +44,7 @@
 |       3 | jx00000003 | 杨佳楠    |
 +---------+------------+-----------+
 ```
-3.  下面以创建2号学生虚拟磁盘为例，其中guestmount那一步就是挂在学生路由器虚拟硬盘，修改WAN口IP地址位10.16.0.6
+3.  对于每个学生都需要执行mkstu.sh [学生ID]进行创建虚拟磁盘，下面以创建2号学生虚拟磁盘为例，其中guestmount那一步就是挂在学生路由器虚拟硬盘，修改WAN口IP地址位10.16.0.6
 
 ```
 [root@jxvpn 01-linux-all]# bash -x /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/mkstu.sh 2
