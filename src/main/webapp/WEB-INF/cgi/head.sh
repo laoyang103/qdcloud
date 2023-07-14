@@ -128,14 +128,15 @@ function startvm() {
 
   # 寻找一台最空闲（虚拟机运行数最小）宿主机启动该虚拟机
   minhpv=$hpvFirst
-  mincnt=$(virsh -c qemu+tcp://$hpvFirst/system list | wc -l)
+  mincnt=$(ssh $hpvFirst free -g | grep Mem | awk '{print 100 - $7/$2*100}' | awk -F "." '{print $1}')
   for hpv in ${hpvList[@]}; do
-    vcnt=$(virsh -c qemu+tcp://$hpv/system list | wc -l)
+    vcnt=$(ssh $hpv free -g | grep Mem | awk '{print 100 - $7/$2*100}' | awk -F "." '{print $1}')
     if [ $vcnt -lt $mincnt ]; then
       minhpv=$hpv
+      mincnt=$vcnt
     fi
   done
-  echo "starting $vmname on $minhpv ... </br>"
+  echo "starting $vmname on $minhpv (mem: %$mincnt)... </br>"
   echo "virsh -c qemu+tcp://$minhpv/system start $vmname </br>"
   virsh -c qemu+tcp://$minhpv/system start $vmname
 }
