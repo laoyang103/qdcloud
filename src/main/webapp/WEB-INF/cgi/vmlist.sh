@@ -15,6 +15,10 @@ echo -n '<X><L K="total" V="18"/><XL K="data">'
 user_id=$(echo $QUERY_STRING | awk -F "=" '{print $2}')
 user_name=$($mysqllogin "select user_name from lab_user where user_id=$user_id" | grep -v user_name)
 
+# 学生路由器
+state=$(statevm $user_name)
+echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"state\" V=\"$state\"/></X>"
+
 for vm in ${vmList[@]}; do
   vm=$(echo $vm | sed "s/jx-//g" | sed "s/^/$user_name-/g")
   state=$(statevm $vm)
