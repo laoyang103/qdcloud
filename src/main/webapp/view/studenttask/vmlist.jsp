@@ -144,7 +144,9 @@ String subpage = "studentvmlist";
 		function ops2link(vmname, state){
 			dovmurl = "<a href=\"/cgi-bin/dovm.sh?";
                         vmparam = dovmurl + "user_id=<%=user_id%>&user_name=<%=user_name%>&vmname=" + vmname;
-			if (state == "shut") {
+		        if(!vmname.includes("-")){
+                        	return "<font color=\"red\">不可操作</font>";
+                        } else if (state == "shut") {
 				return vmparam + "&action=start\">开启</a>&nbsp;" + 
 			       	       vmparam + "&action=reset\">重置</a>";
                         } else if (state == "running") {

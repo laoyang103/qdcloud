@@ -17,7 +17,8 @@ user_name=$($mysqllogin "select user_name from lab_user where user_id=$user_id" 
 
 # 学生路由器
 state=$(statevm $user_name)
-echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"路由器不可关闭\"/><S K=\"state\" V=\"$state\"/></X>"
+vmrip=$(num2ip $(echo $vmrbase + $user_id*4 - 2 | bc))
+echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"$vmrip\"/><S K=\"state\" V=\"$state\"/></X>"
 
 for vm in ${vmList[@]}; do
   vm=$(echo $vm | sed "s/jx-//g" | sed "s/^/$user_name-/g")
