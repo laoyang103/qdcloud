@@ -17,13 +17,14 @@ user_name=$($mysqllogin "select user_name from lab_user where user_id=$user_id" 
 
 # 学生路由器
 state=$(statevm $user_name)
-echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"state\" V=\"$state\"/></X>"
+echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"路由器不可关闭\"/><S K=\"state\" V=\"$state\"/></X>"
 
 for vm in ${vmList[@]}; do
   vm=$(echo $vm | sed "s/jx-//g" | sed "s/^/$user_name-/g")
+  ipaddr=$(echo $vm | awk -F "-" '{print $NF}')
   state=$(statevm $vm)
   # 以XCO格式拼接数据
-  echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"state\" V=\"$state\"/></X>"
+  echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"ipaddr\" V=\"10.10.10.$ipaddr\"/><S K=\"state\" V=\"$state\"/></X>"
 done
 
 echo -n '</XL></X>'
