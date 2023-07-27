@@ -114,6 +114,10 @@ String subpage = "studentvmlist";
                         $("#datatable").html("<p>资源加载中...</p>");
 			$.doXcoRequest(options);
 		}
+
+		function startDisable() {
+                        $('#vmstart').val('加载中...').prop('disabled', true);
+                }       
         
 		function manage(xco) {
                         var _dataList = xco.getXCOListValue("data");
@@ -147,11 +151,11 @@ String subpage = "studentvmlist";
 		        if(!vmname.includes("-")){
                         	return "<font color=\"red\">不可操作</font>";
                         } else if (state == "shut") {
-				return vmparam + "&action=start\">开启</a>&nbsp;" + 
-			       	       vmparam + "&action=reset\">重置</a>";
+				return vmparam + "&action=start\"><button id=\"vmstart\" onclick=\"startDisable()\">开启</button></a>&nbsp;" + 
+			       	       vmparam + "&action=reset\"><button>重置</button></a>";
                         } else if (state == "running") {
-				return vmparam + "&action=destroy\">关闭</a>&nbsp;" + 
-			       	       vmparam + "&action=connect\">连接</a>";
+				return vmparam + "&action=destroy\"><button>关闭</button></a>&nbsp;" + 
+			       	       vmparam + "&action=connect\"><button>连接</button></a>";
                         } else {
 				return "不可操作";
                         }
