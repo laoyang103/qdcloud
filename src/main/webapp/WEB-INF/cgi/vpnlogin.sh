@@ -32,7 +32,7 @@ echo "${time_stamp}: Successful authentication: username=\"$username\"." >> $log
 # 检查管理节点的iptables相关规则，如果不存在则添加规则
 ipnum=$(echo $vmrbase + $user_id*4 - 2 | bc)
 ipvmr=$($mysqllogin "select inet_ntoa(\"$ipnum\")" | grep -v inet_ntoa)
-haverule=$(iptables-save | grep $ipvmr | head -n 1)
+haverule=$(iptables-save | grep $ipvmr -w | head -n 1)
 if [ -z "$haverule" ]; then
   addrule $ipvmr $ipstr
 fi
