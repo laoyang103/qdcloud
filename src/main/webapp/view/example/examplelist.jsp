@@ -66,8 +66,10 @@ String subpage = "examplelist";
                               </div>
                              
                               <button class="btn btn-primary mr10" id="serach"><i class="fa fa-search fa-fw"></i>搜索</button>
+			      <!--
                               <a href="/view/example/addexample.jsp" class="btn btn-danger ml10" type="button"><i class="fa fa-plus fa-fw"></i>新增</a>
                               <button class="btn btn-danger ml10" type="button" id="delExp"><i class="fa fa-trash-o fa-fw"></i>删除</button>
+			      -->
                             </div>
                             
                            
@@ -77,9 +79,9 @@ String subpage = "examplelist";
                                     <thead>
                                       <tr>
                                         <th width="10%">勾选</th>
-                                        <th width="25%">习题名称</th>
-                                        <th width="35%">用途</th>
-                                        <th width="15%">创建日期</th>
+                                        <th width="20%">习题名称</th>
+                                        <th width="20%">用途</th>
+                                        <th width="20%">创建日期</th>
                                         <th width="15%">操作</th>
                                       </tr>
                                     </thead>

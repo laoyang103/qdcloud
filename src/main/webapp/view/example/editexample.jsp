@@ -61,43 +61,20 @@ String subpage = "examplelist";
                             </div>
                         </div>
 						<div class="content-in pos-r">
-                        <div class="s-pannel mt20">
                            <div role="form" class="form-horizontal font-14">
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label">习题名称：</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control w210" id="example_name">
-                                    <span id="example_name_msg" class="help-block pull-left ml10">习题名称不能为空！</span>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label">习题用途：</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control tip w210" id="example_use">
-                                    <span id="example_use_msg" class="help-block pull-left ml10">习题用途不能为空！</span>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label">习题内容：</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" rows="7" name="example_content" id="example_content" style="width:800px;height:400px;visibility:hidden;"></textarea>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label"></label>
-                                <div class="col-sm-9">
-                                    <button class="btn btn-primary mr10 btn-save" type="submit" id="ok">修改</button>
-                                    <button class="btn btn-primary mr10 btn-save" type="submit" id="cancel">取消</button>													
-                                </div>
-                              </div>
-                             </div>
+                              <input type="hidden" class="form-control w210" id="example_name">
+                              <span id="example_name_msg" class="help-block pull-left ml10">习题名称不能为空！</span>
+                              <input type="hidden" class="form-control tip w210" id="example_use">
+                              <span id="example_use_msg" class="help-block pull-left ml10">习题用途不能为空！</span>
+                              <textarea class="form-control" rows="7" name="example_content" id="example_content" style="width:1000px;height:400px;visibility:hidden;"></textarea>
+                              <button class="btn btn-primary mr10 btn-save" type="submit" id="ok">提交</button>
+                           </div>
         					</div>
                        
 						</div>
 						<!-- /PAGE HEADER -->
 					</div><!-- /CONTENT-->
 				</div>
-			</div>
 		</div>
 	</section>
 	<form name="editForm" id="editForm">
