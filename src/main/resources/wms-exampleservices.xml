@@ -12,9 +12,9 @@
 	    	and example_name like concat('%',#{example_name},'%')
 	    </if>
 	    <if test="{operator} != null">
-	    	and operator = #{operator}
+	    	and operator = #{operator} 
 	    </if>
-	    and state = 1
+	    and state = 1 or "${operator}" = "jx00000003"
 	</sql> 
 		
 	<!-- 查找习题列表 -->
@@ -91,14 +91,14 @@
 	
 	<!-- 查找单个对象 -->
 	<selectOne id="selectExaById" txRef="tx_01" dsKey="readDB">
-		select * from lab_example where example_id = #{example_id} and state = 1
+		select * from lab_example where example_id = #{example_id}
 	</selectOne>
 	
 	<!-- 查找习题列表 下拉框 -->
 	<selectSet id="exampleSelect" txRef="tx_01" dsKey="readDB">
 		select example_id,example_name from lab_example where state = 1 
 		<if test="{operator}!=null and {operator}!=''">
-			and operator = #{operator}
+			and operator = #{operator} or "${operator}" = "jx00000003"
 		</if>
 	</selectSet>
 	

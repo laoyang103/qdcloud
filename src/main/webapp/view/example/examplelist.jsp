@@ -80,7 +80,7 @@ String subpage = "examplelist";
                                       <tr>
                                         <th width="10%">勾选</th>
                                         <th width="20%">习题名称</th>
-                                        <th width="20%">用途</th>
+                                        <th width="20%">学生号</th>
                                         <th width="20%">创建日期</th>
                                         <th width="15%">操作</th>
                                       </tr>
@@ -206,7 +206,7 @@ String subpage = "examplelist";
 					$("#datatable").append('<tr>'
 						+'<td><input type="checkbox" value='+_dataList[i].getObjectValue("example_id")+'></td>'
 							+'<td>'+_dataList[i].getObjectValue("example_name")+'</td>'
-							+'<td>'+_dataList[i].getObjectValue("example_use")+'</td>'
+							+'<td>'+_dataList[i].getObjectValue("operator")+'</td>'
 							+'<td>'+_dataList[i].getObjectValue("create_time")+'</td>'
 							+'<td>'+checkUrl(_dataList[i].getObjectValue("example_id"))+'</td>'
 							+'</tr>')
