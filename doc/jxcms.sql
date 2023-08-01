@@ -950,6 +950,25 @@ INSERT INTO `lab_vm` VALUES (1,'jx-nginx-11','10.10.10.11','jx-nginx-11.qcow2',2
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+--
+-- Table structure for table `lab_check`
+--
+
+DROP TABLE IF EXISTS `lab_check`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lab_check` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `user_id` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '用户',
+  `time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '日期',
+  `state`int(10) unsigned NOT NULL DEFAULT 0 COMMENT '状态：0缺卡，1签到，2迟到，3旷课，4事假，5病假',
+  `remark` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='签到表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- INSERT INTO `lab_check` VALUES (1, 101, 1690877781, 0, '渺无音训');
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
