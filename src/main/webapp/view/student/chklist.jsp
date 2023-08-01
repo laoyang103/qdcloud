@@ -75,10 +75,10 @@ String subpage = "studentlist";
                             	<table class="table table-bordered table-striped center">
                                     <thead>
                                       <tr>
-                                        <th width="15%">学号</th>
                                         <th width="10%">姓名</th>
                                         <th width="10%">班级</th>
-                                        <th width="20%">时间</th>
+                                        <th width="10%">日期</th>
+                                        <th width="10%">状态</th>
                                         <th width="40%">操作</th>
                                       </tr>
                                     </thead>
@@ -134,7 +134,7 @@ String subpage = "studentlist";
 			
 			//传分页条件
   			var options ={
-					url: "/cgi-bin/chkstudent.sh?class_id=" + class_id,
+					url: "/cgi-bin/chklist.sh?class_id=" + class_id,
 					data: new XCO(),
 					success: manage
 			};
@@ -153,10 +153,10 @@ String subpage = "studentlist";
 				var tdIndex = 1;
 				for ( var i = 0; i < _dataList.length; i++) {
 					$("#datatable").append('<tr>'
-							+'<td>'+_dataList[i].getObjectValue("user_name")+'</td>'
 							+'<td>'+_dataList[i].getObjectValue("real_name")+'</td>'
 							+'<td>'+_dataList[i].getObjectValue("class_name")+'</td>'
 							+'<td>'+_dataList[i].getObjectValue("time")+'</td>'
+							+'<td>'+state2str(_dataList[i].getObjectValue("state"))+'</td>'
 							+'<td>'+checkUrl(_dataList[i].getObjectValue("user_id"), _dataList[i].getObjectValue("state"))+'</td>'
 							+'</tr>')
 				}
@@ -167,6 +167,22 @@ String subpage = "studentlist";
             		}
 			
 		}  
+		function state2str(state) {
+			if (state == "0"){
+                        	return "<font color=\"red\">缺卡</font>";
+			} else if (state == "1") {
+                        	return "<font color=\"green\">已签到</font>";
+			} else if (state == "2") {
+                        	return "<font color=\"yellow\">迟到</font>";
+			} else if (state == "3") {
+                        	return "<font color=\"red\">旷课</font>";
+			} else if (state == "4") {
+                        	return "<font color=\"red\">事假</font>";
+			} else if (state == "5") {
+                        	return "<font color=\"red\">病假</font>";
+			}
+                        // '状态：0缺卡，1签到，2迟到，3旷课，4事假，5病假',
+		}
 		
 		function checkUrl(user_id, state){
 			dovmurl = "<a href=\"/cgi-bin/studentcheck.sh?";
