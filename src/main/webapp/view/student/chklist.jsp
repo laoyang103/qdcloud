@@ -26,6 +26,7 @@ String subpage = "studentlist";
 	<link href="${pageContext.request.contextPath}/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<!-- ANIMATE -->
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/animatecss/animate.min.css" />	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 <!--#include virtual="/BIsystem/include/header.html"-->
@@ -47,7 +48,7 @@ String subpage = "studentlist";
                                             <i class="fa fa-home"></i>
                                             <a href="/view/message/msgadminlist.jsp">Home</a>
                                         </li>
-                                        <li>学生列表</li>
+                                        <li>考勤列表</li>
                                     </ul>
                                     <div class="pull-right mt10 ml10 hui999">当前时间：<span class="hui666"><%=date %></span></div>
                                     <div class="pull-right mt10 hui999">登录人：<span class="blue"><%=real_name %></span></div>
@@ -59,13 +60,16 @@ String subpage = "studentlist";
 						<div class="content-in pos-r">
                         <div class="s-pannel mt20">
                         	
-							<div role="form" class="form-inline " style="width:1050px;">
+			<div role="form" class="form-inline " style="width:1050px;">
                               <div class="form-group mr15">
                               	<select class="form-control w160" id="class_name">
                                   <option value="">-选择班级-</option>
                                 </select>
                               </div>
-                             
+                              <div class="form-group mr15">
+                                 <input id="date_time" class="form-control Wdate" placeholder="日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:160px;" /> 
+                              </div>
+
                               <button class="btn btn-primary mr10" id="serach"><i class="fa fa-search fa-fw"></i>搜索</button>
                             </div>
                             
@@ -77,7 +81,7 @@ String subpage = "studentlist";
                                       <tr>
                                         <th width="10%">姓名</th>
                                         <th width="10%">班级</th>
-                                        <th width="10%">日期</th>
+                                        <th width="15%">时间</th>
                                         <th width="10%">状态</th>
                                         <th width="40%">操作</th>
                                       </tr>
@@ -120,8 +124,19 @@ String subpage = "studentlist";
 				renderPage = true;
 				doSubmit(0,pageSize);
 			});
-			
 		})
+
+		function dochk(param) {
+			var url = "/cgi-bin/dochk.sh?" + param;
+			//传分页条件
+  			var options ={
+					url: url,
+					data: new XCO(),
+					success: manage
+			};
+                        $("#datatable").html("<p>资源加载中...</p>");
+			$.doXcoRequest(options);					
+		}
 		
 		 //分页查询表格
 		doSubmit(0,pageSize); 	
@@ -130,14 +145,16 @@ String subpage = "studentlist";
     		
 		var renderPage = true;
 		function doSubmit(start,pageSize){
-   			var class_id = $("#class_name").val();
+   			var class_id  = $("#class_name").val();
+   			var date_time = $("#date_time").val();
 			
 			//传分页条件
   			var options ={
-					url: "/cgi-bin/chklist.sh?class_id=" + class_id,
+					url: "/cgi-bin/dochk.sh?user_id=&action=&class_id=" + class_id + "&data_time=" + date_time,
 					data: new XCO(),
 					success: manage
 			};
+                        $("#datatable").html("<p>资源加载中...</p>");
 			$.doXcoRequest(options);					
 		}
         
@@ -173,25 +190,31 @@ String subpage = "studentlist";
 			} else if (state == "1") {
                         	return "<font color=\"green\">已签到</font>";
 			} else if (state == "2") {
-                        	return "<font color=\"yellow\">迟到</font>";
+                        	return "<font color=\"d99058\">迟到</font>";
 			} else if (state == "3") {
                         	return "<font color=\"red\">旷课</font>";
 			} else if (state == "4") {
-                        	return "<font color=\"red\">事假</font>";
+                        	return "<font color=\"98777b\">事假</font>";
 			} else if (state == "5") {
-                        	return "<font color=\"red\">病假</font>";
+                        	return "<font color=\"997a8d\">病假</font>";
 			}
                         // '状态：0缺卡，1签到，2迟到，3旷课，4事假，5病假',
 		}
 		
 		function checkUrl(user_id, state){
-			dovmurl = "<a href=\"/cgi-bin/studentcheck.sh?";
-                        vmparam = dovmurl + "user_id=<%=user_id%>&action=normal\">签到</a>&nbsp;&nbsp;&nbsp;" + 
-			          dovmurl + "user_id=<%=user_id%>&action=delay\">迟到</a>&nbsp;&nbsp;&nbsp;" +
-			          dovmurl + "user_id=<%=user_id%>&action=leave\">旷课</a>&nbsp;&nbsp;&nbsp;" +
-			          dovmurl + "user_id=<%=user_id%>&action=thing\">事假</a>&nbsp;&nbsp;&nbsp;" +
-			          dovmurl + "user_id=<%=user_id%>&action=ill\">病假</a>&nbsp;&nbsp;&nbsp;";
-			return vmparam;
+   			var date_time = $("#date_time").val();
+   			var class_id = $("#class_name").val();
+			var mark  = "user_id=" + user_id + "&action=mark"  + "&class_id=" + class_id + "&date_time=" + date_time;
+			var delay = "user_id=" + user_id + "&action=delay" + "&class_id=" + class_id + "&date_time=" + date_time;
+			var leave = "user_id=" + user_id + "&action=leave" + "&class_id=" + class_id + "&date_time=" + date_time;
+			var thing = "user_id=" + user_id + "&action=thing" + "&class_id=" + class_id + "&date_time=" + date_time;
+			var ill   = "user_id=" + user_id + "&action=ill"   + "&class_id=" + class_id + "&date_time=" + date_time;
+                        btncode = "<button class=\"btn btn-primary\" onclick=\"dochk(\'" + mark  + "\')\">签到</button>&nbsp;&nbsp;" + 
+                                  "<button class=\"btn btn-primary\" onclick=\"dochk(\'" + delay + "\')\">迟到</button>&nbsp;&nbsp;" + 
+                                  "<button class=\"btn btn-primary\" onclick=\"dochk(\'" + leave + "\')\">旷课</button>&nbsp;&nbsp;" + 
+                                  "<button class=\"btn btn-primary\" onclick=\"dochk(\'" + thing + "\')\">事假</button>&nbsp;&nbsp;" + 
+                                  "<button class=\"btn btn-primary\" onclick=\"dochk(\'" + ill   + "\')\">病假</button>&nbsp;&nbsp;";
+			return btncode;
 		}
 		
 	</script>
