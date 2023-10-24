@@ -58,9 +58,9 @@ ln -sf /data/vdisk/ images
 # 下载路由器和虚拟机的模板虚拟磁盘
 cd /data/vdisk
 curl http://stu.jxit.net.cn:88/qdcloud/mbvm.tar.gz   -o mbvm.tar.gz
-curl http://stu.jxit.net.cn:88/qdcloud/stuvm.zip     -o stuvm.zip
+curl http://stu.jxit.net.cn:88/qdcloud/stuvm.zip     -o stuvm.tar.gz
 curl http://stu.jxit.net.cn:88/qdcloud/stuenv.tar.gz -o stuenv.tar.gz
-tar -zxf mbvm.tar.gz && tar -zxf stuenv.tar.gz && unzip stuvm.zip 
+tar -zxf mbvm.tar.gz && tar -zxf stuenv.tar.gz && tar -zxf stuvm.tar.gz
 # 虚拟磁盘模板文件和虚拟机定义（xml）模板文件要放到存储根目录
 mv mbvm/mbvm* . && rm mbvm -rf
 

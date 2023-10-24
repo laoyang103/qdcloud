@@ -1,0 +1,35 @@
+2023-10-22 20:27:26 WARNING: --topology net30 support for server configs with IPv4 pools will be removed in a future release. Please migrate to --topology subnet as soon as possible.
+2023-10-22 20:27:26 --cipher is not set. Previous OpenVPN version defaulted to BF-CBC as fallback when cipher negotiation failed in this case. If you need this fallback please add '--data-ciphers-fallback BF-CBC' to your configuration and/or add BF-CBC to --data-ciphers.
+2023-10-22 20:27:26 WARNING: POTENTIALLY DANGEROUS OPTION --verify-client-cert none|optional may accept clients which do not present a certificate
+2023-10-22 20:27:26 OpenVPN 2.5.9 x86_64-redhat-linux-gnu [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [PKCS11] [MH/PKTINFO] [AEAD] built on Feb 16 2023
+2023-10-22 20:27:26 library versions: OpenSSL 3.0.7 1 Nov 2022, LZO 2.10
+2023-10-22 20:27:26 net_route_v4_best_gw query: dst 0.0.0.0
+2023-10-22 20:27:26 net_route_v4_best_gw result: via 192.168.1.1 dev enp2s0
+2023-10-22 20:27:26 NOTE: your local LAN uses the extremely common subnet address 192.168.0.x or 192.168.1.x.  Be aware that this might create routing conflicts if you connect to the VPN server from public locations such as internet cafes that use the same subnet.
+2023-10-22 20:27:26 NOTE: the current --script-security setting may allow this configuration to call user-defined scripts
+2023-10-22 20:27:26 Diffie-Hellman initialized with 2048 bit key
+2023-10-22 20:27:26 CRL: loaded 1 CRLs from file /etc/openvpn/crl.pem
+2023-10-22 20:27:26 Outgoing Control Channel Authentication: Using 160 bit message hash 'SHA1' for HMAC authentication
+2023-10-22 20:27:26 Incoming Control Channel Authentication: Using 160 bit message hash 'SHA1' for HMAC authentication
+2023-10-22 20:27:26 net_route_v4_best_gw query: dst 0.0.0.0
+2023-10-22 20:27:26 net_route_v4_best_gw result: via 192.168.1.1 dev enp2s0
+2023-10-22 20:27:26 ROUTE_GATEWAY 192.168.1.1/255.255.255.0 IFACE=enp2s0 HWADDR=2c:f0:5d:8f:4c:4d
+2023-10-22 20:27:26 TUN/TAP device tun0 opened
+2023-10-22 20:27:26 net_iface_mtu_set: mtu 1500 for tun0
+2023-10-22 20:27:26 net_iface_up: set tun0 up
+2023-10-22 20:27:26 net_addr_ptp_v4_add: 10.32.0.1 peer 10.32.0.2 dev tun0
+2023-10-22 20:27:26 net_route_v4_add: 10.32.0.0/16 via 10.32.0.2 dev [NULL] table 0 metric -1
+2023-10-22 20:27:26 Could not determine IPv4/IPv6 protocol. Using AF_INET
+2023-10-22 20:27:26 Socket Buffers: R=[212992->212992] S=[212992->212992]
+2023-10-22 20:27:26 UDPv4 link local (bound): [AF_INET][undef]:1194
+2023-10-22 20:27:26 UDPv4 link remote: [AF_UNSPEC]
+2023-10-22 20:27:26 GID set to root
+2023-10-22 20:27:26 UID set to root
+2023-10-22 20:27:26 MULTI: multi_init called, r=256 v=256
+2023-10-22 20:27:26 IFCONFIG POOL IPv4: base=10.32.0.4 size=16382
+2023-10-22 20:27:26 Initialization Sequence Completed
+2023-10-22 20:28:24 event_wait : Interrupted system call (code=4)
+2023-10-22 20:28:24 net_route_v4_del: 10.32.0.0/16 via 10.32.0.2 dev [NULL] table 0 metric -1
+2023-10-22 20:28:24 Closing TUN/TAP interface
+2023-10-22 20:28:24 net_addr_ptp_v4_del: 10.32.0.1 dev tun0
+2023-10-22 20:28:24 SIGINT[hard,] received, process exiting
