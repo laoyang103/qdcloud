@@ -15,16 +15,26 @@ fi
 
 # 创建学生路由器虚拟磁盘
 rm $vdiskdir/$stuname -rf
-cp -r $vdiskdir/stuvm/ $vdiskdir/$stuname 
+ssh root@10.16.255.253 "cp -r $vdiskdir/stuvm/ $vdiskdir/$stuname"
 vmr="$vdiskdir/$stuname/$stuname.qcow2"
+sleep 10
+
 # 写时拷贝方式，不影响模板磁盘
-qemu-img create -b $hpvdiskdir/mbvmr.qcow2 -F qcow2 -f qcow2 $vmr
+qemu-img create -b $hpvdiskdir/mbvmr.qcow2 -F qcow2 -f qcow2 $vmr 
+if [ $? -ne 0 ]; then 
+  echo "create vmr qcow2 err"
+  exit 
+fi
 chmod 755 $vmr
 
 # 根据学生ID修改路由器WAN口IP
 mkdir -p /tmp/$stuname
 # 挂载路由器虚拟磁盘
 guestmount -a $vmr -m /dev/sda1 /tmp/$stuname
+if [ $? -ne 0 ]; then 
+  echo "create vmr qcow2 err"
+  exit 
+fi
 # 计算该学生路由器WAN口IP地址，修改虚拟磁盘中的网卡配置文件
 vmrip=$(num2ip $(echo $vmrbase + $stuno*4 - 2 | bc))
 sed -i "s/IPADDR=..*$/IPADDR=$vmrip/g" /tmp/$stuname/$vdiskipcfg

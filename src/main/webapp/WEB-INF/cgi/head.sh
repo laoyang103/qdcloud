@@ -169,10 +169,10 @@ function resetvm() {
     virsh -c qemu+tcp://$hpv/system destroy $vmname
   done
   vmdisk=$(echo $vmname | sed "s/jx[0-9]\{8\}-/jx-/g" | sed "s/$/.qcow2/g")
-  rm $vdiskdir/$user_name/$vmdisk
-  cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk
-  echo "rm $vdiskdir/$user_name/$vmdisk </br>"
-  echo "cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk </br>"
+  ssh root@10.16.255.253 rm $vdiskdir/$user_name/$vmdisk
+  ssh root@10.16.255.253 cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk
+  echo "ssh root@10.16.255.253 rm $vdiskdir/$user_name/$vmdisk </br>"
+  echo "ssh root@10.16.255.253 cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk </br>"
 }
 
 # VNC连接某个虚拟机，会显示虚拟机所在计算节点IP和VNC监听端口
