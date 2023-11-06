@@ -39,13 +39,6 @@ public class LoginController {
 		try {
 			
 			HttpSession session = request.getSession();
-			String verifyCode = xco.getStringValue("verifyCode").trim();
-			
-			// 得到验证码
-			String code = (String) session.getAttribute("authcode");
-			if (!verifyCode.equalsIgnoreCase(code)) {
-				return XCOUtil.getResultXCO(1, "验证码错误");
-			}
 			
 			// TODO 这里不能返回密码
 			xco.setStringValue("password", xco.getStringValue("password"));
