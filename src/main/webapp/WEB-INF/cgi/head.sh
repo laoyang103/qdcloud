@@ -18,7 +18,7 @@ ccddir="/etc/openvpn/ccd/"
 hpvdiskdir="/var/lib/libvirt/images/"
 
 # 管理节点数据库的登陆信息
-mysqllogin="mysql -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
+mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
 
 # 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
