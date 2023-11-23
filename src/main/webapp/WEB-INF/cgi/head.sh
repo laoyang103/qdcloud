@@ -17,8 +17,15 @@ ccddir="/etc/openvpn/ccd/"
 # 计算节点虚拟磁盘目录（NFS映射到管理节点的/data/vdisk）
 hpvdiskdir="/var/lib/libvirt/images/"
 
-# 管理节点数据库的登陆信息
+# 管理中心数据库的登陆信息
 mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
+
+# 本机对外通信网卡（有网关的网卡）
+localnic=$(ip r | grep default | awk '{print $5}' | head -n 1)
+localmac=$(ip link show $localnic | grep ether | awk '{print $2}')
+
+# 根据MAC地址是否在可用区表，确定是管理中心还是可用区主节点，并获取可用区ID
+regionid=$($mysqllogin "select id from lab_region where mac='$mac'" | grep -v id | head -n 1)
 
 # 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
@@ -47,9 +54,9 @@ vmList=$($mysqllogin "select name from lab_vm" | grep -v name)
 # 学生路由器后面的虚拟机的IP列表10.10.10.11、10.10.10.12.....
 vmipList=$($mysqllogin "select ipaddr from lab_vm" | grep -v ipaddr)
 
-# 计算节点的IP列表，第一个计算节点的IP，管理节点要被所有计算节点ssh信任
-hpvList=$($mysqllogin "select ipaddr from lab_hpv" | grep -v ipaddr)
-hpvFirst=$($mysqllogin "select ipaddr from lab_hpv limit 1" | grep -v ipaddr)
+# 根据可用区ID获取计算节点的IP列表，第一个计算节点的IP，主节点要被所有计算节点ssh信任
+hpvList=$($mysqllogin "select ip from lab_region_hpv where region_id=$regionid" | grep -v ip)
+hpvFirst=$($mysqllogin "select ip from lab_region_hpv where region_id=$regionid limit 1" | grep -v ip)
 
 # 管理节点存放所有虚拟机虚拟磁盘的目录
 vdiskdir="/data/vdisk/"
