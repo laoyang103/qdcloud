@@ -25,7 +25,7 @@ localnic=$(ip r | grep default | awk '{print $5}' | head -n 1)
 localmac=$(ip link show $localnic | grep ether | awk '{print $2}')
 
 # 根据MAC地址是否在可用区表，确定是管理中心还是可用区主节点，并获取可用区ID
-regionid=$($mysqllogin "select id from lab_region where mac='$mac'" | grep -v id | head -n 1)
+regionid=$($mysqllogin "select id from lab_region where mac='$localmac'" | grep -v id | head -n 1)
 
 # 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
