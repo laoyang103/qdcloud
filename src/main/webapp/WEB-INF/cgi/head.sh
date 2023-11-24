@@ -20,12 +20,30 @@ hpvdiskdir="/var/lib/libvirt/images/"
 # 管理中心数据库的登陆信息
 mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
 
+# 管理中心MQ登录用户名密码
+mqlogin="guest:guest" 
+
+# 推送消息到管理中心MQ的URL
+mqpushurl="http://mq.jxit.net.cn:15672/api/exchanges/%2F/amq.default/publish"
+
+# 推送消息到管理中心MQ的消息模板，需要替换__region_queue_name队列名和__msg消息内容
+mqpushtmpl="{\"vhost\":\"/\",\"name\":\"amq.default\",\"properties\":{\"delivery_mode\":1,\"headers\":{}},\"routing_key\":\"__region_queue_name\",\"delivery_mode\":\"1\",\"payload\":\"__msg\",\"payload_encoding\":\"string\",\"headers\":{},\"props\":{}}"
+
+# 从管理中心MQ获取消息URL，需要替换__region_queue_name为队列名
+mqpullurl="http://mq.jxit.net.cn:15672/api/queues/%2F/__region_queue_name/get"
+
+# 拉取管理中心MQ中__region_queue_name队列的一条消息
+mqpulltmpl="{\"vhost\":\"/\",\"name\":\"__region_queue_name\",\"truncate\":\"50000\",\"ackmode\":\"ack_requeue_false\",\"encoding\":\"auto\",\"count\":\"1\"}"
+
 # 本机对外通信网卡（有网关的网卡）
 localnic=$(ip r | grep default | awk '{print $5}' | head -n 1)
 localmac=$(ip link show $localnic | grep ether | awk '{print $2}')
 
 # 根据MAC地址是否在可用区表，确定是管理中心还是可用区主节点，并获取可用区ID
 regionid=$($mysqllogin "select id from lab_region where mac='$localmac'" | grep -v id | head -n 1)
+regiondomain=$($mysqllogin "select domain from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
+regionwebport=$($mysqllogin "select webport from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
+regionvpnport=$($mysqllogin "select vpnport from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
 
 # 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
