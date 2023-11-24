@@ -18,7 +18,7 @@ ccddir="/etc/openvpn/ccd/"
 hpvdiskdir="/var/lib/libvirt/images/"
 
 # 管理中心数据库的登陆信息
-mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p123456Ww jxcms -e "
+mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
 
 # 管理中心MQ登录用户名密码
 mqlogin="guest:guest" 
