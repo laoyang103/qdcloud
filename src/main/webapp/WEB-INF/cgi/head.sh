@@ -18,7 +18,7 @@ ccddir="/etc/openvpn/ccd/"
 hpvdiskdir="/var/lib/libvirt/images/"
 
 # 管理中心数据库的登陆信息
-mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
+mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p123456Ww jxcms -e "
 
 # 管理中心MQ登录用户名密码
 mqlogin="guest:guest" 
@@ -42,8 +42,8 @@ localmac=$(ip link show $localnic | grep ether | awk '{print $2}')
 # 根据MAC地址是否在可用区表，确定是管理中心还是可用区主节点，并获取可用区ID
 regionid=$($mysqllogin "select id from lab_region where mac='$localmac'" | grep -v id | head -n 1)
 regiondomain=$($mysqllogin "select domain from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
-regionwebport=$($mysqllogin "select webport from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
-regionvpnport=$($mysqllogin "select vpnport from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
+regionwebport=$($mysqllogin "select webport from lab_region where mac='$localmac'" | grep -v webport | head -n 1)
+regionvpnport=$($mysqllogin "select vpnport from lab_region where mac='$localmac'" | grep -v vpnport | head -n 1)
 
 # 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
