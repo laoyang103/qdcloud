@@ -57,7 +57,8 @@ String subpage = "studentvmlist";
 			<div class="content-in pos-r">
                                 <h2 align="center">虚拟机需要通过VPN连接：
 					<a target="_black" style="text-decoration:underline;" href="http://dl.jxit.net.cn/jxfiles/jxvpn-wan.pdf">文字教程</a>&nbsp&nbsp
-					<a target="_black" style="text-decoration:underline;" href="http://dl.jxit.net.cn/mp4/shizhan/jxstu/jxstu-vpn-usage.mp4">视频教程</a>
+					<a target="_black" style="text-decoration:underline;" href="http://dl.jxit.net.cn/mp4/shizhan/jxstu/jxstu-vpn-usage.mp4">视频教程</a>&nbsp&nbsp
+					<a target="_black" style="text-decoration:underline;" href="/cgi-bin/vpnkey.sh?user_id=<%=user_id %>">VPN密钥</a>
 				</h2>
                             <div class="t-wrap mt20">
                             	<table class="table table-bordered table-striped center">
