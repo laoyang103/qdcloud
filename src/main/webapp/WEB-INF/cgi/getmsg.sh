@@ -4,27 +4,26 @@ source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
 
 # 如果获取不到可用区域名，则是管理中心，不拉取任务执行
 if [ -z "$regiondomain" -a -z "$regionwebport" ]; then
-  echo "not a region will not pull msg from $mqpullurl"
+  echo "$time_stamp $0: not a region will not pull msg from $mqpullurl" >> $log_file
   exit
 fi
 
 mqpullurl=$(echo $mqpullurl  | sed "s/__region_queue_name/$regiondomain/g")
 mqpullreq=$(echo $mqpulltmpl | sed "s/__region_queue_name/$regiondomain/g")
-echo "pull msg with $mqpullurl $mqpullreq"
+echo "$time_stamp $0: pull msg with $mqpullurl $mqpullreq" >> $log_file
 
 while true; do
-  msg=$(curl -u $mqlogin $mqpullurl -d "$mqpullreq")
-  echo "pulled msg $msg"
-  
-  param=$(echo $msg | jq ".[].payload" | sed "s/\"//g")
-  echo "pulled msg payload is $param"
-  
-  if [ -n "$param" ]; then
-    echo "call curl with http://localhost:$regionwebport/cgi-bin/dovm.sh?$param"
-    curl http://localhost:$regionwebport/cgi-bin/dovm.sh?$param
-  else
-    echo "no msg payload is $msg"
+  msg=$(curl -s -u $mqlogin $mqpullurl -d "$mqpullreq" | grep payload | grep -v grep)
+  if [ -z "$msg" ]; then
+    sleep 3
+    continue;
   fi
 
-  sleep 3
+  echo "$time_stamp $0: pulled msg $msg" >> $log_file
+
+  param=$(echo $msg | jq ".[].payload" | sed "s/\"//g")
+  echo "$time_stamp $0: pulled msg payload is $param" >> $log_file
+  echo "$time_stamp $0: call curl with http://localhost:$regionwebport/cgi-bin/dovm.sh?$param" >> $log_file
+  curl -s http://localhost:$regionwebport/cgi-bin/dovm.sh?$param
+
 done

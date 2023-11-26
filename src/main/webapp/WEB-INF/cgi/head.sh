@@ -6,7 +6,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 
 # 当前时间和日志文件路径
 time_stamp=`date "+%Y-%m-%d %T"`
-log_file="/var/log/messages"
+log_file="/var/log/qdcloud"
 
 # 检查iptables规则的临时文件
 currfile="/tmp/iptables-curr.txt"
@@ -40,7 +40,7 @@ localnic=$(ip r | grep default | awk '{print $5}' | head -n 1)
 localmac=$(ip link show $localnic | grep ether | awk '{print $2}')
 
 # 根据MAC地址是否在可用区表，确定是管理中心还是可用区主节点，并获取可用区ID
-regioninfo=$($mysqllogin "select concat(id, ':', 'domain', ':', webport, ':', vpnport) from lab_region where mac='$localmac'" | grep -v id | head -n 1)
+regioninfo=$($mysqllogin "select concat(id, ':', domain, ':', webport, ':', vpnport) from lab_region where mac='$localmac'" | grep -v id | head -n 1)
 regionid=$(echo $regioninfo | awk -F ":" '{print $1}')
 regiondomain=$(echo $regioninfo | awk -F ":" '{print $2}')
 regionwebport=$(echo $regioninfo | awk -F ":" '{print $3}')
