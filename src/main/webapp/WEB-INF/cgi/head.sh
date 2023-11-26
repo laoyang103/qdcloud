@@ -40,10 +40,11 @@ localnic=$(ip r | grep default | awk '{print $5}' | head -n 1)
 localmac=$(ip link show $localnic | grep ether | awk '{print $2}')
 
 # 根据MAC地址是否在可用区表，确定是管理中心还是可用区主节点，并获取可用区ID
-regionid=$($mysqllogin "select id from lab_region where mac='$localmac'" | grep -v id | head -n 1)
-regiondomain=$($mysqllogin "select domain from lab_region where mac='$localmac'" | grep -v domain | head -n 1)
-regionwebport=$($mysqllogin "select webport from lab_region where mac='$localmac'" | grep -v webport | head -n 1)
-regionvpnport=$($mysqllogin "select vpnport from lab_region where mac='$localmac'" | grep -v vpnport | head -n 1)
+regioninfo=$($mysqllogin "select concat(id, ':', 'domain', ':', webport, ':', vpnport) from lab_region where mac='$localmac'" | grep -v id | head -n 1)
+regionid=$(echo $regioninfo | awk -F ":" '{print $1}')
+regiondomain=$(echo $regioninfo | awk -F ":" '{print $2}')
+regionwebport=$(echo $regioninfo | awk -F ":" '{print $3}')
+regionvpnport=$(echo $regioninfo | awk -F ":" '{print $4}')
 
 # 计算节点桥接到计算集群交换机网桥名称
 vmrbr="br-vmr"
@@ -67,14 +68,14 @@ vmrbase=168820736
 vpnbase=169869312
 
 # 学生路由器后面的虚拟机列表jx-nginx-11、jx-nginx-12.....
-vmList=$($mysqllogin "select name from lab_vm" | grep -v name)
-
 # 学生路由器后面的虚拟机的IP列表10.10.10.11、10.10.10.12.....
-vmipList=$($mysqllogin "select ipaddr from lab_vm" | grep -v ipaddr)
+vminfo=$($mysqllogin "select name,ipaddr from lab_vm" | grep -v name | sed "s/\t/@/g")
+vmList=$(echo $vminfo | sed "s/ /\n/g" | awk -F "@" '{print $1}' | xargs)
+vmipList=$(echo $vminfo | sed "s/ /\n/g" | awk -F "@" '{print $2}' | xargs)
 
 # 根据可用区ID获取计算节点的IP列表，第一个计算节点的IP，主节点要被所有计算节点ssh信任
 hpvList=$($mysqllogin "select ip from lab_region_hpv where region_id=$regionid" | grep -v ip)
-hpvFirst=$($mysqllogin "select ip from lab_region_hpv where region_id=$regionid limit 1" | grep -v ip)
+hpvFirst=$(echo $hpvList | awk '{print $1}')
 
 # 管理节点存放所有虚拟机虚拟磁盘的目录
 vdiskdir="/data/vdisk/"
