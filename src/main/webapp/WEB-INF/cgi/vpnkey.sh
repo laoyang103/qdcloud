@@ -1,0 +1,128 @@
+#!/bin/bash 
+
+source head.sh
+
+# 接收学生ID，查询用户名
+user_id=$(echo $QUERY_STRING | awk -F "=" '{print $2}')
+user_name=$($mysqllogin "select user_name from lab_user where user_id=$user_id" | grep -v user_name)
+
+# 获取学生所在可用区的域名和vpn端口
+regionhost=$($mysqllogin "select concat(lab_region.domain, ' ', lab_region.vpnport) from lab_user join lab_region on lab_user.region=lab_region.id where lab_user.user_id=$user_id;" | grep -v vpnport)
+
+echo "HTTP/1.1 200 OK"
+echo "Content-Type: application/octet-stream"
+echo "Content-Disposition: attachment;filename=$user_name.ovpn"
+echo "Connection: keep-alive"
+echo ""
+
+echo "
+client
+nobind
+dev tun
+remote-cert-tls server
+auth-user-pass
+remote $regionhost udp
+float
+route 10.16.0.0 255.255.0.0 vpn_gateway
+route 10.10.10.0 255.255.255.0 vpn_gateway
+
+<key>
+-----BEGIN PRIVATE KEY-----
+MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC0MioxrxeMi/JH
+2lrO/9SCQAuxWZvyjsXhrVueUwUicuclYBPmPCjF2NRfZztlr1ZuVmPcWPtwhvhU
+gpxbsu66SCk9Ba4YRonL7b4PL6kwbINv5z3JYWXO5x8ymBUXla5cQ4rKji1vs4WD
+AgaGLgyKe1+s1vPooBmdtnRdb1OOKLzh7/oUG1BKs37TgqAw9/BCqKKJ3wc/VVur
+u6PKT47LZdPqiHXWc2YCK/b0RnHC/sBbaVBwmhK12uXfZCFbH7wRCcQaSvKi1VFk
+8nDBBeL0IJxW3r3g2iOmlj/EbxLdV28LqG4lHz7dRbpoUR62DfCsQ5XiGdGPJUSD
+fIA8pdyZAgMBAAECggEAWKXJLjIWIrWCVqjsPaOL9xvs5K3R0207mj9/sA7lmsHu
+RuvSPlTgNhzqtZiClw7ANX3YmMFJyV0M8/5hT5dibFAtwXB26khhZ+qosq3ezQzF
+SJr5QYXh4PzA01IQJk8jvQ4ZTHbPkYE+sGmhrgcfck0pj00cJxgEIhtteb3X3DoI
+jfshM/oVBOAzw0u+w3oOzvAt7FtOixwINyw6Hflk0k3gMXEq/2J9ZgkYbr+SOpYk
+MWmDQFKttYNdsmWh3yvQ8iuCtWJiHI40AEObPsIAmHkryR0nfXWS7h/qrdMw+tKs
+plK5q0yvSUemDmnwXLjHIcRIRhfmi1qCTTC6CW5/AQKBgQDloFBsgqzOJL+gmwJS
+Lhwf1SRHGj1/5zP6HhzlsykjtGqeZeRXEQ8Hq5yW9dZ62W9DTHRK96AOxUk0Y9BA
++uYWFBW4nKmtCtfzggJL+sfQPSqidnnT0TKAP2btOGfzp2J5JOJht1ioX4TNkkOW
+0MpuKA5i49ufxSG1IdbDQ+rleQKBgQDI5HSYVYte/Uf5OKv9wf8fOfQVt4MD6i2I
+8WKb7hpmAqwzOpR5ebvlIn4DlELPCxjS72vFDhYRX3489lCMo9y/Qwmu0k20iuji
+ccT+GENFaLpX1q8OGtOBOxgZUvJeJxJeB34B1h13AjRhhFMMkCjXAPgJFvekB9wV
+ipxVzaaIIQKBgQCvlnEpKJt/XrZx11ZlBQFYjiGZhUU1wtQKFHDAbMmulc1Zpkx/
+D3pQwTeScBY8BnyAF7xtfwETimS5/QFITxMWGvGpI5LT0ZDkkauz8eZNJBiv9qyd
+/kABtXm9N/61YG96d2vskMjop3HjyE6KysmghlzJ3bcZayKlYWTaF9tM8QKBgQCN
+2qvuKXGpmIXrGLZyEDubDCwr7ZJpAEI5EeIEo2Qmpjp8TiAriuc/zFRZKKboVjio
+MgHSerjgeaLFX1TPiqHEuIys0rmmA/SgeZ+VoQJXj7UNc33XIuA4v8arkyOrkkFo
+/jdfCpdxwq/EMFEIbP85muiKWppxTE9/MopkGDxAoQKBgQCPh/HGh7k2ZLsiierc
+YFktod0EO6jhUO5FaSXQC+vluTzVlHqTCim3HaXe3dBoFxeWhn7uYyWzvYIH6tkH
+X0zVtDL9hN1gKuqE96YC2snnSRs+CraDq0f9CZAGvtfKG79TKepWyTeLHI27KDl2
+Tgzwwtj1DRzrUgh1KrJ895njKg==
+-----END PRIVATE KEY-----
+</key>
+<cert>
+-----BEGIN CERTIFICATE-----
+MIIDRTCCAi2gAwIBAgIRAJJgQ+MyCtMxfg8f4kmbgs8wDQYJKoZIhvcNAQELBQAw
+DzENMAsGA1UEAwwEanhpdDAeFw0yMzAyMDIwMzE5MDlaFw0yNTA1MDcwMzE5MDla
+MA8xDTALBgNVBAMMBGp4aXQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+AQC0MioxrxeMi/JH2lrO/9SCQAuxWZvyjsXhrVueUwUicuclYBPmPCjF2NRfZztl
+r1ZuVmPcWPtwhvhUgpxbsu66SCk9Ba4YRonL7b4PL6kwbINv5z3JYWXO5x8ymBUX
+la5cQ4rKji1vs4WDAgaGLgyKe1+s1vPooBmdtnRdb1OOKLzh7/oUG1BKs37TgqAw
+9/BCqKKJ3wc/VVuru6PKT47LZdPqiHXWc2YCK/b0RnHC/sBbaVBwmhK12uXfZCFb
+H7wRCcQaSvKi1VFk8nDBBeL0IJxW3r3g2iOmlj/EbxLdV28LqG4lHz7dRbpoUR62
+DfCsQ5XiGdGPJUSDfIA8pdyZAgMBAAGjgZswgZgwCQYDVR0TBAIwADAdBgNVHQ4E
+FgQUlcQfwtRObYm41HARWxAX6i1T9KEwSgYDVR0jBEMwQYAUtnIpRxJfdnrER4YU
+ZdPlQiIkv2ahE6QRMA8xDTALBgNVBAMMBGp4aXSCFCf3qFJJX+67TJIyW1U7BcI5
+NGIyMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAsGA1UdDwQEAwIHgDANBgkqhkiG9w0B
+AQsFAAOCAQEAX2aIRZnzq8g1tjzmW/MGMmfzoJ9R6SvgMEmni6k8hYgiJdvCXzFM
+3LpMCgh3PntbztsYFmWR+Y7ZAcOCPR9veEkj0iL8Yw2n/8uhXJaLRk248KZErsTr
+80b7x4VgkFWEYV7cG4n2EPYeAYl2BkJJvZ7YxFeCSJ5wruG3eR9OIgAmL5j2kluL
+Vr0hyrhtXmZr7Mn6BKatGAjm9o9GDYvRFOa1cKMev/YxKEvrECdeXXcMNZUKT8Lo
+CsjXivAkH82Gu+zjct/ESXdTROqQpf4WtgPM/xG7oxq8kfJJW7bWJQbYuB7TzsTU
+vspLtJjyfAAudxmmw9R5jKrfQrQI04Y9hw==
+-----END CERTIFICATE-----
+</cert>
+<ca>
+-----BEGIN CERTIFICATE-----
+MIIDNjCCAh6gAwIBAgIUJ/eoUklf7rtMkjJbVTsFwjk0YjIwDQYJKoZIhvcNAQEL
+BQAwDzENMAsGA1UEAwwEanhpdDAeFw0yMzAyMDIwMzE2MzFaFw0zMzAxMzAwMzE2
+MzFaMA8xDTALBgNVBAMMBGp4aXQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQDFbK4ZnygmIetPR6rZ0TBXm3MIBpTpAQ5BEn2Ih91+Tjyls4WdsnGvTifp
+dpiIY783ClQZz8EyRxSA+kUJz/EVz0YUTe7UWZhBu6qqKiEdHJW5F4pyxMjWub89
+oi+Dx45IHNDs5Ye3YBKy5UX9ELCDZF9M39OUef6GAJ7dv6QGZwIrdXKXSnZAcRCC
+Siq8C+PlTemrMqFbkkCZvm5CB8ukv7HTUm11qr7wThQIOZR/JJkfBKuNfNvvqKt6
+uVmFL4fi1JQ3xtYUaJ4fZMdVPxUVdpMPsqHqwkZ0gjQKXkV0Mlx3Vj1ifnF0uIOQ
+swBZDHDlr/FB7/8EWav0KysBhZmDAgMBAAGjgYkwgYYwHQYDVR0OBBYEFLZyKUcS
+X3Z6xEeGFGXT5UIiJL9mMEoGA1UdIwRDMEGAFLZyKUcSX3Z6xEeGFGXT5UIiJL9m
+oROkETAPMQ0wCwYDVQQDDARqeGl0ghQn96hSSV/uu0ySMltVOwXCOTRiMjAMBgNV
+HRMEBTADAQH/MAsGA1UdDwQEAwIBBjANBgkqhkiG9w0BAQsFAAOCAQEAm62gcxgc
+T/fsg1Zy0Y1fz5aABYq8cM2oLokG/PTrb+x1yLGHebvxFJZQNJoHaFD+KLirUD+m
+wpnsxCaMEnyD6VcSNGwFy+eKAIgKKagzOe4w5UNGoFw8CDT1TEewOm+DRohTChFU
+c7chgXVHRXvkx4CiQZnBge7vBRHYqZgdBQO6DA2U44+8gWN9zvpXrsC3tidVUfvT
+xMxwmbJ4BgS2zBqkLE6TnoZg74pAJZA05xOy533fOgOYKVQhSov2PWLLaTY6jqWR
+9cDECzG7E55W2sBA78dSTHldNlhxvJl5PsLCzWQPE7KZKdKdzrXCZj66svxPN1aL
+w6syJeTAyorgSA==
+-----END CERTIFICATE-----
+</ca>
+key-direction 1
+<tls-auth>
+#
+# 2048 bit OpenVPN static key
+#
+-----BEGIN OpenVPN Static key V1-----
+05c957fd11458008ab9b1cfa761d3673
+26833852e62a1b0fc60acd797d4dbccf
+26d57d8893282a8d2130f5bfb3fcc8af
+1e7b3d6423d45af4209d0d823340b6d0
+46b8a2f94c1ffb7334dad37c97745d6b
+ad7d3d3fdca03067aaf6f5ec12526ae3
+c02b9c6ee41140b02665ce9bd40b6c10
+be7bcafed4c1776c43ac21c627dbf598
+ae6840918e8a2407d482fb2274255c56
+683c15499aa0452025b9c62f0fcf03aa
+4f6dc7727703cb78f6c46faa484ed377
+39f0c538a6bb6d642923f7c84cfcb6da
+76a68a5444d583fc702081d15904cdc1
+9494f716248e1b27393435e1eca7e55a
+2d0446c3d6a57689b32ca7e4a3bfc0cb
+8881f7793d8b6af5f40e89c4323350bc
+-----END OpenVPN Static key V1-----
+</tls-auth>
+
+# redirect-gateway def1"
