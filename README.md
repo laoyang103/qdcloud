@@ -15,7 +15,7 @@
 3. 每个学生都要通过 **[微劈恩]** 连接到管理节点，根据学生为 **[微劈恩]** 客户端分配固定IP（网段10.32.0.0/16）。
 4. 管理节点通过iptables对每个学生的每个虚拟机进行22和80端口映射，学生在客户端即可连接虚拟机。
 5. 如果有公网IP，只需在光猫上映射管理节点的1194端口，即可实现外网连接
-![系统架构图]([doc/qdcloud.png](http://stu.jxit.net.cn:88/mianshi/image/shuoci2.png))
+![架构图](http://stu.jxit.net.cn:88/mianshi/image/shuoci1.png)
 
 
 ## 安装操作系统
