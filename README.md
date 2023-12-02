@@ -20,7 +20,7 @@
 
 ## 安装操作系统
 1.  安装管理节点，管理节点使用Centos7.9镜像
-2.  地址：[http://stu.jxit.net.cn:88/qdcloud/CentOS-7-x86_64-Minimal-2009.iso](https://dl.jxit.net.cn/qdcloud/CentOS-7-x86_64-Minimal-2009.iso)
+2.  地址：http://dl.jxit.net.cn/qdcloud/CentOS-7-x86_64-Minimal-2009.iso
 3.  管理节点相当于所有计算节点的路由器，WAN口IP随意，能上网即可， **LAN口IP必须为10.16.255.254/16！** 
 4.  计算节点安装Centos7.9镜像IP地址建议为10.16.255.1/16、10.16.255.2/16、...，网关为10.16.255.254，并保证和管理节点的LAN口在同一交换机
 
