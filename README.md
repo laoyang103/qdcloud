@@ -6,7 +6,7 @@
 3. 体验地址：[http://oa.jxit.net.cn](http://oa.jxit.net.cn) 账号：jx21080001密码：qdcloud
 4. 进入后点击视频或文字教程，通过 **[微劈恩]** 连接虚拟机
 
-![学生操作主页面](doc/vmlist.png)
+![学生操作主页面](http://stu.jxit.net.cn:88/mianshi/image/shuoci2.png)
 
 ## 软件架构
 1. 系统最低为三台服务器，一台管理+存储，两个计算节点，其中管理至少两个网卡。
@@ -15,53 +15,22 @@
 3. 每个学生都要通过 **[微劈恩]** 连接到管理节点，根据学生为 **[微劈恩]** 客户端分配固定IP（网段10.32.0.0/16）。
 4. 管理节点通过iptables对每个学生的每个虚拟机进行22和80端口映射，学生在客户端即可连接虚拟机。
 5. 如果有公网IP，只需在光猫上映射管理节点的1194端口，即可实现外网连接
-![系统架构图](doc/qdcloud.png)
+![系统架构图]([doc/qdcloud.png](http://stu.jxit.net.cn:88/mianshi/image/shuoci2.png))
 
 
 ## 安装操作系统
-1.  安装管理节点，管理节点使用[Centos9-stream镜像](http://stu.jxit.net.cn:88/qdcloud/CentOS-Stream-9-latest-x86_64-boot.iso)最小化安装
+1.  安装管理节点，管理节点使用Centos7镜像http://stu.jxit.net.cn:88/qdcloud/CentOS-7-x86_64-Minimal-2009.iso最小化安装
 2.  管理节点相当于所有计算节点的路由器，WAN口IP随意，能上网即可， **LAN口IP必须为10.16.255.254/16！** 
-3.  计算节点安装[Centos7-2009镜像](http://stu.jxit.net.cn:88/qdcloud/CentOS-Stream-9-latest-x86_64-boot.iso)，IP地址建议为10.16.255.1/16、10.16.255.2/16、...，网关为10.16.255.254，并保证和管理节点的LAN口在同一交换机
-
+3.  计算节点安装Centos7镜像http://stu.jxit.net.cn:88/qdcloud/CentOS-7-x86_64-Minimal-2009.iso，IP地址建议为10.16.255.1/16、10.16.255.2/16、...，网关为10.16.255.254，并保证和管理节点的LAN口在同一交换机
 
 ## 部署起点云
 
-### 最好先看一遍部署的[视频讲解](http://stu.jxit.net.cn:88/mp4/shizhan/qdcloud/qdcloud_deploy.mp4)
+## 环境
+见视频：http://dl.jxit.net.cn/mp4/shizhan/qdcloud/20231102_qdcloud_deploy.mp4
 
-1.  下载项目代码：git clone https://gitee.com/laoyang103/qdcloud.git
-2.  进入项目目录：cd qdcloud
-3.  执行安装脚本：bash -x doc/qdcloud.sh（建议先阅读一下脚本，每一步都有注释）
 
-### 创建学生虚拟磁盘
-1.  部署完毕后本机数据库已经自带200个学生，数据库root密码123456，学生的ID在lab_user表，字段为user_id
-```
-[root@jxvpn qdcloud]# mysql -uroot -p123456 jxcms -e "select user_id,user_name,real_name from lab_user limit 3"
-+---------+------------+-----------+
-| user_id | user_name  | real_name |
-+---------+------------+-----------+
-|       1 | jx00000001 | 滕文超    |
-|       2 | jx00000002 | 韩磊      |
-|       3 | jx00000003 | 杨佳楠    |
-+---------+------------+-----------+
-```
-3.  对于每个学生都需要执行mkstu.sh [学生ID]进行创建虚拟磁盘，下面以创建2号学生虚拟磁盘为例，其中guestmount那一步就是挂在学生路由器虚拟硬盘，修改WAN口IP地址位10.16.0.6
-
-```
-[root@jxvpn 01-linux-all]# bash -x /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/mkstu.sh 2
-+ source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
-++ export LANG=en_US.UTF-8
-...
-+ guestmount -a /data/vdisk//jx00000002/jx00000002.qcow2 -m /dev/sda1 /tmp/jx00000002
-+++ echo 168820736 + '2*4' - 2
-+++ bc
-++ num2ip 168820742
-++ mysql -uroot -p123456 jxcms -e 'select inet_ntoa("168820742")'
-++ grep -v inet_ntoa
-+ vmrip=10.16.0.6
-+ sed -i 's/IPADDR=..*$/IPADDR=10.16.0.6/g' /tmp/jx00000002//etc/sysconfig/network-scripts/ifcfg-eth1
-+ sed -i 's/NETMASK=..*$/NETMASK=255.255.0.0/g' /tmp/jx00000002//etc/sysconfig/network-scripts/ifcfg-eth1
-+ sed -i 's/GATEWAY=..*$/GATEWAY=10.16.255.254/g' /tmp/jx00000002//etc/sysconfig/network-scripts/ifcfg-eth1
-```
+## 部署
+见视频：http://dl.jxit.net.cn/mp4/shizhan/qdcloud/20231103_qdcloud_deploy_1.mp4
 
 ## 日常维护命令
 ### 查看虚拟机分配
