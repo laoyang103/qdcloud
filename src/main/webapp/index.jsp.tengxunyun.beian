@@ -1,0 +1,129 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="org.xson.common.object.XCO" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String title = "运维资源分享";
+//String key = cn.gatherlife.wms.business.util.JspUtils.getImageVerifyKey();
+%>
+<%
+	String key = cn.gatherlife.wms.business.util.JspUtils.getImageVerifyKey();
+%>
+
+
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width"><style type="text/css">body,html {background:#fff;font-family:"Bitstream Vera Sans","Lucida Grande","Lucida Sans Unicode",Lucidux,Verdana,Lucida,sans-serif;}table {table-layout: fixed;}tr:nth-child(even) {background:#f4f4f4;}th,td {padding:0.1em 0.5em;}th {text-align:left;font-weight:bold;background:#eee;border-bottom:1px solid #aaa;}#list {border:1px solid #aaa;width:100%;}a {color:#a33;}a:hover {color:#e33;}.link {white-space: nowrap;text-overflow: '>';overflow: hidden;}</style>
+
+		<title>运维资源分享 Index of /</title>
+	</head><body><h1>mp4(讲课录屏),jxfiles k8s(视频中文件),mianshi(面试题和录音),etu(思维导图)/</h1>
+<form name="myform" id="myform" action="UserRegResult.asp" method="post">
+
+<span class="label">账号：</span>
+<input type="text" name="UserName" id="UserName" value="" placeholder="请输入账号"  onkeyup="this.value=this.value.replace(/^ +| +$/g,'')">
+			
+<span class="label">密码：</span>
+<input type="password" class="emialLock" maxlength="20" id="PassWord" name="PassWord"  placeholder="请输入密码"  onkeyup="this.value=this.value.replace(/^ +| +$/g,'')">
+
+<span class="label">身份：</span>
+<select class="select" id="Question" style="width:170px;">
+<option value="1">学生</option>
+<option value="2">教师</option>
+<option value="3">管理员</option>
+</select> 
+		
+<span class="label2">验证码：</span>
+<input type="text" class="verifycode" maxlength="20" id="verifycode" name="verifycode"  value="" placeholder="请输验证码"  onkeyup="this.value=this.value.replace(/^ +| +$/g,'')">
+<img title="点击刷新" align="absmiddle" style="margin-right:25px;" src="<%=request.getContextPath()%>/jcaptcha/verify.do?key=<%=key %>" onclick="verifyFun()" id="imgVer">
+			
+		    
+<input type="Button" class="btn_reg" id="btnSubmit" onclick="doLogin();" value="登录">
+		
+</form>	
+		<table id="list"><thead><tr><th colspan="2"><a href="?C=N&amp;O=A">File Name</a>&nbsp;<a href="?C=N&amp;O=D">&nbsp;&darr;&nbsp;</a></th><th><a href="?C=S&amp;O=A">File Size</a>&nbsp;<a href="?C=S&amp;O=D">&nbsp;&darr;&nbsp;</a></th><th><a href="?C=M&amp;O=A">Date</a>&nbsp;<a href="?C=M&amp;O=D">&nbsp;&darr;&nbsp;</a></th></tr></thead>
+			<tbody><tr><td colspan="2" class="link"><a href="cuda/" title="cuda">cuda/</a></td><td class="size">-</td><td class="date">2023-Jun-19 06:42</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/etu/" title="etu">etu/</a></td><td class="size">-</td><td class="date">2023-Nov-27 06:30</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/iso/" title="iso">iso/</a></td><td class="size">-</td><td class="date">2023-Dec-05 01:56</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/jxfiles/" title="jxfiles">jxfiles/</a></td><td class="size">-</td><td class="date">2023-Nov-27 06:31</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/k8s/" title="k8s">k8s/</a></td><td class="size">-</td><td class="date">2023-Dec-29 00:19</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/kejian/" title="kejian">kejian/</a></td><td class="size">-</td><td class="date">2023-Nov-27 07:44</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/meiqi521/" title="meiqi521">meiqi521/</a></td><td class="size">-</td><td class="date">2023-Nov-27 07:51</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/mianshi/" title="mianshi">mianshi/</a></td><td class="size">-</td><td class="date">2023-Dec-19 07:50</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/mp4/" title="mp4">mp4/</a></td><td class="size">-</td><td class="date">2023-Jan-21 14:09</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/qdcloud/" title="qdcloud">qdcloud/</a></td><td class="size">-</td><td class="date">2023-Nov-27 03:30</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/soft/" title="soft">soft/</a></td><td class="size">-</td><td class="date">2023-Dec-11 02:47</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/uniprobe/" title="uniprobe">uniprobe/</a></td><td class="size">-</td><td class="date">2023-Nov-27 03:14</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/xpm/" title="xpm">xpm/</a></td><td class="size">-</td><td class="date">2023-Nov-27 03:15</td></tr>
+				<tr><td colspan="2" class="link"><a href="http://dl.jxit.net.cn/template.html" title="template.html">template.html</a></td><td class="size">2.0 KiB</td><td class="date">2023-Dec-06 09:35</td></tr>
+			</tbody></table><a href="/zhongkuiwaf/honey/trap" class="honeyLink">come-here</a><style>.honeyLink{display:none;}</style></body></html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+				<a target="_blank" style="color:#000000;font-size:28px;" href="https://beian.miit.gov.cn">蒙ICP备2022001337号</a>
+<script type="text/javascript" src="${pageContext.request.contextPath}/img/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/img/jquery.yx_rotaion.js"></script>
+<script src="${pageContext.request.contextPath}/bootstrap-dist/js/bootstrap.min.js"></script>	
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/xco2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-xco-src2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/gou/mToken_K1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/gou/mToken_K1Plugin.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/gou/base64.js"></script>
+<script type="text/javascript">
+//登录
+function doLogin(){
+	var xco = new XCO();
+	var user_name = $("#UserName").val();
+	if(user_name){
+		xco.setStringValue("user_name",user_name);
+	}else{
+		$("#user_name_msg").show();
+	}
+	
+	var password = $("#PassWord").val();
+	if(password){
+		xco.setStringValue("password",password);
+	}else{
+		$("#password_msg").show();
+	}
+	
+	var verifyCode = $("#verifycode").val();
+	if(verifyCode){
+		xco.setStringValue("verifyCode",verifyCode);
+	}else{
+		$("#verifycode_msg").show();
+	}
+	xco.setIntegerValue("type", $("#Question").val());
+	if(xco.getStringValue("user_name") && xco.getStringValue("password") && xco.getStringValue("verifyCode") && xco.getIntegerValue("type")){
+		var options ={
+				url:"/login/login.jhtml",
+				data:xco,
+				success: manage
+		};
+		//if(K1mTokenFindDevice()){
+			$.doXcoRequest(options);
+		//}
+	}
+	
+}
+function manage(xco){
+	//alert(xco.getObjectValue("data"));
+	if(xco.getCode() == 0){
+		var type = xco.getObjectValue("data").getObjectValue("type");
+		if(type == 1){
+			window.location.href="/view/message/msglist.jsp";
+		}else if(type == 2){
+			window.location.href="/view/message/msglist.jsp";
+		}else{
+			//window.location.href="/view/message/sendmsg.jsp";
+			window.location.href="view/message/msgadminlist.jsp";
+		}
+	}else if(xco.getCode() == 1){
+		 $("#verifyCode").val("");
+		var mes = xco.getMessage();
+		alert(mes);
+	}else{
+		var mes = xco.getMessage();
+		alert(mes);
+	}
+	// verifyFun();
+}
+</script>
+</html>
+
