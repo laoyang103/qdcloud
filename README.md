@@ -34,6 +34,13 @@
 见视频：http://dl.jxit.net.cn/mp4/shizhan/qdcloud/20231103_qdcloud_deploy_1.mp4
 
 ## 日常维护命令
+### 脚本目录
+```
+[root@jxcms qdcloud]# ls src/main/webapp/WEB-INF/cgi/
+chkcron.sh  chkmtu.sh  doenv.sh  editdisk.sh  getmsg.sh  iptables.sh  mkstu.sh  qdctl         vmlist.sh  vpnlogin.sh
+chklist.sh  dochk.sh   dovm.sh   envlist.sh   head.sh    mdserver     mkvmr.sh  table-css.sh  vpnkey.sh
+```
+
 ### 查看虚拟机分配
 ```
 [root@jxvpn qdcloud]# qdctl list
