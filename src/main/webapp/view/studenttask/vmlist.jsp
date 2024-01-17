@@ -149,15 +149,18 @@ String subpage = "studentvmlist";
 		
 		function ops2link(vmname, state){
 			dovmurl = "<a href=\"/cgi-bin/dovm.sh?";
+			dovnurl = "<a href=\"/cgi-bin/vnc.sh?";
                         vmparam = dovmurl + "user_id=<%=user_id%>&user_name=<%=user_name%>&vmname=" + vmname;
+                        vnparam = dovnurl + "user_id=<%=user_id%>&user_name=<%=user_name%>&vmname=" + vmname;
 		        if(!vmname.includes("-")){
                         	return "<font color=\"red\">不可操作</font>";
                         } else if (state == "shut") {
 				return vmparam + "&action=start\"><button id=\"vmstart\" onclick=\"startDisable()\">开启</button></a>&nbsp;" + 
-			       	       vmparam + "&action=reset\"><button>重置</button></a>";
+			       	       vmparam + "&action=reset&type=centos\"><button>重置centos</button></a>&nbsp;" +
+			       	       vmparam + "&action=reset&type=ubuntu\"><button>重置ubuntu</button></a>";
                         } else if (state == "running") {
 				return vmparam + "&action=destroy\"><button>关闭</button></a>&nbsp;" + 
-			       	       vmparam + "&action=connect\"><button>连接</button></a>";
+			       	       vnparam + "&action=connect\"><button>连接</button></a>";
                         } else {
 				return "不可操作";
                         }
