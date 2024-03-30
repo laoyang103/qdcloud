@@ -2,7 +2,7 @@
 
 /opt/tomcat8/bin/startup.sh
 
-confpath="/opt/tomcat8/webapps/R00T/WEB-INF/classes/tangyuan-configuration.xml"
+confpath="/opt/tomcat8/webapps/ROOT/WEB-INF/classes/tangyuan-configuration.xml"
 
 while [ ! -e "$confpath" ]; do
   sleep 3
