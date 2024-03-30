@@ -1,7 +1,7 @@
 #!/bin/bash
 
 imgrepo="registry.jxit.net.cn:5000"
-confpath="/opt/tomcat8/webapps/R00T/WEB-INF/classes/tangyuan-configuration.xml"
+confpath="src/main/resources/tangyuan-configuration.xml"
 
 git checkout $confpath
 

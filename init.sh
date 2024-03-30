@@ -14,3 +14,5 @@ sed -i "s/root/$MYSQL_USER/g" $confpath
 sed -i "s/123456/$MYSQL_PASS/g" $confpath
 sed -i "s/jxcms/$MYSQL_NAME/g" $confpath
 
+tail -f /opt/tomcat8/logs/catalina.out
+
