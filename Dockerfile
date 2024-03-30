@@ -6,7 +6,7 @@ RUN apk update && apk add openjdk8-jre bash curl tcpdump && \
     wget http://dl.jxit.net.cn/k8s/tomcat8-cgi.tar.gz -O /opt/tomcat8-cgi.tar.gz && \
     tar -zxf /opt/tomcat8-cgi.tar.gz -C /opt
 
-COPY target/qdcloud.war /opt/tomcat8/webapps/R00T.war
+COPY target/qdcloud.war /opt/tomcat8/webapps/ROOT.war
 
 COPY init.sh /
 
