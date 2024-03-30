@@ -14,6 +14,7 @@ sed -i "s/127.0.0.1/$MYSQL_ADDR/g" $confpath $headpath
 sed -i "s/root/$MYSQL_USER/g" $confpath $headpath
 sed -i "s/123456/$MYSQL_PASS/g" $confpath $headpath
 sed -i "s/jxcms/$MYSQL_NAME/g" $confpath $headpath
+sed -i "s/mq.jxit.net.cn/$MQ_ADDR/g" $confpath $headpath
 
 tail -f /opt/tomcat8/logs/catalina.out
 
