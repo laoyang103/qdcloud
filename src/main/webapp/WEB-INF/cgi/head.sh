@@ -2,7 +2,7 @@
 
 # 环境变量编码类型、命令路径
 export LANG="en_US.UTF-8"
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/sbin"
 
 # 当前时间和日志文件路径
 time_stamp=`date "+%Y-%m-%d %T"`
@@ -18,7 +18,7 @@ ccddir="/etc/openvpn/ccd/"
 hpvdiskdir="/var/lib/libvirt/images/"
 
 # 管理中心数据库的登陆信息
-mysqllogin="mysql --default-character-set=utf8 -hdb.jxit.net.cn -ujxadmin -p jxcms -e "
+mysqllogin="mysql --default-character-set=utf8 -h127.0.0.1 -uroot -p123456 jxcms -e "
 
 # 管理中心MQ登录用户名密码
 mqlogin="guest:guest" 
