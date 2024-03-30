@@ -9,7 +9,7 @@ fi
 
 git checkout $confpath
 
-mvn package -Dmaven.test.skip=true
+mvn clean && mvn package -Dmaven.test.skip=true
 
 docker build . -t $imgrepo/jxit/jxoa:git-$BUILD_NUMBER
 
