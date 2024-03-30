@@ -2,7 +2,7 @@
 
 /opt/tomcat8/bin/startup.sh
 
-headpath="src/main/webapp/WEB-INF/cgi/head.sh"
+headpath="/opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh"
 confpath="/opt/tomcat8/webapps/ROOT/WEB-INF/classes/tangyuan-configuration.xml"
 
 while [ ! -e "$confpath" ]; do
