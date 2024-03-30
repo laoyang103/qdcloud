@@ -2,8 +2,8 @@
 <configuration>
 
     <dataSource id="readDB" type="DBCP">
-        <property name="username" value="jxadmin"/>
-        <property name="password" value=""/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
         <property name="url" value="jdbc:mysql://db.jxit.net.cn:3306/jxcms?Unicode=true&amp;characterEncoding=utf8"/>
         <property name="driver" value="com.mysql.jdbc.Driver"/>
          <!--maxActive: 最大连接数量-->    
@@ -28,8 +28,8 @@
     </dataSource>
     
     <dataSource id="writeDB" type="DBCP" isDefault="true">
-        <property name="username" value="jxadmin"/>
-        <property name="password" value=""/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
         <property name="url" value="jdbc:mysql://db.jxit.net.cn:3306/jxcms?Unicode=true&amp;characterEncoding=utf8"/>
         <property name="driver" value="com.mysql.jdbc.Driver"/>
          <!--maxActive: 最大连接数量-->    
