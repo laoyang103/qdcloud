@@ -2,7 +2,7 @@
 
 ## 纯 脚本+Vxlan+KVM+Mysql+NFS，1000行代码实现的私有云，适合学习研究
 1. 每个学生固定分配20台虚拟机和一个路由器，可以自由开启、关闭、重置。
-2. 基于[B站教学视频](https://space.bilibili.com/621002172)模拟搭建实际生产环境，适合Linux运维培训学习
+2. 基于[B站教学视频](https://space.bilibili.com/621002172/channel/series)模拟搭建实际生产环境，适合Linux运维培训学习
 3. 体验地址：[http://oa.jxit.net.cn](http://oa.jxit.net.cn) 账号：jx21080001密码：qdcloud
 4. 进入后点击视频或文字教程，通过 **[微劈恩]** 连接虚拟机
 
