@@ -146,6 +146,7 @@ function startvm() {
   # 确定该虚拟机是否已经开启
   for hpv in ${hpvList[@]}; do
     state=$(virsh -c qemu+tcp://$hpv/system dominfo $vmname | grep State| awk '{print $2}')
+    test "running" != "$state" && state=$(ssh $hpv "dkctl state $vmname")
     if [ "running" == "$state" ]; then
       echo "domain $vmname is running on $hpv ... </br>"
       return
@@ -163,8 +164,13 @@ function startvm() {
     fi
   done
   echo "starting $vmname on $minhpv (mem: %$mincnt)... </br>"
-  echo "virsh -c qemu+tcp://$minhpv/system start $vmname </br>"
-  virsh -c qemu+tcp://$minhpv/system start $vmname
+  if [ "$user_name" == "jx00000001" -o "$user_name" == "jx23050005" ]; then
+    echo "ssh $minhpv "dbctl start $vmname $user_id $user_name" </br>"
+    ssh $minhpv "dkctl start $vmname $user_id $user_name "
+  else
+    echo "virsh -c qemu+tcp://$minhpv/system start $vmname </br>"
+    virsh -c qemu+tcp://$minhpv/system start $vmname
+  fi
 }
 
 # 查询某个虚拟机的状态，传递虚拟机名字
@@ -173,11 +179,12 @@ function statevm() {
   state="shut"
   for hpv in ${hpvList[@]}; do
     state=$(virsh -c qemu+tcp://$hpv/system dominfo $vmname | grep State| awk '{print $2}')
+    test "running" != "$state" && state=$(ssh $hpv "dkctl state $vmname")
     if [ "running" == "$state" ]; then
       break
     fi
   done
-  echo $state
+  test "running" != "$state" && echo shut || echo running
 }
 
 # 关闭某个虚拟机，传递虚拟机名字
@@ -185,6 +192,7 @@ function destroyvm() {
   vmname=$1
   for hpv in ${hpvList[@]}; do
     virsh -c qemu+tcp://$hpv/system destroy $vmname
+    ssh $hpv dkctl destroy $vmname
   done
 }
 
