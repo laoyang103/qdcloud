@@ -21,10 +21,14 @@ DNS_VOL=/etc/resolv.conf:/etc/resolv.conf
 HOSTNAME_VOL=/tmp/hostname:/etc/hostname
 
 if [ "$ACTION" == "start" ]; then
-  docker rm -f $VM_NAME
-  echo $VM_NAME > /tmp/hostname
-  container_id=$(docker run -dt --name $VM_NAME --pidfile=$PID_FILE -v $DNS_VOL -v $HOSTNAME_VOL --privileged --net=none $DOCKER_IMAGE)
-  
+  container_id=$(docker ps -a | grep $VM_NAME | grep -v grep | awk '{print $1}')
+  if [ -n "$container_id" ]; then
+    docker start $container_id
+  else
+    echo $VM_NAME > /tmp/hostname
+    container_id=$(docker run -dt --name $VM_NAME --pidfile=$PID_FILE -v $DNS_VOL -v $HOSTNAME_VOL --privileged --net=none $DOCKER_IMAGE)
+  fi
+
   pid=$(docker inspect -f '{{.State.Pid}}' $container_id)
   sudo mkdir -p /var/run/netns
   sudo ln -s /proc/$pid/ns/net /var/run/netns/$pid
@@ -40,8 +44,11 @@ if [ "$ACTION" == "start" ]; then
   ip netns exec $pid ip addr add $IP_ADDRESS dev eth0
   ip netns exec $pid ip route add default via $GATEWAY dev eth0
 elif [ "$ACTION" == "state" ]; then
-  docker inspect $VM_NAME | grep Status | awk -F "\"" '{print $4}'
+  isup=$(docker ps -a | grep $VM_NAME | grep Up | grep -v grep)
+  test -n "$isup" && echo "running"
 elif [ "$ACTION" == "destroy" ]; then
+  docker stop $VM_NAME
+elif [ "$ACTION" == "reset" ]; then
   docker rm -f $VM_NAME
 fi
 
