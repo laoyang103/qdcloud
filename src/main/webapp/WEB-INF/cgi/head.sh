@@ -146,7 +146,7 @@ function startvm() {
   # 确定该虚拟机是否已经开启
   for hpv in ${hpvList[@]}; do
     state=$(virsh -c qemu+tcp://$hpv/system dominfo $vmname | grep State| awk '{print $2}')
-    test "running" != "$state" && state=$(ssh $hpv "dkctl state $vmname")
+    test "running" != "$state" && state=$(ssh 10.16.255.1 "dkctl state $vmname")
     if [ "running" == "$state" ]; then
       echo "domain $vmname is running on $hpv ... </br>"
       return
@@ -164,13 +164,14 @@ function startvm() {
     fi
   done
   echo "starting $vmname on $minhpv (mem: %$mincnt)... </br>"
-  if [ "$user_name" == "jx00000001" -o "$user_name" == "jx23050005" ]; then
-    echo "ssh $minhpv "dbctl start $vmname $user_id $user_name" </br>"
-    ssh $minhpv "dkctl start $vmname $user_id $user_name "
+  if [[ "$user_name" == "jx00000003" || "$user_name" == jx2312* || "$user_name" == jx2310* ]]; then
+    echo "ssh $minhpv 'dbctl start $vmname $user_id $user_name' </br>"
+    ssh 10.16.255.1 "dkctl start $vmname $user_id $user_name"
   else
     echo "virsh -c qemu+tcp://$minhpv/system start $vmname </br>"
     virsh -c qemu+tcp://$minhpv/system start $vmname
   fi
+
 }
 
 # 查询某个虚拟机的状态，传递虚拟机名字
@@ -179,7 +180,7 @@ function statevm() {
   state="shut"
   for hpv in ${hpvList[@]}; do
     state=$(virsh -c qemu+tcp://$hpv/system dominfo $vmname | grep State| awk '{print $2}')
-    test "running" != "$state" && state=$(ssh $hpv "dkctl state $vmname")
+    test "running" != "$state" && state=$(ssh 10.16.255.1 "dkctl state $vmname")
     if [ "running" == "$state" ]; then
       break
     fi
@@ -192,22 +193,35 @@ function destroyvm() {
   vmname=$1
   for hpv in ${hpvList[@]}; do
     virsh -c qemu+tcp://$hpv/system destroy $vmname
-    ssh $hpv dkctl destroy $vmname
+    ssh 10.16.255.1 dkctl destroy $vmname
   done
 }
 
 # 重置某个虚拟机，实际是关闭后覆盖虚拟磁盘，传递虚拟机名字
 function resetvm() {
-  vmname=$1
+  centos=$1
   for hpv in ${hpvList[@]}; do
     virsh -c qemu+tcp://$hpv/system destroy $vmname
   done
   vmdisk=$(echo $vmname | sed "s/jx[0-9]\{8\}-/jx-/g" | sed "s/$/.qcow2/g")
   ssh root@10.16.255.253 rm $vdiskdir/$user_name/$vmdisk
+    sleep 5
   ssh root@10.16.255.253 cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk
   echo "ssh root@10.16.255.253 rm $vdiskdir/$user_name/$vmdisk </br>"
   echo "ssh root@10.16.255.253 cp $vdiskdir/stuvm/$vmdisk $vdiskdir/$user_name/$vmdisk </br>"
 }
+function resetvm() {
+  ubuntu=$1
+  for hpv in ${hpvList[@]}; do
+    virsh -c qemu+tcp://$hpv/system destroy $vmname
+  done
+  vmdisk=$(echo $vmname | sed "s/jx[0-9]\{8\}-/jx-/g" | sed "s/$/.qcow2/g")
+  ssh root@10.16.255.253 rm $vdiskdir/$user_name/$vmdisk
+  ssh root@10.16.255.253 cp $vdiskdir/ubuntu/$vmdisk $vdiskdir/$user_name/$vmdisk
+  echo "ssh root@10.16.255.253 rm $vdiskdir/$user_name/$vmdisk </br>"
+  echo "ssh root@10.16.255.253 cp $vdiskdir/ubuntu/$vmdisk $vdiskdir/$user_name/$vmdisk </br>"
+}
+
 
 # VNC连接某个虚拟机，会显示虚拟机所在计算节点IP和VNC监听端口
 function connectvm() {

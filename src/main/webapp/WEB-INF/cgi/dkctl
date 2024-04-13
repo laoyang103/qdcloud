@@ -21,11 +21,11 @@ DNS_VOL=/etc/resolv.conf:/etc/resolv.conf
 HOSTNAME_VOL=/tmp/hostname:/etc/hostname
 
 if [ "$ACTION" == "start" ]; then
+  echo $VM_NAME > /tmp/hostname
   container_id=$(docker ps -a | grep $VM_NAME | grep -v grep | awk '{print $1}')
   if [ -n "$container_id" ]; then
     docker start $container_id
   else
-    echo $VM_NAME > /tmp/hostname
     container_id=$(docker run -dt --name $VM_NAME --pidfile=$PID_FILE -v $DNS_VOL -v $HOSTNAME_VOL --privileged --net=none $DOCKER_IMAGE)
   fi
 
