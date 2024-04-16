@@ -1,0 +1,28 @@
+apiVersion: kubeovn.io/v1
+kind: VpcNatGateway
+metadata:
+  name: gateway-jx00000001
+spec:
+  vpc: vpc-jx00000001
+  subnet: subnet-jx00000001
+  lanIp: 10.10.10.1
+  selector:
+    - "kubernetes.io/os: linux"
+  externalSubnets:
+    - ovn-vpc-external-network
+---
+kind: IptablesEIP
+apiVersion: kubeovn.io/v1
+metadata:
+  name: eip-jx00000001
+spec:
+  v4ip: 10.16.255.101
+  natGwDp: gateway-jx00000001
+---
+kind: IptablesSnatRule
+apiVersion: kubeovn.io/v1
+metadata:
+  name: snat-jx00000001
+spec:
+  eip: eip-jx00000001
+  internalCIDR: 10.10.10.0/24
