@@ -8,7 +8,7 @@ spec:
   cidrBlock: 10.16.0.0/16 # 外部网络的网段
   gateway: 10.16.255.254  # 外部网络的物理网关的地址
   excludeIps:
-  - 10.16.255.100..10.16.255.250
+  - 10.16.0.0..10.16.200.0
 ---
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
