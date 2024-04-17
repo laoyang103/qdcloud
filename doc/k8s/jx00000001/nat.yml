@@ -1,0 +1,37 @@
+apiVersion: kubeovn.io/v1
+kind: IptablesEIP
+metadata:
+  name: eip-jx00000001
+spec:
+  v4ip: 10.16.0.2
+  natGwDp: gateway-jx00000001
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesSnatRule
+metadata:
+  name: snat-jx00000001
+spec:
+  eip: eip-jx00000001
+  internalCIDR: 10.10.10.0/24
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-jx00000001-1122
+spec:
+  eip: eip-jx00000001
+  externalPort: "1122"
+  protocol: tcp
+  internalIp: 10.10.10.11
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-jx00000001-1180
+spec:
+  eip: eip-jx00000001
+  externalPort: "1180"
+  protocol: tcp
+  internalIp: 10.10.10.11
+  internalPort: "80"

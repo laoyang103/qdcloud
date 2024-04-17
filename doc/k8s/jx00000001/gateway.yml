@@ -10,19 +10,3 @@ spec:
     - "kubernetes.io/os: linux"
   externalSubnets:
     - ovn-vpc-external-network
----
-kind: IptablesEIP
-apiVersion: kubeovn.io/v1
-metadata:
-  name: eip-jx00000001
-spec:
-  v4ip: 10.16.255.101
-  natGwDp: gateway-jx00000001
----
-kind: IptablesSnatRule
-apiVersion: kubeovn.io/v1
-metadata:
-  name: snat-jx00000001
-spec:
-  eip: eip-jx00000001
-  internalCIDR: 10.10.10.0/24

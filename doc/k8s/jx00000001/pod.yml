@@ -10,6 +10,8 @@ spec:
   containers:
     - name: jx00000001-nginx-11
       image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7
+      securityContext:
+        privileged: true
 ---
 apiVersion: v1
 kind: Pod
@@ -23,6 +25,8 @@ spec:
   containers:
     - name: jx00000001-nginx-12
       image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7
+      securityContext:
+        privileged: true
 ---
 apiVersion: v1
 kind: Pod
@@ -36,3 +40,5 @@ spec:
   containers:
     - name: jx00000001-nginx-13
       image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7
+      securityContext:
+        privileged: true
