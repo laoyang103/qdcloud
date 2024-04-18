@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ovn-vpc-nat-config
+  namespace: kube-system
+data:
+  image: 'docker.io/kubeovn/vpc-nat-gateway:v1.10.10' 
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ovn-vpc-nat-gw-config
+  namespace: kube-system
+data:
+  enable-vpc-nat-gw: 'true'

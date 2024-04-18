@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    ovn.kubernetes.io/logical_switch: subnet-__user_name
+    ovn.kubernetes.io/ip_address: __fix_ipaddress
+  namespace: ns-__user_name
+  name: __vmname
+spec:
+  containers:
+    - name: __vmname
+      image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7
+      securityContext:
+        privileged: true

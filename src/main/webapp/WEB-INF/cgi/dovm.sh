@@ -32,9 +32,7 @@ fi
 
 # 开启虚拟机（同时开启其网关路由器）
 if [ "$action" == "start" ]; then
-  vmnametmp=$vmname
-  startvm $user_id $user_name $user_name
-  startvm $user_id $user_name $vmnametmp
+  startvm $vmname $user_name
 # 关闭虚拟机
 elif [ "$action" == "destroy" ]; then
   destroyvm $vmname

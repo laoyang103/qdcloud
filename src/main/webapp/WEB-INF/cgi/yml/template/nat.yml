@@ -1,0 +1,367 @@
+apiVersion: kubeovn.io/v1
+kind: IptablesEIP
+metadata:
+  name: eip-__user_name
+spec:
+  v4ip: __user_vmr
+  natGwDp: gateway-__user_name
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesSnatRule
+metadata:
+  name: snat-__user_name
+spec:
+  eip: eip-__user_name
+  internalCIDR: 10.10.10.0/24
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-1122
+spec:
+  eip: eip-__user_name
+  externalPort: "1122"
+  protocol: tcp
+  internalIp: 10.10.10.11
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-1180
+spec:
+  eip: eip-__user_name
+  externalPort: "1180"
+  protocol: tcp
+  internalIp: 10.10.10.11
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-1222
+spec:
+  eip: eip-__user_name
+  externalPort: "1222"
+  protocol: tcp
+  internalIp: 10.10.10.12
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-1280
+spec:
+  eip: eip-__user_name
+  externalPort: "1280"
+  protocol: tcp
+  internalIp: 10.10.10.12
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-1322
+spec:
+  eip: eip-__user_name
+  externalPort: "1322"
+  protocol: tcp
+  internalIp: 10.10.10.13
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-1380
+spec:
+  eip: eip-__user_name
+  externalPort: "1380"
+  protocol: tcp
+  internalIp: 10.10.10.13
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2122
+spec:
+  eip: eip-__user_name
+  externalPort: "2122"
+  protocol: tcp
+  internalIp: 10.10.10.21
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2180
+spec:
+  eip: eip-__user_name
+  externalPort: "2180"
+  protocol: tcp
+  internalIp: 10.10.10.21
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2222
+spec:
+  eip: eip-__user_name
+  externalPort: "2222"
+  protocol: tcp
+  internalIp: 10.10.10.22
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2280
+spec:
+  eip: eip-__user_name
+  externalPort: "2280"
+  protocol: tcp
+  internalIp: 10.10.10.22
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2622
+spec:
+  eip: eip-__user_name
+  externalPort: "2622"
+  protocol: tcp
+  internalIp: 10.10.10.26
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2680
+spec:
+  eip: eip-__user_name
+  externalPort: "2680"
+  protocol: tcp
+  internalIp: 10.10.10.26
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2722
+spec:
+  eip: eip-__user_name
+  externalPort: "2722"
+  protocol: tcp
+  internalIp: 10.10.10.27
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2780
+spec:
+  eip: eip-__user_name
+  externalPort: "2780"
+  protocol: tcp
+  internalIp: 10.10.10.27
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2822
+spec:
+  eip: eip-__user_name
+  externalPort: "2822"
+  protocol: tcp
+  internalIp: 10.10.10.28
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-2880
+spec:
+  eip: eip-__user_name
+  externalPort: "2880"
+  protocol: tcp
+  internalIp: 10.10.10.28
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3122
+spec:
+  eip: eip-__user_name
+  externalPort: "3122"
+  protocol: tcp
+  internalIp: 10.10.10.31
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3180
+spec:
+  eip: eip-__user_name
+  externalPort: "3180"
+  protocol: tcp
+  internalIp: 10.10.10.31
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3222
+spec:
+  eip: eip-__user_name
+  externalPort: "3222"
+  protocol: tcp
+  internalIp: 10.10.10.32
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3280
+spec:
+  eip: eip-__user_name
+  externalPort: "3280"
+  protocol: tcp
+  internalIp: 10.10.10.32
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3622
+spec:
+  eip: eip-__user_name
+  externalPort: "3622"
+  protocol: tcp
+  internalIp: 10.10.10.36
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3680
+spec:
+  eip: eip-__user_name
+  externalPort: "3680"
+  protocol: tcp
+  internalIp: 10.10.10.36
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3722
+spec:
+  eip: eip-__user_name
+  externalPort: "3722"
+  protocol: tcp
+  internalIp: 10.10.10.37
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3780
+spec:
+  eip: eip-__user_name
+  externalPort: "3780"
+  protocol: tcp
+  internalIp: 10.10.10.37
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3822
+spec:
+  eip: eip-__user_name
+  externalPort: "3822"
+  protocol: tcp
+  internalIp: 10.10.10.38
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-3880
+spec:
+  eip: eip-__user_name
+  externalPort: "3880"
+  protocol: tcp
+  internalIp: 10.10.10.38
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-7122
+spec:
+  eip: eip-__user_name
+  externalPort: "7122"
+  protocol: tcp
+  internalIp: 10.10.10.71
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-7180
+spec:
+  eip: eip-__user_name
+  externalPort: "7180"
+  protocol: tcp
+  internalIp: 10.10.10.71
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-7622
+spec:
+  eip: eip-__user_name
+  externalPort: "7622"
+  protocol: tcp
+  internalIp: 10.10.10.76
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-7680
+spec:
+  eip: eip-__user_name
+  externalPort: "7680"
+  protocol: tcp
+  internalIp: 10.10.10.76
+  internalPort: "80"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-8122
+spec:
+  eip: eip-__user_name
+  externalPort: "8122"
+  protocol: tcp
+  internalIp: 10.10.10.81
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-8180
+spec:
+  eip: eip-__user_name
+  externalPort: "8180"
+  protocol: tcp
+  internalIp: 10.10.10.81
+  internalPort: "80"

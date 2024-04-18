@@ -9,7 +9,6 @@ source /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/head.sh
 # 远程IP：untrusted_ip=10.64.1.136
  
 # 尝试查询该用户名的ID
-mysqllogin="mysql -hdb.jxit.net.cn -ujxadmin -p123456Ww jxcms -e "
 sql="select user_id from lab_user where user_name=\"$username\" and password=\"$password\" and region=$regionid"
 user_id=$($mysqllogin "$sql" | grep -v user_id)
  
