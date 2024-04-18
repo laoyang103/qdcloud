@@ -1,1000 +1,231 @@
-  343  ls
-  344  mv /usr/local/bin/kubectl-ko /opt/
-  345  ls
-  346  vim multus-daemonset-thick.yml 
-  347  kubectl apply -f multus-daemonset-thick.yml 
-  348  kubectl get pod -A
-  349  kubectl -n kube-system describe pod kube-multus-ds-4ptrf 
-  350  ls
-  351  vim multus-daemonset-thick.yml 
-  352  kubectl apply -f multus-daemonset-thick.yml 
-  353  kubectl get pod -A
-  354  kubectl delete -f multus-daemonset-thick.yml 
-  355  kubectl get pod -A
-  356  reboot 
-  357  kubectl get pod -A
-  358  ls
-  359  vim multus-daemonset-thick.yml 
-  360  kubectl apply -f multus-daemonset-thick.yml 
-  361  kubectl get pod -A
-  362  kubectl -n kube-system describe pod kube-multus-ds-4ptrf 
-  363  kubectl -n kube-system describe pod kube-multus-ds-gc89n 
-  364  kubectl get pod -A
-  365  kubectl -n kube-system edit daemonsets.apps kube-multus-ds 
-  366  kubectl get pod -A
-  367  kubectl -n kube-system describe pod kube-multus-ds-gc89n 
-  368  kubectl -n kube-system describe pod kube-multus-ds-4f7qk 
-  369  kubectl get pod -A
-  370  ls
-  371  rz -E
-  372  apt -y install lrzsz
-  373  apt -y update
-  374  apt -y install lrzsz
-  375  rz -E
-  376  ls
-  377  apt -y install unzip
-  378  ls
-  379  unzip qdcloud.zip 
-  380  ls
-  381  cd qdcloud/
-  382  ls
-  383  cd public/
-  384  ls
-  385  mv /usr/local/bin/kubectl-ko /opt/
-  386  ls
-  387  kubectl apply -f enable-vpc-nat-gw.yml 
-  388  ls
-  389  vim external-network.yml 
-  390  kubectl apply -f external-network.yml 
-  391  ls
-  392  vim multus-daemonset-thick.yml 
-  393  ls
-  394  cd ..
-  395  ls
-  396  cd jx00000001/
-  397  ls
-  398  kubectl get pod
-  399  kubectl get pod -A
-  400  ls
-  401  kubectl apply -f vpc-subnet.yml 
-  402  vim vpc-subnet.yml 
-  403  kubectl get pod -A
-  404  ls
-  405  vim vpc-subnet.yml 
-  406  ls
-  407  vim vpc-subnet.yml 
-  408  ls
-  409  vim pod.yml 
-  410  ls
-  411  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 
-  412  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  413  ls
-  414  kubectl delete -f vpc-subnet.yml 
-  415  kubectl get pod -A
-  416  cd 
-  417  ls
-  418  cat /var/lib/rancher/k3s/server/node-token
-  419  kubectl get node
-  420  kubectl get pod -A
-  421  kubectl get pod -A -o wide
-  422  kubectl get pod -A
-  423  kubectl -n kube-system delete daemonsets.apps kube-ovn-pinger 
-  424  kubectl get pod -A
-  425  kubectl get nodes
-  426  kubectl uncordon k8s-master-254 
-  427  kubectl cordon k8s-master-254 
-  428  kubectl get nodes
-  429  reboot 
-  430  ls
-  431  cd qdcloud/
-  432  ls
-  433  kubectl get nodes
-  434  kubectl get pod
-  435  kubectl get pod -A
-  436  kubectl get pod -A -o wide
-  437  ls
-  438  cd jx00000001/
-  439  ls
-  440  mv /usr/local/bin/kubectl-ko /opt/
-  441  ls
-  442  kubectl apply -f vpc-subnet.yml 
-  443  kubectl get pod -A
-  444  kubectl get pod -A -o wide
-  445  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  446  ls
-  447  vim vpc-subnet.yml 
-  448  ls
-  449  ip a | less
-  450  ls
-  451  vim vpc-subnet.yml 
-  452  ls
-  453  cd ,,
-  454  ls
-  455  cd ..
-  456  ls
-  457  cd public/
-  458  ls
-  459  vim external-network.yml 
-  460  kubectl apply -f external-network.yml 
-  461  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  462  ls
-  463  kubectl get pod -A -o wide
-  464  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  465  ls
-  466  cd ..
-  467  ls
-  468  cd jx00000001/
-  469  ls
-  470  vim pod.yml 
-  471  ls
-  472  vim gateway.yml
-  473  vim vpc-subnet.yml 
-  474  kubectl apply -f vpc-subnet.yml 
-  475  kubectl get pod -A
-  476  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  477  kubectl get pod -A
-  478  kubectl -n kube-system logs vpc-nat-gw-gateway-jx00000001-0 
-  479  kubectl -n kube-system logs pod vpc-nat-gw-gateway-jx00000001-0 
-  480  kubectl -n kube-system logs pod/vpc-nat-gw-gateway-jx00000001-0 
-  481  kubectl -n kube-system logs pod/vpc-nat-gw-gateway-jx00000001-0 vpc-nat-gw
-  482  kubectl -n kube-system logs pod/vpc-nat-gw-gateway-jx00000001-0 vpc-nat-gw -f
-  483  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  484  ls
-  485  vim gateway.yml 
-  486  kubectl delete -f gateway.yml 
-  487  kubectl get iptables-snat-rules.kubeovn.io 
-  488  kubectl get iptables-eips.kubeovn.io 
-  489  kubectl delete -f gateway.yml 
-  490  kubectl get pod -A
-  491  ls
-  492  vim gateway.yml 
-  493  ls
-  494  kubectl apply -f gateway.yml 
-  495  kubectl get pod -A
-  496  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  497  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  498  ls
-  499  kubectl apply -f pod.yml 
-  500  kubectl get pod -A
-  501  kubectl get pod -A -o wide
-  502  kubectl get pod -A
-  503  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-11 bash
-  504  ls
-  505  kubectl delete -f pod.yml 
-  506  kubectl get pod -A
-  507  ls
-  508  vim pod.yml 
-  509  kubectl get subnets.kubeovn.io 
-  510  ls
-  511  vim vpc-subnet.yml 
-  512  ls
-  513  kubectl apply -f vpc-subnet.yml 
-  514  ls
-  515  vim vpc-subnet.yml 
-  516  kubectl get pod -A
-  517  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-11 bash
-  518  ip a
-  519  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-11 bash
-  520  kubectl get pod -A
-  521  kubectl apply -f pod.yml 
-  522  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-11 bash
-  523  ls
-  524  cd 
-  525  ls
-  526  mkdir kube-ovn
-  527  ls
-  528  mv * kube-ovn
-  529  ls
-  530  mv kube-ovn/k3s-install.sh .
-  531  mv kube-ovn/qdcloud* .
-  532  ls
-  533  git
-  534  ls
-  535  git clone https://github.com/laoyang103/qdcloud
-  536  rm qdcloud.zip  -rf
-  537  ls
-  538  mv qdcloud/ /opt/
-  539  ls
-  540  ls /opt/
-  541  git clone https://github.com/laoyang103/qdcloud
-  542  export https_proxy=10.64.1.113:16818
-  543  export http_proxy=10.64.1.113:16818
-  544  git clone https://github.com/laoyang103/qdcloud
-  545  ip r
-  546  vim /etc/netplan/jx-install-confing.yaml 
-  547  ip r add 10.64.1.0/24 via 10.16.0.1
-  548  git clone https://github.com/laoyang103/qdcloud
-  549  ping 10.64.1.113
-  550  ip r
-  551  ip r del 10.64.1.0/24 via 10.16.0.1
-  552  ip r
-  553  git clone https://github.com/laoyang103/qdcloud
-  554  ls
-  555  git clone https://github.com/laoyang103/qdcloud
-  556  export http_proxy=10.64.1.113:16818
-  557  export https_proxy=10.64.1.113:16818
-  558  git clone https://github.com/laoyang103/qdcloud
-  559  ls
-  560  wget google.com
-  561  ping 10.64.1.113
-  562  ip r
-  563  ip r add 10.64.1.0/24 via 10.16.0.1
-  564  ip r
-  565  ping 10.16.0.1
-  566  ping 10.64.1.254
-  567  ping 10.64.1.113
-  568  ping qq.com
-  569  git clone https://github.com/laoyang103/qdcloud
-  570  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  571  ls
-  572  history 
-  573  git clone https://github.com/laoyang103/qdcloud
-  574  ls
-  575  cd qdcloud/
-  576  ls
-  577  cd doc/
-  578  ls
-  579  mkdir k8s
-  580  ls
-  581  cd k8s/
-  582  ls
-  583  mv /opt/qdcloud/jx00000001/ .
-  584  mv /opt/qdcloud/public/ .
-  585  ls
-  586  cd ..
-  587  ls
-  588  git add k8s/
-  589  cd ..
-  590  ls
-  591  git status .
-  592  git commit -m 'k3s ovn yaml'
-  593  git config --global user.email "553069938@qq.com"
-  594  git config --global user.name "laoyang103"
-  595  git commit -m 'k3s ovn yaml'
-  596  git push -u origin master
-  597  git remote set-url git@github.com:laoyang103/qdcloud.git
-  598  git remote set-url origin git@github.com:laoyang103/qdcloud.git
-  599  git push -u origin master
-  600  vim ~/.ssh/id_rsa
-  601  chmod 400 ~/.ssh/id_rsa
-  602  git push -u origin master
-  603  git remote -v
-  604  git push -u origin master
-  605  vim ~/.ssh/id_rsa
-  606  vim ~/.ssh/id_rsa.pub 
-  607  git remote set-url origin https://github.com:laoyang103/qdcloud.git
-  608  git remote set-url origin https://github.com/laoyang103/qdcloud.git
-  609  git push -u origin master
-  610  ls
-  611  mv doc/k8s/ /opt/
-  612  ls
-  613  cd ..
-  614  ls
-  615  rm qdcloud/ -rf
-  616  ls
-  617  git clone git@github.com:laoyang103/qdcloud.git
-  618  ssh -T git@github.com
-  619  vim ~/.ssh/id_rsa.pub 
-  620  ssh -T git@github.com
-  621  git clone git@github.com:laoyang103/qdcloud.git
-  622  ls
-  623  cd qdcloud/
-  624  ls
-  625  git mv baseimg/ doc/
-  626  cd doc/
-  627  ls
-  628  git rm exam.sql 
-  629  git rm newnode.sh 
-  630  ls
-  631  cd /
-  632  cd 
-  633  ls
-  634  cd /opt/
-  635  ls
-  636  cd qdcloud/
-  637  ls
-  638  ls /tmp/
-  639  ls
-  640  cd /
-  641  ls
-  642  cd /opt/
-  643  ls
-  644  cd k8s/
-  645  ls
-  646  cd ..
-  647  ls
-  648  mv k8s/ /root/qdcloud/doc/
-  649  cd 
-  650  ls
-  651  cd qdcloud/
-  652  ls
-  653  git status .
-  654  git add doc/k8s/
-  655  git status .
-  656  git commit -m 'add kubeovn yaml'
-  657  git push -u origin master
-  658  ls
-  659  cd doc/
-  660  ls
-  661  cd k8s/
-  662  ls
-  663  cp jx00000001/ jx00000002 -r
-  664  ls
-  665  cd jx00000002/
-  666  ls
-  667  vim gateway.yml 
-  668  ls
-  669  vim vpc-subnet.yml 
-  670  ls
-  671  vim pod.yml 
-  672  ls
-  673  vim vpc-subnet.yml 
-  674  ls
-  675  kubectl apply -f vpc-subnet.yml 
-  676  kubectl apply -f gateway.yml 
-  677  kubectl get pod -A
-  678  kubectl get pod -A -o wide
-  679  ls
-  680  kubectl apply -f pod.yml 
-  681  kubectl get pod -A -o wide > /tmp/a.txt
-  682  vim /tmp/a.txt 
-  683  cd 
-  684  ls
-  685  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-11 bash
-  686  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-12 bash
-  687  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-13 bash
-  688  kubectl -n ns-jx00000001 exec -it pod/jx00000002-nginx-13 bash
-  689  ping qq.com
-  690  kubectl -n ns-jx00000002 exec -it pod/jx00000002-nginx-13 bash
-  691  kubectl -n ns-jx00000002 exec -it pod/jx00000002-nginx-11 bash
-  692  kubectl -n ns-jx00000002 exec -it pod/jx00000002-nginx-12 bash
-  693  kubectl top node
-  694  kubectl top pod -A
-  695  poweroff 
-  696  kubectl get pod -A 
-  697  kubectl top node
-  698  kubectl get pod -A 
-  699  kubectl -n ns-jx00000002 exec -it pod/jx00000002-nginx-12 bash
-  700  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  701  ls
-  702  cd qdcloud/doc/k8s/
-  703  ls
-  704  cd jx0000000
-  705  ls1
-  706  cd jx00000001/
-  707  ls
-  708  kubectl delete -f gateway.yml 
-  709  kubectl apply -f gateway.yml 
-  710  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  711  ip a
-  712  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  713  ip a
-  714  kubectl get pod -A 
-  715  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  716  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-13 bash
-  717  ls
-  718  cd ..
-  719  ls
-  720  cd jx00000002/
-  721  ls
-  722  kubectl apply -f gateway.yml 
-  723  kubectl delete -f gateway.yml 
-  724  kubectl get pod -A 
-  725  kubectl apply -f gateway.yml 
-  726  kubectl get pod -A 
-  727  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  728  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000002-0 bash
-  729  ssh root@10.16.255.2
-  730  reboot 
-  731  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000002-0 bash
-  732  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  733  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  734  kubectl -n kube-system logs pod/vpc-nat-gw-gateway-jx00000001-0 vpc-nat-gw -f
-  735  kubectl get iptables-snat-rules.kubeovn.io 
-  736  kubectl get iptables-eips.kubeovn.io 
-  737  kubectl -n kube-system rollout restart statefulset vpc-nat-gw-gateway-jx00000001 
-  738  kubectl -n kube-system rollout restart statefulset vpc-nat-gw-gateway-jx00000002
-  739  kubectl get pod -A 
-  740  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  741  ls
-  742  kubectl get crd
-  743  ls
-  744  cd qdcloud/
-  745  ls
-  746  cd doc/
-  747  ls
-  748  cd k8s/
-  749  ls
-  750  cd public/
-  751  ls
-  752  vim multus-daemonset-thick.yml 
-  753  kubectl get pod -A 
-  754  kubectl -n kube-system describe pod/kube-multus-ds-mbgz7 
-  755  kubectl -n kube-system logs pod/kube-multus-ds-mbgz7 
-  756  date
-  757  ls
-  758  vim external-network.yml 
-  759  kubectl-ko nbctl show
-  760  ip a
-  761  kubectl-ko nbctl show
-  762  ip a
-  763  kubectl get pod -A 
-  764  df
-  765  kubectl top node
-  766  ls
-  767  kubectl get pod -A
-  768  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  769  kubectl get pod -A
-  770  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  771  kubectl get pod -A
-  772  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  773  kubectl get pod -A
-  774  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  775  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  776  ls
-  777  kubectl get pod -A
-  778  kubectl get subnets.kubeovn.io 
-  779  kubectl get pod -A
-  780  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  781  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-13 bash
-  782  ls
-  783  cd qdcloud/doc/k8s/
-  784  ls
-  785  cd public/
-  786  ls
-  787  vim external-network.yml 
-  788  lls
-  789  ls
-  790  mv /usr/local/bin/kubectl-ko /opt/
-  791  ls
-  792  cd 
-  793  ls
-  794  kubectl get subnets.kubeovn.io ovn-vpc-external-network 
-  795  kubectl get subnets.kubeovn.io ovn-vpc-external-network  -o yaml
-  796  kubectl get subnets.kubeovn.io ovn-default 
-  797  kubectl get subnets.kubeovn.io ovn-default -o yaml
-  798  ls
-  799  cd qdcloud/
-  800  ls
-  801  cd doc/k8s/
-  802  ls
-  803  cd public/
-  804  ls
-  805  vim external-network.yml 
-  806  kubectl apply -f external-network.yml 
-  807  ls
-  808  cd ..
-  809  ls
-  810  cd jx0000000
-  811  cd jx00000001/
-  812  ls
-  813  kubectl delete -f pod.yml 
-  814  kubectl delete -f gateway.yml 
-  815  kubectl delete -f vpc-subnet.yml 
-  816  cd ..
-  817  ls
-  818  kubectl delete -f jx00000002/
-  819  ls
-  820  vim public/external-network.yml 
-  821  kubectl apply -f public/external-network.yml 
-  822  vim public/external-network.yml 
-  823  kubectl apply -f public/external-network.yml 
-  824  vim public/external-network.yml 
-  825  ls
-  826  kubectl get subnets.kubeovn.io 
-  827  kubectl delete -f public/external-network.yml 
-  828  kubectl get subnets.kubeovn.io 
-  829  kubectl apply -f public/external-network.yml 
-  830  ls
-  831  kubectl apply -f jx00000001/
-  832  git checkout public/
-  833  ls
-  834  git status .
-  835  kubectl apply -f public/
-  836  kubectl get subnets.kubeovn.io 
-  837  kubectl delete -f jx00000001/
-  838  kubectl get subnets.kubeovn.io 
-  839  ls
-  840  vim public/external-network.yml 
-  841  kubectl apply -f public/external-network.yml 
-  842  vim public/external-network.yml 
-  843  kubectl get subnets.kubeovn.io 
-  844  ls
-  845  kubectl apply -f jx00000001/gateway.yml 
-  846  vim jx00000001/gateway.yml 
-  847  kubectl apply -f jx00000001/vpc-subnet.yml 
-  848  vim jx00000001/gateway.yml 
-  849  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  850  ls
-  851  vim jx00000001/gateway.yml 
-  852  kubectl -n kube-system describe pod/kube-multus-ds-mbgz7 
-  853  kubectl -n kube-system describe pod/vpc-nat-gw-gateway-jx00000001-0 
-  854  kubectl delete -f jx00000001/gateway.yml 
-  855  kubectl apply -f jx00000001/gateway.yml 
-  856  ls
-  857  git checkout .
-  858  ls
-  859  kubectl delete -f jx00000001/
-  860  ls
-  861  kubectl delete -f public/external-network.yml 
-  862  ls
-  863  git checkout .
-  864  kubectl apply -f public/external-network.yml 
-  865  vim public/external-network.yml 
-  866  kubectl apply -f public/external-network.yml 
-  867  ls
-  868  kubectl apply -f jx00000001/
-  869  ls
-  870  git status .
-  871  git diff public/external-network.yml
-  872  git add public/
-  873  git add jx00000002/
-  874  git commit -m '暂时划分出动态分配IP'
-  875  git push -u origin master
-  876  ls
-  877  kubectl get crd
-  878  ls
-  879  vim jx00000001/gateway.yml 
-  880  kubectl apply -f jx00000001/gateway.yml 
-  881  vim jx00000001/gateway.yml 
-  882  kubectl apply -f jx00000001/gateway.yml 
-  883  vim jx00000001/gateway.yml 
-  884  ls
-  885  mv nat.yml jx00000001/
-  886  ls
-  887  cd jx00000001/
-  888  ls
-  889  kubectl apply -f nat.yml 
-  890  ls
-  891  vim pod.yml 
-  892  kubectl apply -f pod.yml 
-  893  vim pod.yml 
-  894  kubectl apply -f pod.yml 
-  895  vim pod.yml 
-  896  kubectl apply -f pod.yml 
-  897  vim pod.yml 
-  898  kubectl apply -f pod.yml 
-  899  vim pod.yml 
-  900  kubectl delete -f pod.yml 
-  901  kubectl apply -f pod.yml 
-  902  ls
-  903  cd ..
-  904  ls
-  905  git rm jx00000002/
-  906  git rm jx00000002/ -r
-  907  ls
-  908  git add .
-  909  git status .
-  910  git commit -m 'dnat规则'
-  911  git push -u origin master
-  912  kubectl get pod -A
-  913  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
-  914  kubectl -n ns-jx00000001 exec -it pod/jx00000001-nginx-11 bash
-  915  ls
-  916  kubectl get pod
-  917  kubectl get pod -A
-  918  ping 10.16.255.101
-  919  ssh -p 1122 root@10.16.255.101
-  920  ls
-  921  apt -y install openjdk-8-jdk
-  922  java
-  923  javac
-  924  ls
-  925  cd /opt/
-  926  ls
-  927  cd qdcloud/
-  928  ls
-  929  cd ..
-  930  ls
-  931  rm qdcloud/
-  932  rm qdcloud/ -rf
-  933  ls
-  934  wget http://stu.jxit.net.cn:88/k8s/tomcat8-cgi.tar.gz
-  935  ls
-  936  tar -zxf tomcat8-cgi.tar.gz 
-  937  ls
-  938  rm tomcat8-cgi.tar.gz -rf
-  939  ls
-  940  slcd
-  941  ls
-  942  cd qdcloud/
-  943  ls
-  944  mvn
-  945  cd /opt/
-  946  ls
-  947  wget http://stu.jxit.net.cn:88/jxfiles/apache-maven-3.6.3.tar.gz
-  948  ls
-  949  tar -zxf apache-maven-3.6.3.tar.gz 
-  950  ls
-  951  rm apache-maven-3.6.3.tar.gz  -rf
-  952  ls
-  953  mv apache-maven-3.6.3/ maven-3.6.3/
-  954  ls
-  955  cd maven-3.6.3/bin/
-  956  ls
-  957  wd
-  958  pwd
-  959  vim /etc/profile
-  960  vim ~/.bashrc 
-  961  ls
-  962  cd qdcloud/doc/k8s/
-  963  ls
-  964  cd public/
-  965  ls
-  966  cd ..
-  967  ls
-  968  cd ..
-  969  ls
-  970  cp -r k8s/ /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/
-  971  ip a
-  972  cd /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/
-  973  ls
-  974  cd ..
-  975  cd logs/
-  976  ls
-  977  tail -f catalina.out 
-  978  ls
-  979  cd 
-  980  ls
-  981  kubectl -n ns-jx00000002 get pod
-  982  kubectl -n kube-system get pod
-  983  kubectl -n kube-system get pod/vpc-nat-gw-gateway-jx00000002-0
-  984  kubectl -n kube-system get pod/vpc-nat-gw-gateway-jx00000002-0 | grep Running | grep -v grep
-  985  kubectl -n kube-system get pod/vp-nat-gw-gateway-jx00000002-0 | grep Running | grep -v grep
-  986  a=$(kubectl -n kube-system get pod/vp-nat-gw-gateway-jx00000002-0 | grep Running | grep -v grep)
-  987  echo $a
-  988  kubectl get pod
-  989  kubectl get pod -A
-  990  ls
-  991  cd /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/
-  992  ls
-  993  bash -x vmlist.sh 
-  994  apt -y install mariadb-client
-  995  mysql
-  996  bash -x vmlist.sh 
-  997  ls
-  998  vim head.sh 
-  999  bash -x vmlist.sh 
- 1000  bash vmlist.sh 
- 1001  bash -x vmlist.sh 
- 1002  bc
- 1003  kubectl -n ns-jx00000003 get pod/jx00000003-nginx-12 > /dev/null && echo running || echo shut
- 1004  kubectl -n ns-jx00000003 get pod/jx00000003-nginx-12 2>&1 > /dev/null && echo running || echo shut
- 1005  bash -x vmlist.sh 
- 1006  ls
- 1007  cd qdcloud/
- 1008  ls
- 1009  cat doc/qdcloud.sh 
- 1010  mvn install:install-file -Dfile=lib/tangyuan-0.9.0.jar -DgroupId=org.xson -DartifactId=tangyuan -Dversion=0.9.0 -Dpackaging=jar
- 1011  mvn install:install-file -Dfile=lib/rpc-util-1.0.jar -DgroupId=cn.gatherlife -DartifactId=rpc-util -Dversion=1.0 -Dpackaging=jar
- 1012  mvn install:install-file -Dfile=lib/patchca-0.5.0-SNAPSHOT.jar -DgroupId=net.pusuo -DartifactId=patchca -Dversion=0.5.0-SNAPSHOT -Dpackaging=jar
- 1013  mvn install:install-file -Dfile=lib/common-object-0.0.1-SNAPSHOT.jar -DgroupId=org.xson -DartifactId=common-object -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
- 1014  mvn package -Dmaven.test.skip=true
- 1015  ls
- 1016  cp target/qdcloud.war /opt/tomcat8/webapps/ROOT.war
- 1017  /opt/tomcat8/bin/startup.sh 
- 1018  ls
- 1019  cd /opt/tomcat8/webapps/ROOT/
- 1020  ls
- 1021  cd WEB-INF/classes/
- 1022  ls
- 1023  vim tangyuan-configuration.xml 
- 1024  ps aux | grep java
- 1025  killall java
- 1026  ip a | less
- 1027  telnet db.jxit.net.cn 3306
- 1028  ls
- 1029  killall java
- 1030  /opt/tomcat8/bin/startup.sh 
- 1031  ls
- 1032  cd ..
- 1033  ls
- 1034  cd cgi/
- 1035  ls
- 1036  cd 
- 1037  ls
- 1038  cd /opt/
- 1039  ls
- 1040  cd frp/
- 1041  ls
- 1042  vim frpc.ini 
- 1043  cd 
- 1044  ls
- 1045  ip a | less
- 1046  kubectl -n kube-system exec -it pod/vpc-nat-gw-gateway-jx00000001-0 bash
- 1047  ip a
- 1048  tcpdump -i enp1s0f0 port 80 -nn
- 1049  ip a
- 1050  ls
- 1051  cd /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/
- 1052  ls
- 1053  vim vmlist.sh 
- 1054  ls
- 1055  vim dovm.sh 
- 1056  ls
- 1057  vim head.sh 
- 1058  vim vmlist.sh 
- 1059  ls
- 1060  vim head.sh 
- 1061  ls
- 1062  vim chkcron.sh 
- 1063  rm chkcron.sh chklist.sh -rf
- 1064  ls
- 1065  vim chkmtu.sh 
- 1066  rm chkmtu.sh -rf
- 1067  ls
- 1068  rm dkctl -rf
- 1069  ls
- 1070  vim dochk.sh 
- 1071  ls
- 1072  rm dochk.sh -rf
- 1073  l
- 1074  ls
- 1075  vim doenv.sh 
- 1076  ls
- 1077  rm doenv.sh -rf
- 1078  ls
- 1079  rm editdisk.sh envlist.sh -rf
- 1080  ls
- 1081  vim iptables.sh 
- 1082  rm iptables.sh -rf
- 1083  ls
- 1084  vim dovm.sh 
- 1085  ls
- 1086  rm mdserver mkstu.sh -rf
- 1087  ls
- 1088  vim mkvmr.sh 
- 1089  rm mkvmr.sh -rf
- 1090  ls
- 1091  rm qdctl table-css.sh vnc.sh -rf
- 1092  ls
- 1093  vim vpnkey.sh 
- 1094  ls
- 1095  rm vpnkey.sh -rf
- 1096  ls
- 1097  vim vpnlogin.sh 
- 1098  ls
- 1099  vim head.sh 
- 1100  ls
- 1101  cd ..
- 1102  ls
- 1103  cp cgi/ /opt/cgi-bak -r
- 1104  ls
- 1105  cd cgi/
- 1106  ls
- 1107  vim vmlist.sh 
- 1108  ls
- 1109  vim dovm.sh 
- 1110  ls
- 1111  bash -x mkenv.sh jx00000001
- 1112  vim /var/lib/libvirt/images//jx00000001/jx00000001-ops-81.yml
- 1113  ls
- 1114  vim mkenv.sh 
- 1115  vim /var/lib/libvirt/images//jx00000001/jx00000001-ops-81.yml
- 1116  bash -x mkenv.sh jx00000001
- 1117  vim /var/lib/libvirt/images//jx00000001/jx00000001-ops-81.yml
- 1118  ls
- 1119  vim /var/lib/libvirt/images//jx00000001/pod.yml 
- 1120  vim /var/lib/libvirt/images//jx00000001/jx00000001-ops-81.ymlls
- 1121  ls
- 1122  vim mkenv.sh 
- 1123  bash -x mkenv.sh jx00000001
- 1124  vim /var/lib/libvirt/images//jx00000001/jx00000001-ops-81.yml
- 1125  ls
- 1126  kubectl -n ns-jx00000001 get pod
- 1127  ls
- 1128  bash -x mkenv.sh jx00000002
- 1129  kubectl -n ns-jx00000002 get pod
- 1130  iptables -F
- 1131  kubectl -n ns-jx00000002 get pod
- 1132  kubectl -n ns-jx00000001 get pod
- 1133  ls
- 1134  vim mkenv.sh 
- 1135  bash -x mkenv.sh jx00000003
- 1136  iptables -F
- 1137  ls
- 1138  vim vmlist.sh 
- 1139  ls
- 1140  kubectl get pod 
- 1141  kubectl -n ns-jx00000003 get pod
- 1142  ls
- 1143  vim dovm.sh 
- 1144  ls
- 1145  vim dovm.sh 
- 1146  ls
- 1147  vim vmlist.sh 
- 1148  bash -x vmlist.sh 
- 1149  ls
- 1150  vim head.sh 
- 1151  bash -x vmlist.sh 
- 1152  kubectl get ns
- 1153  kubectl -n ns-jx00000003 get pod/jx00000003-ops-81
- 1154  vim head.sh 
- 1155  apt -y install openvpn
- 1156  cd 
- 1157  ls
- 1158  wget http://stu.jxit.net.cn:88/jxfiles/openvpn/jxvpn-server.tar.gz
- 1159  ls
- 1160  tar -zxf jxvpn-server.tar.gz 
- 1161  ls
- 1162  cd etc/
- 1163  ls
- 1164  cd openvpn/
- 1165  ls
- 1166  ls /etc/openvpn/
- 1167  ls /root/etc/openvpn/
- 1168  ls
- 1169  rm * -rf
- 1170  ls
- 1171  cd 
- 1172  ls
- 1173  rm etc/ -rf
- 1174  ls
- 1175  tar -zxf jxvpn-server.tar.gz 
- 1176  ls
- 1177  mv etc/openvpn/* /etc/openvpn/
- 1178  ls
- 1179  rm etc/ -rf
- 1180  ls
- 1181  cd /etc/openvpn/
- 1182  ls
- 1183  cd 
- 1184  ls
- 1185  nohup openvpn --config /etc/openvpn/openvp.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem &
- 1186  openvpn --config /etc/openvpn/openvp.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem 
- 1187  openvpn --config /etc/openvpn/openvpn.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem 
- 1188  mkdir /etc/openvpn/ccd
- 1189  openvpn --config /etc/openvpn/openvpn.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem 
- 1190  vim /etc/openvpn/openvpn.conf 
- 1191  ls
- 1192  cd qdcloud/
- 1193  ls
- 1194  cd doc/
- 1195  ls
- 1196  cd conf/
- 1197  ls
- 1198  cd openvpn/
- 1199  ls
- 1200  mv * /etc/openvpn/
- 1201  rm /etc/openvpn/* -rf
- 1202  ls
- 1203  git chekcout .
- 1204  ls
- 1205  git checkcout .
- 1206  ls
- 1207  git checkout .
- 1208  ls
- 1209  cp * /etc/openvpn/ -r
- 1210  cd 
- 1211  ls
- 1212  rm jxvpn-server.tar.gz -rf
- 1213  ls
- 1214  nohup openvpn --config /etc/openvpn/openvp.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem &
- 1215  openvpn --config /etc/openvpn/openvpn.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem 
- 1216  chmod +x /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/vpnlogin.sh
- 1217  openvpn --config /etc/openvpn/openvpn.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem 
- 1218  mkdir /etc/openvpn/ccd
- 1219  openvpn --config /etc/openvpn/openvpn.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem 
- 1220  nohup openvpn --config /etc/openvpn/openvpn.conf --client-config-dir /etc/openvpn/ccd --crl-verify /etc/openvpn/crl.pem &
- 1221  ip a
- 1222  tcpdump -i enp1s0f0 port 1194 -nn
- 1223  iptables-save 
- 1224  iptables-save | grep 1122
- 1225  iptables-save | grep 10.16.0.2
- 1226  ip a | less
- 1227  tcpdump -i enp1s0f0 port 1194 -nn
- 1228  tcpdump -i enp1s0f0 port 1122 -nn
- 1229  ip a
- 1230  tcpdump -i tun0 port 1122 -nn
- 1231  tcpdump -i any port 1122 -nn
- 1232  tcpdump -i any port 1194 -nn
- 1233  tcpdump -i any port 1194 or port 22 or port 1122 -nn
- 1234  tcpdump -i any port 1194 or port 1122 -nn
- 1235  tail -f nohup.out 
- 1236  ls
- 1237  cd /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/
- 1238  ls
- 1239  mv k8s/ yml
- 1240  ls
- 1241  cd yml/
- 1242  ls
- 1243  mv jx00000001/ template
- 1244  ls
- 1245  cd template/
- 1246  ls
- 1247  sed -i "s/jx00000001/jx00000002/g" *
- 1248  ls
- 1249  vim vpc-subnet.yml 
- 1250  ls
- 1251  vim gateway.yml 
- 1252  ls
- 1253  vim nat.yml 
- 1254  ls
- 1255  vim pod.yml 
- 1256  ls
- 1257  kubectl apply -f .
- 1258  cd ..
- 1259  ls
- 1260  vim vmlist.sh 
- 1261  cd 
- 1262  ls
- 1263  kubectl -n ns-jx00000002 get pod/jx00000002-nginx-11 -o yaml | kubectl replace --force -f -
- 1264  kubectl -n ns-jx00000002 get pod
- 1265  ls
- 1266  cd -
- 1267  ls
- 1268  cd yml/
- 1269  ls
- 1270  cd template/
- 1271  ls
- 1272  vim vpc-subnet.yml 
- 1273  ls
- 1274  vim gateway.yml 
- 1275  ls
- 1276  vim pod.yml 
- 1277  ls
- 1278  vim nat.yml 
- 1279  ls
- 1280  cd ..
- 1281  ls
- 1282  mkdir /var/lib/libvirt/images -p
- 1283  ls
- 1284  cd template/
- 1285  ls
- 1286  vim gateway.yml 
- 1287  grep __user_name
- 1288  grep __user_name -rn .
- 1289  grep __user_name -rln .
- 1290  ls
- 1291  vim pod.yml 
- 1292  ls
- 1293  mkdir aa
- 1294  mv jx-nginx-11.yml aa/
- 1295  ls
- 1296  rm jx-* -rf
- 1297  ls
- 1298  vim pod.yml 
- 1299  cat aa/jx-nginx-11.yml > pod.yml 
- 1300  ls
- 1301  rm aa/ -rf
- 1302  ls
- 1303  vim pod.yml 
- 1304  ls
- 1305  vim pod.yml 
- 1306  ps aux | grep java
- 1307  cd 
- 1308  ls
- 1309  iptables -F
- 1310  ls
- 1311  cd qdcloud/
- 1312  ls
- 1313  cd src/main/webapp/WEB-INF/cgi/
- 1314  ls
- 1315  vim dovm.sh 
- 1316  vim head.sh 
- 1317  ls
- 1318  cd /var/lib/libvirt/images/
- 1319  ls
- 1320  cd jx0000000
- 1321  cd jx00000003/
- 1322  ls
- 1323  cd /opt/tomcat8/webapps/ROOT/WEB-INF/cgi/
- 1324  ls
- 1325  cd ..
- 1326  ls
- 1327  rm /opt/cgi-bak/ -rf
- 1328  ls
- 1329  cp cgi/ /opt/cgi-bak
- 1330  cp cgi/ /opt/cgi-bak -r
- 1331  ls
- 1332  ls /opt/
- 1333  ip a
- 1334  kubectl get node
- 1335  kubectl get pod -A -o wide
- 1336  kubectl get pod -A -o wide | wc -l
- 1337  ls
- 1338  cd qdcloud/
- 1339  ls
- 1340  cd doc/
- 1341  ls
- 1342  history > cmd-20230825.txt 
+    1  ls
+    2  ip a
+    3  vim /etc/netplan/jx-install-confing.yaml 
+    4  ls
+    5  reboot 
+    6  df
+    7  df -hT
+    8  poweroff 
+    9  lsb
+   10  lsblk 
+   11  df
+   12  resize2fs /dev/vdb1
+   13  lsblk -F
+   14  lsblk -f
+   15  lsblk 
+   16  fdisk /dev/vdb
+   17  e2fsck -f /dev/vdb1
+   18  e2fsck -f /dev/vdb
+   19  df
+   20  lsblk 
+   21  df -hT
+   22  reboot 
+   23  df
+   24  df -hT
+   25  poweroff 
+   26  vim /etc/netplan/jx-install-confing.yaml 
+   27  reboot 
+   28  ping qq.com
+   29  ping 10.10.10.12
+   30  ping 10.10.10.13
+   31  poweroff 
+   32  vim /etc/ssh/sshd_config
+   33  systemctl enable ssh
+   34  reboot 
+   35  ps aux | grep ssh
+   36  journalctl -u ssh
+   37  mkdir ~/.ssh
+   38  cd ~/.ssh/
+   39  ls
+   40  vim id_rsa
+   41  vim id_rsa.pub
+   42  reboot 
+   43  ls
+   44  ps aux | grep ssh
+   45  systemctl start ssh
+   46  journalctl -xeu ssh
+   47  ssh-keygen 
+   48  systemctl start ssh
+   49  journalctl -xeu ssh
+   50  ssh-keygen 
+   51  systemctl start ssh
+   52  journalctl -xeu ssh
+   53  vim /usr/lib/systemd/system/ssh.service 
+   54  sshd -D
+   55  /usr/sbin/sshd -D
+   56  /usr/sbin/sshd
+   57  /usr/sbin/sshd 
+   58  ssh-keygen -A
+   59  /usr/sbin/sshd 
+   60  ps aux | grep ssh
+   61  /usr/sbin/sshd -D
+   62  ls /run/ssh
+   63  mkdir -p /run/ssh
+   64  /usr/sbin/sshd -D
+   65  rm /run/ssh -rf
+   66  mkdir -p /run/sshd
+   67  /usr/sbin/sshd -D
+   68  ls
+   69  vim ~/.ssh/id_rsa
+   70  vim ~/.ssh/id_rsa.pub 
+   71  ls
+   72  systemctl restart sshd
+   73  systemctl restart ssh
+   74  ps aux | grep ssh
+   75  reboot 
+   76  ps aux | grep ssh
+   77  ls
+   78  vim ~/.ssh/authorized_keys 
+   79  ls
+   80  reboot 
+   81  poweroff 
+   82  vim /etc/ssh/sshd_config
+   83  vim /etc/netplan/jx-install-confing.yaml 
+   84  hostnamectl set-hostname jx-nginx-12
+   85  reboot 
+   86  ls
+   87  ip a
+   88  ls
+   89  vim /etc/netplan/jx-install-confing.yaml 
+   90  hostnamectl set-hostname k8s-node-11
+   91  ip a
+   92  netplan apply 
+   93  ip a
+   94  ping 10.16.255.254
+   95  ping qq.com
+   96  ping 8.8.8.8
+   97  ping qq.com
+   98  vim /etc/resolv.conf 
+   99  vim /etc/netplan/jx-install-confing.yaml 
+  100  netplan apply 
+  101  vim /etc/resolv.conf 
+  102  ping 8.8.8.8
+  103  ping 175.102.15.166
+  104  ip r
+  105  ping 10.16.255.254
+  106  ip a
+  107  ip r
+  108  vim /etc/resolv.conf 
+  109  ls
+  110  vim /etc/resolv.conf 
+  111  systemctl status systemd-resolved.service 
+  112  systemctl stop systemd-resolved.service 
+  113  systemctl disable systemd-resolved.service 
+  114  vim /etc/resolv.conf 
+  115  ls
+  116  reboot 
+  117  vim ~/.ssh/authorized_keys 
+  118  vim ~/.ssh/id_rsa
+  119  cat /etc/resolv.conf 
+  120  systemctl enable systemd-resolved.service --now
+  121  cat /etc/resolv.conf 
+  122  ping qq.com
+  123  ping 192.168.1.1
+  124  ping 10.16.255.
+  125  ping 192.168.1.11
+  126  ping 192.168.1.1
+  127  poweroff 
+  128  ip a
+  129  ps aux | grep ssh
+  130  ls
+  131  vim /etc/netplan/jx-install-confing.yaml 
+  132  hostnamectl set-hostname k8s-node-01
+  133  reboot 
+  134  vim ~/.ssh/authorized_keys 
+  135  ip a
+  136  ping qq.com
+  137  vim ~/.ssh/authorized_keys 
+  138  wget http://stu.jxit.net.cn:88/jxfiles/frp/frpc.sh
+  139  l
+  140  ls
+  141  bash frpc.sh $(hostname) 22 8601
+  142  reboot 
+  143  ps aux | grep frp
+  144  cat /etc/rc.local 
+  145  ip a
+  146  ping qq.com
+  147  vim /lib/systemd/system/rc-local.service
+  148  systemctl daemon-reload 
+  149  vim /etc/rc.local 
+  150  ls -al /etc/rc.local 
+  151  chmod +x /etc/rc.local 
+  152  ls -al /etc/rc.local 
+  153  reboot 
+  154  ps aux | grep frp
+  155  reboot 
+  156  poweroff 
+  157  ip a
+  158  crontab -l
+  159  crontab -e
+  160  ls
+  161  ps aux | grep frp
+  162  cat /etc/rc.local 
+  163  vim /etc/rc.local 
+  164  ls
+  165  rm frpc.sh -rf
+  166  wget http://stu.jxit.net.cn:88/jxfiles/frp/frpc.sh
+  167  bash frpc.sh $(hostname) 22 8601
+  168  crontab -l
+  169  ps aux | grep frp
+  170  crontab -l
+  171  ps aux | grep frp
+  172  tail -f /var/log/syslog 
+  173  crontab -l
+  174  tail -f /var/log/syslog 
+  175  ps aux | grep frp
+  176  ls
+  177  rm * -rf
+  178  poweroff 
+  179  ping qq.com
+  180  hostnamectl set-hostname k8s-master-01
+  181  reboot 
+  182  ip a
+  183  ping qq.com
+  184  poweroff 
+  185  export INSTALL_K3S_VERSION=v1.28.8+k3s1
+  186  export https_proxy=10.64.1.113:16818
+  187  export http_proxy=10.64.1.113:16818
+  188  curl -sfL https://get.k3s.io | sh -s - --flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode 644 --write-kubeconfig ~/.kube/config
+  189  wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.10/dist/images/install.sh
+  190  ls
+  191  vim install.sh 
+  192  bash -x install.sh 
+  193  mv /usr/local/bin/kubectl-ko /opt/
+  194  ls
+  195  kubectl get pod
+  196  source /usr/share/bash-completion/bash_completion
+  197  source <(kubectl completion bash)
+  198  vim ~/.bashrc 
+  199  ls
+  200  kubectl get pod -A
+  201  cat /var/lib/rancher/k3s/server/node-token
+  202  ls
+  203  kubectl get pod
+  204  kubectl get pod -A
+  205  kubectl -n kube-system delete daemonsets.apps kube-ovn-pinger 
+  206  kubectl get pod -A
+  207  ls
+  208  git
+  209  apt -y install net-tools
+  210  kubectl get pod -A -w
+  211  apt -y update
+  212  apt -y install net-tools
+  213  apt -y install tree
+  214  apt -y install unzip
+  215  ls
+  216  export http_proxy=10.64.1.113:16818
+  217  export https_proxy=10.64.1.113:16818
+  218  git clone https://github.com/laoyang103/qdcloud
+  219  ls
+  220  cd qdcloud/
+  221  ls
+  222  cd doc/
+  223  ls
+  224  vim ~/.ssh/id_rsa
+  225  vim ~/.ssh/id_rsa.pub 
+  226  cd qdcloud/
+  227  ls
+  228  git status .
+  229  cd doc/
+  230  ls
+  231  history > cmd.txt 
