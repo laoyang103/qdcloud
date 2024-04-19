@@ -25,7 +25,7 @@ echo -n '<?xml version="1.0" encoding="UTF-8"?>'
 echo -n '<X><L K="total" V="18"/><XL K="data">'
 
 # 学生路由器
-state=$(statevm vpc-nat-gw-gateway-$user_name-0 $user_name)
+state=$(statevm $gwprefix-$user_name-0 $user_name)
 vmrip=$(num2ip $(echo $vmrbase + $user_id*4 - 2 | bc))
 echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"$vmrip\"/><S K=\"state\" V=\"$state\"/></X>"
 

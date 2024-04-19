@@ -8,6 +8,9 @@ export KUBECONFIG="/root/.kube/config"
 # k8s系统命名空间
 ksys="kubectl -n kube-system"
 
+# vpc网关容器前缀
+gwprefix="vpc-nat-gw-gateway"
+
 # 当前时间和日志文件路径
 time_stamp=`date "+%Y-%m-%d %T"`
 log_file="/var/log/qdcloud"
