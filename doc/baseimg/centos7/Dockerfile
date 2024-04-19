@@ -15,12 +15,13 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
     rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 RUN yum -y install crontabs rsyslog httpd iproute psmisc net-tools && \
-    yum -y install vim openssh-server wget curl && \ 
+    yum -y install vim tcpdump openssh-server wget curl && \ 
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     systemctl enable crond && \
     systemctl enable sshd   && \
     systemctl enable rsyslog && \
     echo 123 | passwd root --stdin && \
+    echo "UseDNS no" >> /etc/ssh/sshd_config && \
     yum clean all
 
 VOLUME [ "/sys/fs/cgroup" ]
