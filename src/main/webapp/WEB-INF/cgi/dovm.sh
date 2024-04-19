@@ -8,6 +8,7 @@ source head.sh
 
 # 对某个虚拟机进行操作，浏览器传递ID、用户名、虚拟机名、动作
 # QUERY_STRING="user_id=3&user_name=jx00000003&name=jx00000003-mysql-master-36&action=start"
+QUERY_STRING="user_id=3&user_name=jx00000003&vmname=jx00000003-nginx-11&action=reset&type=centos"
 user_id=$(echo $QUERY_STRING | awk -F "&" '{print $1}' | awk -F "=" '{print $2}')
 user_name=$(echo $QUERY_STRING | awk -F "&" '{print $2}' | awk -F "=" '{print $2}')
 vmname=$(echo $QUERY_STRING | awk -F "&" '{print $3}' | awk -F "=" '{print $2}')
@@ -35,12 +36,10 @@ if [ "$action" == "start" ]; then
   startvm $vmname $user_name
 # 关闭虚拟机
 elif [ "$action" == "destroy" ]; then
-  destroyvm $vmname
+  destroyvm $vmname $user_name
 # 重置虚拟机
-elif [ "$action" == "resetvm" ]; then
-  resetvm $centos
-elif [ "$type" == "ubuntu" ]; then
-  resetvm $ubuntu
+elif [ "$action" == "reset" ]; then
+  resetvm $vmname $user_name $type
 # 虚拟机连接信息
 elif [ "$action" == "connect" ]; then
   connectvm $vmname

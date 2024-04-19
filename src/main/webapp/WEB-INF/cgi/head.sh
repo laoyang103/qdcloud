@@ -3,6 +3,7 @@
 # 环境变量编码类型、命令路径
 export LANG="en_US.UTF-8"
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/sbin"
+export KUBECONFIG="/root/.kube/config"
 
 # k8s系统命名空间
 ksys="kubectl -n kube-system"
@@ -106,7 +107,7 @@ function addrule() {
 function startvm() {
   vmname=$1
   user_name=$2
-  kubectl apply -f $hpvdiskdir/$user_name/$vmname.yml
+  kubectl apply -f $hpvdiskdir/$user_name/pod/$vmname.yml
 }
 
 # 查询某个虚拟机的状态，传递虚拟机名字，用户名
@@ -132,6 +133,5 @@ function destroyvm() {
 function resetvm() {
   vmname=$1
   user_name=$2
-  kubectl -n ns-$user_name exec -it pod/$vmname
   kubectl -n ns-$user_name get pod/$vmname -o yaml | kubectl replace --force -f -
 }
