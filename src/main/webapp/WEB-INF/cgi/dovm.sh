@@ -35,12 +35,10 @@ if [ "$action" == "start" ]; then
   startvm $vmname $user_name
 # 关闭虚拟机
 elif [ "$action" == "destroy" ]; then
-  destroyvm $vmname
+  destroyvm $vmname $user_name
 # 重置虚拟机
-elif [ "$action" == "resetvm" ]; then
-  resetvm $centos
-elif [ "$type" == "ubuntu" ]; then
-  resetvm $ubuntu
+elif [ "$action" == "reset" ]; then
+  resetvm $vmname $user_name $type
 # 虚拟机连接信息
 elif [ "$action" == "connect" ]; then
   connectvm $vmname

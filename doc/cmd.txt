@@ -1,231 +1,26 @@
-    1  ls
-    2  ip a
-    3  vim /etc/netplan/jx-install-confing.yaml 
-    4  ls
-    5  reboot 
-    6  df
-    7  df -hT
-    8  poweroff 
-    9  lsb
-   10  lsblk 
-   11  df
-   12  resize2fs /dev/vdb1
-   13  lsblk -F
-   14  lsblk -f
-   15  lsblk 
-   16  fdisk /dev/vdb
-   17  e2fsck -f /dev/vdb1
-   18  e2fsck -f /dev/vdb
-   19  df
-   20  lsblk 
-   21  df -hT
-   22  reboot 
-   23  df
-   24  df -hT
-   25  poweroff 
-   26  vim /etc/netplan/jx-install-confing.yaml 
-   27  reboot 
-   28  ping qq.com
-   29  ping 10.10.10.12
-   30  ping 10.10.10.13
-   31  poweroff 
-   32  vim /etc/ssh/sshd_config
-   33  systemctl enable ssh
-   34  reboot 
-   35  ps aux | grep ssh
-   36  journalctl -u ssh
-   37  mkdir ~/.ssh
-   38  cd ~/.ssh/
-   39  ls
-   40  vim id_rsa
-   41  vim id_rsa.pub
-   42  reboot 
-   43  ls
-   44  ps aux | grep ssh
-   45  systemctl start ssh
-   46  journalctl -xeu ssh
-   47  ssh-keygen 
-   48  systemctl start ssh
-   49  journalctl -xeu ssh
-   50  ssh-keygen 
-   51  systemctl start ssh
-   52  journalctl -xeu ssh
-   53  vim /usr/lib/systemd/system/ssh.service 
-   54  sshd -D
-   55  /usr/sbin/sshd -D
-   56  /usr/sbin/sshd
-   57  /usr/sbin/sshd 
-   58  ssh-keygen -A
-   59  /usr/sbin/sshd 
-   60  ps aux | grep ssh
-   61  /usr/sbin/sshd -D
-   62  ls /run/ssh
-   63  mkdir -p /run/ssh
-   64  /usr/sbin/sshd -D
-   65  rm /run/ssh -rf
-   66  mkdir -p /run/sshd
-   67  /usr/sbin/sshd -D
-   68  ls
-   69  vim ~/.ssh/id_rsa
-   70  vim ~/.ssh/id_rsa.pub 
-   71  ls
-   72  systemctl restart sshd
-   73  systemctl restart ssh
-   74  ps aux | grep ssh
-   75  reboot 
-   76  ps aux | grep ssh
-   77  ls
-   78  vim ~/.ssh/authorized_keys 
-   79  ls
-   80  reboot 
-   81  poweroff 
-   82  vim /etc/ssh/sshd_config
-   83  vim /etc/netplan/jx-install-confing.yaml 
-   84  hostnamectl set-hostname jx-nginx-12
-   85  reboot 
-   86  ls
-   87  ip a
-   88  ls
-   89  vim /etc/netplan/jx-install-confing.yaml 
-   90  hostnamectl set-hostname k8s-node-11
-   91  ip a
-   92  netplan apply 
-   93  ip a
-   94  ping 10.16.255.254
-   95  ping qq.com
-   96  ping 8.8.8.8
-   97  ping qq.com
-   98  vim /etc/resolv.conf 
-   99  vim /etc/netplan/jx-install-confing.yaml 
-  100  netplan apply 
-  101  vim /etc/resolv.conf 
-  102  ping 8.8.8.8
-  103  ping 175.102.15.166
-  104  ip r
-  105  ping 10.16.255.254
-  106  ip a
-  107  ip r
-  108  vim /etc/resolv.conf 
-  109  ls
-  110  vim /etc/resolv.conf 
-  111  systemctl status systemd-resolved.service 
-  112  systemctl stop systemd-resolved.service 
-  113  systemctl disable systemd-resolved.service 
-  114  vim /etc/resolv.conf 
-  115  ls
-  116  reboot 
-  117  vim ~/.ssh/authorized_keys 
-  118  vim ~/.ssh/id_rsa
-  119  cat /etc/resolv.conf 
-  120  systemctl enable systemd-resolved.service --now
-  121  cat /etc/resolv.conf 
-  122  ping qq.com
-  123  ping 192.168.1.1
-  124  ping 10.16.255.
-  125  ping 192.168.1.11
-  126  ping 192.168.1.1
-  127  poweroff 
-  128  ip a
-  129  ps aux | grep ssh
-  130  ls
-  131  vim /etc/netplan/jx-install-confing.yaml 
-  132  hostnamectl set-hostname k8s-node-01
-  133  reboot 
-  134  vim ~/.ssh/authorized_keys 
-  135  ip a
-  136  ping qq.com
-  137  vim ~/.ssh/authorized_keys 
-  138  wget http://stu.jxit.net.cn:88/jxfiles/frp/frpc.sh
-  139  l
-  140  ls
-  141  bash frpc.sh $(hostname) 22 8601
-  142  reboot 
-  143  ps aux | grep frp
-  144  cat /etc/rc.local 
-  145  ip a
-  146  ping qq.com
-  147  vim /lib/systemd/system/rc-local.service
-  148  systemctl daemon-reload 
-  149  vim /etc/rc.local 
-  150  ls -al /etc/rc.local 
-  151  chmod +x /etc/rc.local 
-  152  ls -al /etc/rc.local 
-  153  reboot 
-  154  ps aux | grep frp
-  155  reboot 
-  156  poweroff 
-  157  ip a
-  158  crontab -l
-  159  crontab -e
-  160  ls
-  161  ps aux | grep frp
-  162  cat /etc/rc.local 
-  163  vim /etc/rc.local 
-  164  ls
-  165  rm frpc.sh -rf
-  166  wget http://stu.jxit.net.cn:88/jxfiles/frp/frpc.sh
-  167  bash frpc.sh $(hostname) 22 8601
-  168  crontab -l
-  169  ps aux | grep frp
-  170  crontab -l
-  171  ps aux | grep frp
-  172  tail -f /var/log/syslog 
-  173  crontab -l
-  174  tail -f /var/log/syslog 
-  175  ps aux | grep frp
-  176  ls
-  177  rm * -rf
-  178  poweroff 
-  179  ping qq.com
-  180  hostnamectl set-hostname k8s-master-01
-  181  reboot 
-  182  ip a
-  183  ping qq.com
-  184  poweroff 
-  185  export INSTALL_K3S_VERSION=v1.28.8+k3s1
-  186  export https_proxy=10.64.1.113:16818
-  187  export http_proxy=10.64.1.113:16818
-  188  curl -sfL https://get.k3s.io | sh -s - --flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode 644 --write-kubeconfig ~/.kube/config
-  189  wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.10/dist/images/install.sh
-  190  ls
-  191  vim install.sh 
-  192  bash -x install.sh 
-  193  mv /usr/local/bin/kubectl-ko /opt/
-  194  ls
-  195  kubectl get pod
-  196  source /usr/share/bash-completion/bash_completion
-  197  source <(kubectl completion bash)
-  198  vim ~/.bashrc 
-  199  ls
-  200  kubectl get pod -A
-  201  cat /var/lib/rancher/k3s/server/node-token
-  202  ls
-  203  kubectl get pod
-  204  kubectl get pod -A
-  205  kubectl -n kube-system delete daemonsets.apps kube-ovn-pinger 
-  206  kubectl get pod -A
-  207  ls
-  208  git
-  209  apt -y install net-tools
-  210  kubectl get pod -A -w
-  211  apt -y update
-  212  apt -y install net-tools
-  213  apt -y install tree
-  214  apt -y install unzip
-  215  ls
-  216  export http_proxy=10.64.1.113:16818
-  217  export https_proxy=10.64.1.113:16818
-  218  git clone https://github.com/laoyang103/qdcloud
-  219  ls
-  220  cd qdcloud/
-  221  ls
-  222  cd doc/
-  223  ls
-  224  vim ~/.ssh/id_rsa
-  225  vim ~/.ssh/id_rsa.pub 
-  226  cd qdcloud/
-  227  ls
-  228  git status .
-  229  cd doc/
-  230  ls
-  231  history > cmd.txt 
+export http_proxy=10.64.1.113:16818
+export https_proxy=10.64.1.113:16818
+
+export INSTALL_K3S_VERSION=v1.28.8+k3s1
+export INSTALL_K3S_MIRROR=cn
+wget https://rancher-mirror.rancher.cn/k3s/k3s-install.sh |  sh -s k3s-install.sh --flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode 644 --write-kubeconfig ~/.kube/config
+sh k3s-install.sh --flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode 644 --write-kubeconfig ~/.kube/config
+wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.12/dist/images/install.sh
+vim install.sh 
+bash -x install.sh 
+git clone https://github.com/laoyang103/qdcloud
+cd qdcloud/src/main/webapp/WEB-INF/cgi/yml/public/
+kubectl apply -f multus-daemonset-thick.yml 
+mv /usr/local/bin/kubectl-ko /opt/
+echo "source /usr/share/bash-completion/bash_completion" >> ~/.bashrc
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+wget http://stu.jxit.net.cn:88/k8s/kube-ovn/multus-cni_4.0.2_linux_amd64.tar.gz 
+tar -zxf multus-cni_4.0.2_linux_amd64.tar.gz 
+cd multus-cni_4.0.2_linux_amd64/
+mv multus* /opt/cni/bin/
+cat /var/lib/rancher/k3s/server/node-token
+kubectl -n kube-system delete daemonsets.apps kube-ovn-pinger 
+cd qdcloud/src/main/webapp/WEB-INF/cgi/yml/
+kubectl apply -f external-network.yml 
+kubectl apply -f enable-vpc-nat-gw.yml 
+apt -y install mariadb-client mariadb-client tree net-tools

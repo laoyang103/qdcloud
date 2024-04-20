@@ -7,8 +7,15 @@ metadata:
   namespace: ns-__user_name
   name: __vmname
 spec:
+  nodeSelector:
+    kubernetes.io/hostname: __select_node
+  dnsPolicy: "None"
+  dnsConfig:
+    nameservers:
+      - 114.114.114.114
+      - 8.8.8.8
   containers:
     - name: __vmname
-      image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7
+      image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7@sha256:9e6366f5568060050a286cc0410a70fdbf0044e3e58501bda8ea37dcb9ddf225
       securityContext:
         privileged: true
