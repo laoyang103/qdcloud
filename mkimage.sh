@@ -4,7 +4,7 @@ imgrepo="registry.jxit.net.cn:5000"
 confpath="src/main/resources/tangyuan-configuration.xml"
 
 if [ -z "$BUILD_NUMBER" ]; then
-  BUILD_NUMBER=$(git reflog | wc -l)
+  BUILD_NUMBER=$(git log --oneline | wc -l)
 fi
 
 git checkout $confpath
