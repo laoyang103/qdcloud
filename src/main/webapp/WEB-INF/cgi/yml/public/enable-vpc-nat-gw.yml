@@ -4,7 +4,7 @@ metadata:
   name: ovn-vpc-nat-config
   namespace: kube-system
 data:
-  image: 'docker.io/kubeovn/vpc-nat-gateway:v1.10.10' 
+  image: 'registry.jxit.net.cn:5000/qdcloud/vpc-nat-gateway:openssh@sha256:5cbe28d1ebe71ca32cef4b9be6fef9aeed90545719cd03bd14e4d96caa89530e'
 ---
 kind: ConfigMap
 apiVersion: v1

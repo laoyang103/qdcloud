@@ -20,7 +20,7 @@ kubectl apply -f $hpvdiskdir/$user_name/nat.yml
 echo "### get gateway pod node ..."
 gwnode=""
 while true; do
-  gwnode=$($ksys get pod/$gwprefix-$user_name-0 -o wide | grep -v NODE | awk '{print $7}')
+  gwnode=$($ksys get pod/$gwprefix-$user_name-0 -o yaml | grep nodeName | awk '{print $2}')
   test -n "$gwnode" && break
 done
 
