@@ -41,7 +41,7 @@ spec:
   - args:
     - cloud-init
     - aW5zdGFuY2UtaWQ6IDVkZTlkNTNlLTAyMTYtNGI1MC04NmVhLWY2M2QzZmFiNzMyYwpsb2NhbC1ob3N0bmFtZTogdWJ1bnR1LWNvbnRhaW5lci1yb290ZnM=
-    - I2Nsb3VkLWNvbmZpZwpwYXNzd29yZDogcGFzc3dvcmQKY2hwYXNzd2Q6IHsgZXhwaXJlOiBGYWxzZSB9CnNzaF9wd2F1dGg6IFRydWU=
+    - I2Nsb3VkLWNvbmZpZwpzc2hfcHdhdXRoOiBUcnVlCmNocGFzc3dkOgogIGxpc3Q6IHwKICAgICByb290OjEyMwogICAgIHVidW50dToxMjMKICBleHBpcmU6IEZhbHNlCmJvb3RjbWQ6CiAtIGVjaG8gUGVybWl0Um9vdExvZ2luIHllcyA+PiAvZXRjL3NzaC9zc2hkX2NvbmZpZw==
     - ""
     - /mnt/cloud-init/cloud-init.iso
     command:
