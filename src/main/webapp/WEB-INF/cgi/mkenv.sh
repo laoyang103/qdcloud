@@ -9,6 +9,7 @@ vmrip=$(num2ip $(echo $vmrbase + $user_id*4 - 2 | bc))
 rm -rf $hpvdiskdir/$user_name
 mkdir -p $hpvdiskdir/$user_name/pod
 cp -r yml/template/*.yml $hpvdiskdir/$user_name/
+
 sed -i "s/__user_vmr/$vmrip/g" $hpvdiskdir/$user_name/*.yml
 sed -i "s/__user_name/$user_name/g" $hpvdiskdir/$user_name/*.yml
 
@@ -27,12 +28,18 @@ done
 $ksys get pod/vpc-nat-gw-gateway-$user_name-0 -o wide
 
 echo "### create yml(not create pod) on $gwnode"
-for vm in ${vmList[@]}; do
-  vmname=$(echo $vm | sed "s/jx-//g" | sed "s/^/$user_name-/g")
-  ipaddr="10.10.10.$(echo $vm | awk -F "-" '{print $NF}')"
-  cp $hpvdiskdir/$user_name/pod.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+for vminfo in ${vmList[@]}; do
+  vmname=$(echo $vminfo | awk -F "@" '{print $1}' | sed "s/jx-//g" | sed "s/^/$user_name-/g")
+  vmaddr=$(echo $vminfo | awk -F "@" '{print $2}')
+  vmtype=$(echo $vminfo | awk -F "@" '{print $3}')
+
+  # 根据类型创建虚拟机或者容器
+  cp $hpvdiskdir/$user_name/pod-$vmtype.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+
   sed -i "s/__vmname/$vmname/g" $hpvdiskdir/$user_name/pod/$vmname.yml
-  sed -i "s/__fix_ipaddress/$ipaddr/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+  sed -i "s/__fix_ipaddress/$vmaddr/g" $hpvdiskdir/$user_name/pod/$vmname.yml
   sed -i "s/__select_node/$gwnode/g" $hpvdiskdir/$user_name/pod/$vmname.yml
   echo "create $hpvdiskdir/$user_name/pod/$vmname.yml"
 done
+
+rm $hpvdiskdir/$user_name/pod-*.yml

@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: ns-jx00000003
-  name: jx00000003-nginx-11
+  namespace: ns-__user_name
+  name: __vmname
   annotations:
-    ovn.kubernetes.io/logical_switch: subnet-jx00000003
-    ovn.kubernetes.io/ip_address: 10.10.10.11
+    ovn.kubernetes.io/logical_switch: subnet-__user_name
+    ovn.kubernetes.io/ip_address: __fix_ipaddress
 spec:
   nodeSelector:
-    kubernetes.io/hostname: k8s-node-03
+    kubernetes.io/hostname: __select_node
   dnsPolicy: "None"
   dnsConfig:
     nameservers:

@@ -29,8 +29,8 @@ state=$(statevm $gwprefix-$user_name-0 $user_name)
 vmrip=$(num2ip $(echo $vmrbase + $user_id*4 - 2 | bc))
 echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"$vmrip\"/><S K=\"state\" V=\"$state\"/></X>"
 
-for vm in ${vmList[@]}; do
-  vm=$(echo $vm | sed "s/jx-//g" | sed "s/^/$user_name-/g")
+for vminfo in ${vmList[@]}; do
+  vm=$(echo $vminfo | awk -F "@" '{print $1}' | sed "s/jx-//g" | sed "s/^/$user_name-/g")
   state=$(statevm $vm $user_name)
   ipaddr=$(echo $vm | awk -F "-" '{print $NF}')
   echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"ipaddr\" V=\"10.10.10.$ipaddr\"/><S K=\"state\" V=\"$state\"/></X>"

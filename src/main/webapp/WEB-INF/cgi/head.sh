@@ -76,8 +76,8 @@ vpnbase=169869312
 
 # 学生路由器后面的虚拟机列表jx-nginx-11、jx-nginx-12.....
 # 学生路由器后面的虚拟机的IP列表10.10.10.11、10.10.10.12.....
-vminfo=$($mysqllogin "select name,ipaddr from lab_vm" | grep -v name | sed "s/\t/@/g")
-vmList=$(echo $vminfo | sed "s/ /\n/g" | awk -F "@" '{print $1}' | xargs)
+vminfo=$($mysqllogin "select name,ipaddr,type from lab_vm" | grep -v name | sed "s/\t/@/g")
+vmList=$(echo $vminfo | sed "s/ /\n/g" | xargs)
 vmipList=$(echo $vminfo | sed "s/ /\n/g" | awk -F "@" '{print $2}' | xargs)
 
 # 将整数IP地址转为点分十进制
@@ -110,6 +110,7 @@ function addrule() {
 function startvm() {
   vmname=$1
   user_name=$2
+  kubectl apply -f $hpvdiskdir/$user_name/gateway.yml
   kubectl apply -f $hpvdiskdir/$user_name/pod/$vmname.yml
 }
 
