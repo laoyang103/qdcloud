@@ -99,3 +99,25 @@ spec:
     name: ubuntu
   - emptyDir: {}
     name: cloud-init
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-__fix_ipaddress_nf22
+spec:
+  eip: eip-__user_name
+  externalPort: "__fix_ipaddress_nf22"
+  protocol: tcp
+  internalIp: __fix_ipaddress
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-__fix_ipaddress_nf80
+spec:
+  eip: eip-__user_name
+  externalPort: "__fix_ipaddress_nf80"
+  protocol: tcp
+  internalIp: __fix_ipaddress
+  internalPort: "80"

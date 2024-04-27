@@ -32,12 +32,14 @@ for vminfo in ${vmList[@]}; do
   vmname=$(echo $vminfo | awk -F "@" '{print $1}' | sed "s/jx-//g" | sed "s/^/$user_name-/g")
   vmaddr=$(echo $vminfo | awk -F "@" '{print $2}')
   vmtype=$(echo $vminfo | awk -F "@" '{print $3}')
+  vmaddrnf=$(echo $vmaddr | awk -F "." '{print $4}')
 
   # 根据类型创建虚拟机或者容器
   cp $hpvdiskdir/$user_name/pod-$vmtype.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
 
   sed -i "s/__vmname/$vmname/g" $hpvdiskdir/$user_name/pod/$vmname.yml
-  sed -i "s/__fix_ipaddress/$vmaddr/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+  sed -i "s/__fix_ipaddress_all/$vmaddr/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+  sed -i "s/__fix_ipaddress_nf/$vmaddrnf/g" $hpvdiskdir/$user_name/pod/$vmname.yml
   sed -i "s/__select_node/$gwnode/g" $hpvdiskdir/$user_name/pod/$vmname.yml
   echo "create $hpvdiskdir/$user_name/pod/$vmname.yml"
 done

@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   annotations:
     ovn.kubernetes.io/logical_switch: subnet-__user_name
-    ovn.kubernetes.io/ip_address: __fix_ipaddress
+    ovn.kubernetes.io/ip_address: __fix_ipaddress_all
   namespace: ns-__user_name
   name: __vmname
 spec:
@@ -19,3 +19,25 @@ spec:
       image: registry.jxit.net.cn:5000/qdcloud/jxcentos:7@sha256:9e6366f5568060050a286cc0410a70fdbf0044e3e58501bda8ea37dcb9ddf225
       securityContext:
         privileged: true
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-__fix_ipaddress_nf22
+spec:
+  eip: eip-__user_name
+  externalPort: "__fix_ipaddress_nf22"
+  protocol: tcp
+  internalIp: __fix_ipaddress_all
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-__user_name-__fix_ipaddress_nf80
+spec:
+  eip: eip-__user_name
+  externalPort: "__fix_ipaddress_nf80"
+  protocol: tcp
+  internalIp: __fix_ipaddress_all
+  internalPort: "80"
