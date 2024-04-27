@@ -106,11 +106,22 @@ function addrule() {
   done
 }
 
-# 寻找一台最空闲的计算节点开启虚拟机，传递学生ID、学生用户名
+# 传递学生ID、学生用户名
 function startvm() {
+  gwnode=""
   vmname=$1
   user_name=$2
+
+  # 创建子网和网关（如果已经存在不会有影响）
+  kubectl apply -f $hpvdiskdir/$user_name/vpc-subnet.yml
   kubectl apply -f $hpvdiskdir/$user_name/gateway.yml
+
+  # 等待网关容器就绪，创建SNAT和目标pod
+  while [ -z "$($ksys get pod/$gwprefix-$user_name-0 | grep Running | grep -v grep)" ]; do
+    echo "wait for pod/$gwprefix-$user_name-0 Running ..."
+    sleep 5
+  done
+  kubectl apply -f $hpvdiskdir/$user_name/nat.yml
   kubectl apply -f $hpvdiskdir/$user_name/pod/$vmname.yml
 }
 
