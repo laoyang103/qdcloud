@@ -7,6 +7,6 @@ spec:
   subnet: subnet-__user_name
   lanIp: 10.10.10.1
   selector:
-    - kubernetes.io/os: linux
+    - "kubernetes.io/os: linux"
   externalSubnets:
     - ovn-vpc-external-network
