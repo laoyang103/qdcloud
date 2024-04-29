@@ -32,7 +32,7 @@ iptables -t nat -A POSTROUTING -s 10.16.0.0/16 -j MASQUERADE
 见视频：http://dl.jxit.net.cn/mp4/shizhan/qdcloud/20231102_qdcloud_deploy.mp4
 
 ## 日常维护命令
-### 脚本目录
+### 获取所有学生Pod状态
 ```shell
 [root@master jx00000003]# kubectl get pod -A | gre jx
 kube-system     vpc-nat-gw-gateway-jx00000001-0           1/1     Running   0          47h
