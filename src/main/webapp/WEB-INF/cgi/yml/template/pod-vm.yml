@@ -29,7 +29,7 @@ spec:
   - args:
     - /mnt/ubuntu/rootfs.raw
     - "42949672960"
-    image: smartxworks/virtink-container-rootfs-ubuntu
+    image: registry.jxit.net.cn:5000/qdcloud/init-rootfs-ubuntu:noover
     imagePullPolicy: Always
     name: init-volume-ubuntu
     resources: {}
@@ -95,8 +95,9 @@ spec:
     name: virtink
   - emptyDir: {}
     name: virtink-kernel
-  - emptyDir: {}
-    name: ubuntu
+  - name: ubuntu
+    persistentVolumeClaim:
+      claimName: __vmname-pvc
   - emptyDir: {}
     name: cloud-init
 ---
