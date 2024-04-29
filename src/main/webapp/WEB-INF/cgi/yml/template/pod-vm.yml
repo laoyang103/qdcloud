@@ -29,7 +29,7 @@ spec:
   - args:
     - /mnt/ubuntu/rootfs.raw
     - "42949672960"
-    image: registry.jxit.net.cn:5000/qdcloud/init-rootfs-ubuntu:noover
+    image: registry.jxit.net.cn:5000/qdcloud/init-rootfs-ubuntu:no-over
     imagePullPolicy: Always
     name: init-volume-ubuntu
     resources: {}
@@ -41,8 +41,8 @@ spec:
   - args:
     - cloud-init
     - aW5zdGFuY2UtaWQ6IDVkZTlkNTNlLTAyMTYtNGI1MC04NmVhLWY2M2QzZmFiNzMyYwpsb2NhbC1ob3N0bmFtZTogdWJ1bnR1LWNvbnRhaW5lci1yb290ZnM=
-    - I2Nsb3VkLWNvbmZpZwpzc2hfcHdhdXRoOiBUcnVlCmNocGFzc3dkOgogIGxpc3Q6IHwKICAgICByb290OjEyMwogICAgIHVidW50dToxMjMKICBleHBpcmU6IEZhbHNlCmJvb3RjbWQ6CiAtIGVjaG8gUGVybWl0Um9vdExvZ2luIHllcyA+PiAvZXRjL3NzaC9zc2hkX2NvbmZpZw==
-    - ""
+    - I2Nsb3VkLWNvbmZpZwpzc2hfcHdhdXRoOiBUcnVlCmNocGFzc3dkOgogIGxpc3Q6IHwKICAgICByb290OjEyMwogICAgIHVidW50dToxMjMKICBleHBpcmU6IEZhbHNlCmJvb3RjbWQ6CiAgLSBlY2hvIFBlcm1pdFJvb3RMb2dpbiB5ZXMgPj4gL2V0Yy9zc2gvc3NoZF9jb25maWc=
+    - dmVyc2lvbjogMQpjb25maWc6CiAgLSB0eXBlOiBwaHlzaWNhbAogICAgbmFtZTogZW5zNAogICAgc3VibmV0czoKICAgICAgLSB0eXBlOiBzdGF0aWMKICAgICAgICBpcHY0OiB0cnVlCiAgICAgICAgYWRkcmVzczogMTAuMTAuMTAuODEKICAgICAgICBuZXRtYXNrOiAyNTUuMjU1LjI1NS4wCiAgICAgICAgZ2F0ZXdheTogMTAuMTAuMTAuMQogICAgICAgIGNvbnRyb2w6IGF1dG8KICAtIHR5cGU6IG5hbWVzZXJ2ZXIKICAgIGFkZHJlc3M6IDEwLjE2LjI1NS4yNTQ=
     - /mnt/cloud-init/cloud-init.iso
     command:
     - virt-init-volume
