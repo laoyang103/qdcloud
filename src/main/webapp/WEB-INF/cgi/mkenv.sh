@@ -48,7 +48,13 @@ for vminfo in ${vmList[@]}; do
   vmaddrnf=$(echo $vmaddr | awk -F "." '{print $4}')
 
   # 根据类型创建虚拟机或者容器
-  cp $hpvdiskdir/$user_name/pod-$vmtype.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+  if [ "$vmtype" == "vm" ]; then
+    cp $hpvdiskdir/$user_name/pod-vm.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+    # 如果是虚拟机则创建PVC
+    sed -i "s/__vmname/$vmname/g" $hpvdiskdir/$user_name/pvc.yml
+  else
+    cp $hpvdiskdir/$user_name/pod-container.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+  fi
 
   sed -i "s/__vmname/$vmname/g" $hpvdiskdir/$user_name/pod/$vmname.yml
   sed -i "s/__fix_ipaddress_all/$vmaddr/g" $hpvdiskdir/$user_name/pod/$vmname.yml
