@@ -106,24 +106,86 @@ function addrule() {
   done
 }
 
-# 传递学生ID、学生用户名
-function startvm() {
-  gwnode=""
-  vmname=$1
-  user_name=$2
-
-  # 创建子网和网关（如果已经存在不会有影响）
+# 传递学生ID、创建学生环境
+function mkenv() {
+  user_name=$1
+  user_id=$($mysqllogin "select user_id from lab_user where user_name='$user_name'" | grep -v user_id)
+  vmrip=$(num2ip $(echo $vmrbase + $user_id*4 - 2 | bc))
+  
+  # 删除用户环境
+  rm -rf $hpvdiskdir/$user_name
+  mkdir -p $hpvdiskdir/$user_name/pod
+  cp -r yml/template/*.yml $hpvdiskdir/$user_name/
+  
+  # 替换路由器IP、用户名
+  sed -i "s/__user_vmr/$vmrip/g" $hpvdiskdir/$user_name/*.yml
+  sed -i "s/__user_name/$user_name/g" $hpvdiskdir/$user_name/*.yml
+  
+  # 尝试创建VPC、子网、网关
+  echo "### create gateway pod ..."
   kubectl apply -f $hpvdiskdir/$user_name/vpc-subnet.yml
   kubectl apply -f $hpvdiskdir/$user_name/gateway.yml
+  kubectl apply -f $hpvdiskdir/$user_name/nat.yml
+  
+  # 等待网关创建，获取网关所在node（因为实验pod要和网关pod在相同节点）
+  echo "### get gateway pod node ..."
+  gwnode=""
+  while true; do
+    gwnode=$($ksys get pod/$gwprefix-$user_name-0 -o yaml | grep nodeName | awk '{print $2}')
+    test -n "$gwnode" && break
+  done
+  
+  # 修改网关yml文件中节点选择为上面获取节点，保证不再变动
+  echo "### gateway $gwprefix-$user_name-0 node is $gwnode ..."
+  sed -i "s@kubernetes.io/os: linux@kubernetes.io/hostname: $gwnode@g" $hpvdiskdir/$user_name/gateway.yml
+  
+  # 创建每个实验Pod的yml并绑定到网关所在的node
+  echo "### create yml(not create pod) on $gwnode"
+  for vminfo in ${vmList[@]}; do
+    vmname=$(echo $vminfo | awk -F "@" '{print $1}' | sed "s/jx-//g" | sed "s/^/$user_name-/g")
+    vmaddr=$(echo $vminfo | awk -F "@" '{print $2}')
+    vmtype=$(echo $vminfo | awk -F "@" '{print $3}')
+    vmaddrnf=$(echo $vmaddr | awk -F "." '{print $4}')
+  
+    # 根据类型创建虚拟机或者容器
+    if [ "$vmtype" == "vm" ]; then
+      # 如果是虚拟机则创建PVC
+      sed -i "s/__vmname/$vmname/g" $hpvdiskdir/$user_name/pvc.yml
+      kubectl apply -f $hpvdiskdir/$user_name/pvc.yml
+      cp $hpvdiskdir/$user_name/pod-vm.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+    else
+      cp $hpvdiskdir/$user_name/pod-container.yml $hpvdiskdir/$user_name/pod/$vmname.yml 
+    fi
+  
+    sed -i "s/__vmname/$vmname/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+    sed -i "s/__fix_ipaddress_all/$vmaddr/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+    sed -i "s/__fix_ipaddress_nf/$vmaddrnf/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+    sed -i "s/__select_node/$gwnode/g" $hpvdiskdir/$user_name/pod/$vmname.yml
+    echo "create $hpvdiskdir/$user_name/pod/$vmname.yml"
+  done
+  
+  # 删除临时文件
+  rm $hpvdiskdir/$user_name/pod-*.yml
+}
 
-  # 等待网关容器就绪，创建SNAT和目标pod
+# 传递学生ID、学生用户名
+function startvm() {
+  vm=$1
+  user_name=$2
+
+  # 如果没有命名空间，则创建环境（VPC、子网、网关...）
+  if [ -z "$(kubectl get ns ns-$user_name)" ]; then
+    mkenv $user_name
+  fi
+
+  # 等待网关容器就绪
   while [ -z "$($ksys get pod/$gwprefix-$user_name-0 | grep Running | grep -v grep)" ]; do
     echo "wait for pod/$gwprefix-$user_name-0 Running ..."
     sleep 5
   done
-  kubectl apply -f $hpvdiskdir/$user_name/nat.yml
-  kubectl apply -f $hpvdiskdir/$user_name/pvc.yml
-  kubectl apply -f $hpvdiskdir/$user_name/pod/$vmname.yml
+
+  # 创建目标Pod
+  kubectl apply -f $hpvdiskdir/$user_name/pod/$vm.yml
 }
 
 # 查询某个虚拟机的状态，传递虚拟机名字，用户名
