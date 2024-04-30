@@ -1,7 +1,7 @@
 # 起点教学云
 
 ## 基于kube-ovn VPC多租户隔离，支持虚拟机和容器，使用Kubernetes统一管理
-![93aaa1215855b006c2919345da4dbb5](https://github.com/laoyang103/qdcloud/assets/6375156/bced49e4-486b-4830-b2c4-fc4dc987e99a)
+![93aaa1215855b006c2919345da4dbb5](http://stu.jxit.net.cn:88/qdcloud/kubeovn.png)
 
 ## 效果图
 1. 每个学生固定分配18台容器、1台虚拟机、1台路由器，可以自由开启、关闭、重置。
