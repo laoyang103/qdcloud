@@ -1,6 +1,6 @@
 # 起点教学云
 
-## 基于kube-ovn的VPC多租户隔离，支持虚拟机和容器，使用Kubernetes统一管理
+## 基于kube-ovn VPC多租户隔离，支持虚拟机和容器，使用Kubernetes统一管理
 ![93aaa1215855b006c2919345da4dbb5](https://github.com/laoyang103/qdcloud/assets/6375156/bced49e4-486b-4830-b2c4-fc4dc987e99a)
 
 ## 效果图
