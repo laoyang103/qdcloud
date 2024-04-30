@@ -29,7 +29,7 @@ iptables -t nat -A POSTROUTING -s 10.16.0.0/16 -j MASQUERADE
 ```
 ## 部署起点云
 
-见视频：[http://dl.jxit.net.cn/mp4/shizhan/qdcloud/20231102_qdcloud_deploy.mp4](http://stu.jxit.net.cn:88/mp4/shizhan/qdcloud/20240430_qdcloud_k8s_deploy.mp4)
+见视频：http://stu.jxit.net.cn:88/mp4/shizhan/qdcloud/20240430_qdcloud_k8s_deploy.mp4
 
 ## 日常维护命令
 ### 获取所有学生Pod状态
