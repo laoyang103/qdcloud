@@ -21,8 +21,8 @@ currfile="/tmp/iptables-curr.txt"
 # 每个客户端的VPN配置目录
 ccddir="/etc/openvpn/ccd/"
 
-# 计算节点虚拟磁盘目录（NFS映射到管理节点的/data/vdisk）
-hpvdiskdir="/var/lib/libvirt/images/"
+# 学生资源清单配置目录
+hpvdiskdir="/var/lib/qdcloud/"
 
 # 管理中心数据库的登陆信息
 mysqllogin="mysql --default-character-set=utf8 -h127.0.0.1 -uroot -p123456 jxcms -e "
