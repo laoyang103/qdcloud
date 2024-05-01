@@ -65,9 +65,10 @@ String subpage = "studentvmlist";
                             	<table class="table table-bordered table-striped center">
                                     <thead>
                                       <tr>
-                                        <th width="23%">虚拟机</th>
-                                        <th width="25%">IP地址</th>
-                                        <th width="23%">状态</th>
+                                        <th width="25%">名称</th>
+                                        <th width="15%">类型</th>
+                                        <th width="20%">IP地址</th>
+                                        <th width="10%">状态</th>
 					<th width="30%">操作</th>
                                       </tr>
                                     </thead>
@@ -125,11 +126,13 @@ String subpage = "studentvmlist";
                         var _dataList = xco.getXCOListValue("data");
                         $("#datatable").html("");
 			for (var i = 0; i < _dataList.length; i++) {
+                                var type   = _dataList[i].getStringValue("type")
                                 var state  = _dataList[i].getStringValue("state")
 				var vmname = _dataList[i].getStringValue("vmname")
 				var ipaddr = _dataList[i].getStringValue("ipaddr")
 				$("#datatable").append('<tr>'
 						+ '<td>' + vmname + '</td>'
+						+ '<td>' + type   + '</td>'
 						+ '<td>' + ipaddr + '</td>'
 						+ '<td>' + state2str(state) + '</td>'
 						+ '<td>' + ops2link(vmname, state) + '</td>'
