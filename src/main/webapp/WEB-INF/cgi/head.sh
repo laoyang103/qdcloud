@@ -211,5 +211,6 @@ function destroyvm() {
 function resetvm() {
   vmname=$1
   user_name=$2
-  kubectl -n ns-$user_name get pod/$vmname -o yaml | kubectl replace --force -f -
+  kubectl -n ns-$user_name delete pod/$vmname
+  kubectl -n ns-$user_name delete pvc $vmname-pvc
 }

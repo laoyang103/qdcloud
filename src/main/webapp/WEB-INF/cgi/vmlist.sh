@@ -27,13 +27,18 @@ echo -n '<X><L K="total" V="18"/><XL K="data">'
 # 学生路由器
 state=$(statevm $gwprefix-$user_name-0 $user_name)
 vmrip=$(num2ip $(echo $vmrbase + $user_id*4 - 2 | bc))
-echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"$vmrip\"/><S K=\"state\" V=\"$state\"/></X>"
+echo -n "<X><S K=\"vmname\" V=\"$user_name\"/><S K=\"ipaddr\" V=\"$vmrip\"/><S K=\"state\" V=\"$state\"/><S K=\"type\" V=\"容器\"/></X>"
 
+runningPods=$(kubectl -n ns-$user_name get pod | grep Running | grep -v grep)
 for vminfo in ${vmList[@]}; do
   vm=$(echo $vminfo | awk -F "@" '{print $1}' | sed "s/jx-//g" | sed "s/^/$user_name-/g")
-  state=$(statevm $vm $user_name)
   ipaddr=$(echo $vm | awk -F "-" '{print $NF}')
-  echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"ipaddr\" V=\"10.10.10.$ipaddr\"/><S K=\"state\" V=\"$state\"/></X>"
+  state=$(echo $runningPods | grep $vm > /dev/null && echo running || echo shut)
+  if [ "$ipaddr" == "81" ]; then
+    echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"ipaddr\" V=\"10.10.10.$ipaddr\"/><S K=\"state\" V=\"$state\"/><S K=\"type\" V=\"虚拟机\"/></X>"
+  else
+    echo -n "<X><S K=\"vmname\" V=\"$vm\"/><S K=\"ipaddr\" V=\"10.10.10.$ipaddr\"/><S K=\"state\" V=\"$state\"/><S K=\"type\" V=\"容器\"/></X>"
+  fi
 done
 
 echo -n '</XL></X>'
