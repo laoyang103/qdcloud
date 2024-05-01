@@ -174,7 +174,7 @@ function startvm() {
   user_name=$2
 
   # 如果没有命名空间，则创建环境（VPC、子网、网关...）
-  if [ -z "$(kubectl get ns ns-$user_name)" ]; then
+  if [ ! -e "$hpvdiskdir/$user_name" ]; then
     mkenv $user_name
   fi
 
