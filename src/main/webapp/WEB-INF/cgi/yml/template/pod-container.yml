@@ -12,7 +12,7 @@ spec:
   dnsPolicy: "None"
   dnsConfig:
     nameservers:
-      - 114.114.114.114
+      - 10.16.255.254
       - 8.8.8.8
   containers:
     - name: __vmname
