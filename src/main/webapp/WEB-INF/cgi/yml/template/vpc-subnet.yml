@@ -12,7 +12,7 @@ spec:
   - ns-__user_name
   staticRoutes:
   - cidr: 0.0.0.0/0
-    nextHopIP: 10.10.10.1
+    nextHopIP: 10.10.10.254
     policy: policyDst
 ---
 apiVersion: kubeovn.io/v1
@@ -21,6 +21,7 @@ metadata:
   name: subnet-__user_name
 spec:
   vpc: vpc-__user_name
+  gateway: 10.10.10.254
   cidrBlock: 10.10.10.0/24
   protocol: IPv4
   namespaces:

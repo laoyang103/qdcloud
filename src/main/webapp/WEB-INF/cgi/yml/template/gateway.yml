@@ -5,7 +5,7 @@ metadata:
 spec:
   vpc: vpc-__user_name
   subnet: subnet-__user_name
-  lanIp: 10.10.10.1
+  lanIp: 10.10.10.254
   selector:
     - "kubernetes.io/os: linux"
   externalSubnets:
