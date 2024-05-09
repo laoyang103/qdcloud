@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: ns-jx00000003
+  name: jx00000003-ops-81-pvc
+spec:
+  storageClassName:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi

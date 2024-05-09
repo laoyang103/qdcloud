@@ -1,0 +1,160 @@
+apiVersion: virt.virtink.smartx.com/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: jx00000003-ops-81
+  namespace: ns-jx00000003
+  annotations:
+    ovn.kubernetes.io/logical_switch: subnet-jx00000003
+    ovn.kubernetes.io/ip_address: 10.10.10.81
+spec:
+  instance:
+    memory:
+      size: 1Gi
+    kernel:
+      image: smartxworks/virtink-kernel-5.15.12
+      cmdline: "console=ttyS0 root=/dev/vda rw"
+    disks:
+      - name: ubuntu
+      - name: cloud-init
+    interfaces:
+      - name: pod
+  volumes:
+    - name: ubuntu
+      containerRootfs:
+        image: smartxworks/virtink-container-rootfs-ubuntu
+        size: 4Gi
+    - name: cloud-init
+      cloudInit:
+        userData: |-
+          #cloud-config
+          password: 123
+          chpasswd: { expire: False }
+          ssh_pwauth: True
+  networks:
+    - name: pod
+      pod: {}
+---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   namespace: ns-jx00000003
+#   name: jx00000003-ops-81
+#   annotations:
+#     ovn.kubernetes.io/logical_switch: subnet-jx00000003
+#     ovn.kubernetes.io/ip_address: 10.10.10.81
+# spec:
+#   nodeSelector:
+#     kubernetes.io/hostname: ubuntu-22-04
+#   dnsPolicy: "None"
+#   dnsConfig:
+#     nameservers:
+#       - 10.16.255.254
+#       - 114.114.114.114
+#   initContainers:
+#   - args:
+#     - /mnt/virtink-kernel/vmlinux
+#     image: smartxworks/virtink-kernel-5.15.12
+#     imagePullPolicy: Always
+#     name: init-kernel
+#     resources: {}
+#     terminationMessagePath: /dev/termination-log
+#     terminationMessagePolicy: File
+#     volumeMounts:
+#     - mountPath: /mnt/virtink-kernel
+#       name: virtink-kernel
+#   - args:
+#     - /mnt/ubuntu/rootfs.raw
+#     - "42949672960"
+#     image: registry.jxit.net.cn:5000/qdcloud/init-rootfs-ubuntu@sha256:876b5c79caedde9f7a6df0e5f09c05e7aa78c0ff39b36c80ea6f8e88f3c3bb11
+#     imagePullPolicy: Always
+#     name: init-volume-ubuntu
+#     resources: {}
+#     terminationMessagePath: /dev/termination-log
+#     terminationMessagePolicy: File
+#     volumeMounts:
+#     - mountPath: /mnt/ubuntu
+#       name: ubuntu
+#   - args:
+#     - cloud-init
+#     - aW5zdGFuY2UtaWQ6IDVkZTlkNTNlLTAyMTYtNGI1MC04NmVhLWY2M2QzZmFiNzMyYwpsb2NhbC1ob3N0bmFtZTogdWJ1bnR1LWNvbnRhaW5lci1yb290ZnM=
+#     - I2Nsb3VkLWNvbmZpZwpzc2hfcHdhdXRoOiBUcnVlCmNocGFzc3dkOgogIGxpc3Q6IHwKICAgICByb290OjEyMwogICAgIHVidW50dToxMjMKICBleHBpcmU6IEZhbHNlCmJvb3RjbWQ6CiAgLSBlY2hvIFBlcm1pdFJvb3RMb2dpbiB5ZXMgPj4gL2V0Yy9zc2gvc3NoZF9jb25maWc=
+#     - dmVyc2lvbjogMQpjb25maWc6CiAgLSB0eXBlOiBwaHlzaWNhbAogICAgbmFtZTogZW5zNAogICAgc3VibmV0czoKICAgICAgLSB0eXBlOiBzdGF0aWMKICAgICAgICBpcHY0OiB0cnVlCiAgICAgICAgYWRkcmVzczogMTAuMTAuMTAuODEKICAgICAgICBuZXRtYXNrOiAyNTUuMjU1LjI1NS4wCiAgICAgICAgZ2F0ZXdheTogMTAuMTAuMTAuMQogICAgICAgIGNvbnRyb2w6IGF1dG8KICAtIHR5cGU6IG5hbWVzZXJ2ZXIKICAgIGFkZHJlc3M6IDEwLjE2LjI1NS4yNTQ=
+#     - /mnt/cloud-init/cloud-init.iso
+#     command:
+#     - virt-init-volume
+#     image: smartxworks/virt-prerunner:v0.13.0@sha256:44311e42fb3fb4823a755d487c728535ba928efa8e449a3b3b5b8617360bacf6
+#     imagePullPolicy: IfNotPresent
+#     name: init-volume-cloud-init
+#     resources: {}
+#     terminationMessagePath: /dev/termination-log
+#     terminationMessagePolicy: File
+#     volumeMounts:
+#     - mountPath: /mnt/cloud-init
+#       name: cloud-init
+#   containers:
+#   - args:
+#     - --vm-data
+#     - eyJraW5kIjoiVmlydHVhbE1hY2hpbmUiLCJhcGlWZXJzaW9uIjoidmlydC52aXJ0aW5rLnNtYXJ0eC5jb20vdjFhbHBoYTEiLCJtZXRhZGF0YSI6eyJuYW1lIjoidWJ1bnR1LWNvbnRhaW5lci1yb290ZnMiLCJuYW1lc3BhY2UiOiJkZWZhdWx0IiwidWlkIjoiNWRlOWQ1M2UtMDIxNi00YjUwLTg2ZWEtZjYzZDNmYWI3MzJjIiwicmVzb3VyY2VWZXJzaW9uIjoiMjU2MTEiLCJnZW5lcmF0aW9uIjoxLCJjcmVhdGlvblRpbWVzdGFtcCI6IjIwMjQtMDQtMjBUMDY6MDQ6NDFaIiwiYW5ub3RhdGlvbnMiOnsia3ViZWN0bC5rdWJlcm5ldGVzLmlvL2xhc3QtYXBwbGllZC1jb25maWd1cmF0aW9uIjoie1wiYXBpVmVyc2lvblwiOlwidmlydC52aXJ0aW5rLnNtYXJ0eC5jb20vdjFhbHBoYTFcIixcImtpbmRcIjpcIlZpcnR1YWxNYWNoaW5lXCIsXCJtZXRhZGF0YVwiOntcImFubm90YXRpb25zXCI6e30sXCJuYW1lXCI6XCJ1YnVudHUtY29udGFpbmVyLXJvb3Rmc1wiLFwibmFtZXNwYWNlXCI6XCJkZWZhdWx0XCJ9LFwic3BlY1wiOntcImluc3RhbmNlXCI6e1wiZGlza3NcIjpbe1wibmFtZVwiOlwidWJ1bnR1XCJ9LHtcIm5hbWVcIjpcImNsb3VkLWluaXRcIn1dLFwiaW50ZXJmYWNlc1wiOlt7XCJuYW1lXCI6XCJwb2RcIn1dLFwia2VybmVsXCI6e1wiY21kbGluZVwiOlwiY29uc29sZT10dHlTMCByb290PS9kZXYvdmRhIHJ3XCIsXCJpbWFnZVwiOlwic21hcnR4d29ya3MvdmlydGluay1rZXJuZWwtNS4xNS4xMlwifSxcIm1lbW9yeVwiOntcInNpemVcIjpcIjFHaVwifX0sXCJuZXR3b3Jrc1wiOlt7XCJuYW1lXCI6XCJwb2RcIixcInBvZFwiOnt9fV0sXCJ2b2x1bWVzXCI6W3tcImNvbnRhaW5lclJvb3Rmc1wiOntcImltYWdlXCI6XCJzbWFydHh3b3Jrcy92aXJ0aW5rLWNvbnRhaW5lci1yb290ZnMtdWJ1bnR1XCIsXCJzaXplXCI6XCI0R2lcIn0sXCJuYW1lXCI6XCJ1YnVudHVcIn0se1wiY2xvdWRJbml0XCI6e1widXNlckRhdGFcIjpcIiNjbG91ZC1jb25maWdcXG5wYXNzd29yZDogcGFzc3dvcmRcXG5jaHBhc3N3ZDogeyBleHBpcmU6IEZhbHNlIH1cXG5zc2hfcHdhdXRoOiBUcnVlXCJ9LFwibmFtZVwiOlwiY2xvdWQtaW5pdFwifV19fVxuIn0sIm1hbmFnZWRGaWVsZHMiOlt7Im1hbmFnZXIiOiJrdWJlY3RsLWNsaWVudC1zaWRlLWFwcGx5Iiwib3BlcmF0aW9uIjoiVXBkYXRlIiwiYXBpVmVyc2lvbiI6InZpcnQudmlydGluay5zbWFydHguY29tL3YxYWxwaGExIiwidGltZSI6IjIwMjQtMDQtMjBUMDY6MDQ6NDFaIiwiZmllbGRzVHlwZSI6IkZpZWxkc1YxIiwiZmllbGRzVjEiOnsiZjptZXRhZGF0YSI6eyJmOmFubm90YXRpb25zIjp7Ii4iOnt9LCJmOmt1YmVjdGwua3ViZXJuZXRlcy5pby9sYXN0LWFwcGxpZWQtY29uZmlndXJhdGlvbiI6e319fSwiZjpzcGVjIjp7Ii4iOnt9LCJmOmluc3RhbmNlIjp7Ii4iOnt9LCJmOmRpc2tzIjp7fSwiZjppbnRlcmZhY2VzIjp7fSwiZjprZXJuZWwiOnsiLiI6e30sImY6Y21kbGluZSI6e30sImY6aW1hZ2UiOnt9fSwiZjptZW1vcnkiOnsiLiI6e30sImY6c2l6ZSI6e319fSwiZjpuZXR3b3JrcyI6e30sImY6dm9sdW1lcyI6e319fX0seyJtYW5hZ2VyIjoidmlydC1jb250cm9sbGVyIiwib3BlcmF0aW9uIjoiVXBkYXRlIiwiYXBpVmVyc2lvbiI6InZpcnQudmlydGluay5zbWFydHguY29tL3YxYWxwaGExIiwidGltZSI6IjIwMjQtMDQtMjBUMDY6MDQ6NDFaIiwiZmllbGRzVHlwZSI6IkZpZWxkc1YxIiwiZmllbGRzVjEiOnsiZjpzdGF0dXMiOnsiZjpwaGFzZSI6e30sImY6dm1Qb2ROYW1lIjp7fX19LCJzdWJyZXNvdXJjZSI6InN0YXR1cyJ9LHsibWFuYWdlciI6InZpcnQtZGFlbW9uIiwib3BlcmF0aW9uIjoiVXBkYXRlIiwiYXBpVmVyc2lvbiI6InZpcnQudmlydGluay5zbWFydHguY29tL3YxYWxwaGExIiwidGltZSI6IjIwMjQtMDQtMjBUMDY6MDQ6NDFaIiwiZmllbGRzVHlwZSI6IkZpZWxkc1YxIiwiZmllbGRzVjEiOnsiZjpzdGF0dXMiOnt9fSwic3VicmVzb3VyY2UiOiJzdGF0dXMifV19LCJzcGVjIjp7InJlc291cmNlcyI6e30sInJ1blBvbGljeSI6Ik9uY2UiLCJpbnN0YW5jZSI6eyJjcHUiOnsic29ja2V0cyI6MiwiY29yZXNQZXJTb2NrZXQiOjJ9LCJtZW1vcnkiOnsic2l6ZSI6IjhHaSJ9LCJrZXJuZWwiOnsiaW1hZ2UiOiJzbWFydHh3b3Jrcy92aXJ0aW5rLWtlcm5lbC01LjE1LjEyIiwiY21kbGluZSI6ImNvbnNvbGU9dHR5UzAgcm9vdD0vZGV2L3ZkYSBydyJ9LCJkaXNrcyI6W3sibmFtZSI6InVidW50dSJ9LHsibmFtZSI6ImNsb3VkLWluaXQifV0sImludGVyZmFjZXMiOlt7Im5hbWUiOiJwb2QiLCJtYWMiOiI1Mjo1NDowMDplMjoxNjplYSIsImJyaWRnZSI6e319XX0sInZvbHVtZXMiOlt7Im5hbWUiOiJ1YnVudHUiLCJjb250YWluZXJSb290ZnMiOnsiaW1hZ2UiOiJzbWFydHh3b3Jrcy92aXJ0aW5rLWNvbnRhaW5lci1yb290ZnMtdWJ1bnR1Iiwic2l6ZSI6IjQwR2kifX0seyJuYW1lIjoiY2xvdWQtaW5pdCIsImNsb3VkSW5pdCI6eyJ1c2VyRGF0YSI6IiNjbG91ZC1jb25maWdcbnBhc3N3b3JkOiBwYXNzd29yZFxuY2hwYXNzd2Q6IHsgZXhwaXJlOiBGYWxzZSB9XG5zc2hfcHdhdXRoOiBUcnVlIn19XSwibmV0d29ya3MiOlt7Im5hbWUiOiJwb2QiLCJwb2QiOnt9fV19LCJzdGF0dXMiOnsicGhhc2UiOiJTY2hlZHVsaW5nIiwidm1Qb2ROYW1lIjoidm0tdWJ1bnR1LWNvbnRhaW5lci1yb290ZnMtcWdyZHgifX0=
+#     image: smartxworks/virt-prerunner:v0.13.0@sha256:44311e42fb3fb4823a755d487c728535ba928efa8e449a3b3b5b8617360bacf6
+#     imagePullPolicy: IfNotPresent
+#     name: cloud-hypervisor
+#     securityContext:
+#       capabilities:
+#         add:
+#         - SYS_ADMIN
+#         - NET_ADMIN
+#         - SYS_RESOURCE
+#       privileged: true
+#     terminationMessagePath: /dev/termination-log
+#     terminationMessagePolicy: File
+#     volumeMounts:
+#     - mountPath: /dev/kvm
+#       name: devkvm
+#     - mountPath: /dev/net/tun
+#       name: devtun
+#     - mountPath: /var/run/virtink
+#       name: virtink
+#     - mountPath: /mnt/virtink-kernel
+#       name: virtink-kernel
+#     - mountPath: /mnt/ubuntu
+#       name: ubuntu
+#     - mountPath: /mnt/cloud-init
+#       name: cloud-init
+#   volumes:
+#   - name: devkvm
+#     hostPath:
+#       path: /dev/kvm
+#   - name: devtun
+#     hostPath:
+#       path: /dev/net/tun
+#   - emptyDir: {}
+#     name: virtink
+#   - emptyDir: {}
+#     name: virtink-kernel
+#   - name: ubuntu
+#     persistentVolumeClaim:
+#       claimName: jx00000003-ops-81-pvc
+#   - emptyDir: {}
+#     name: cloud-init
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-jx00000003-8122
+spec:
+  eip: eip-jx00000003
+  externalPort: "8122"
+  protocol: tcp
+  internalIp: 10.10.10.81
+  internalPort: "22"
+---
+apiVersion: kubeovn.io/v1
+kind: IptablesDnatRule
+metadata:
+  name: dnat-jx00000003-8180
+spec:
+  eip: eip-jx00000003
+  externalPort: "8180"
+  protocol: tcp
+  internalIp: 10.10.10.81
+  internalPort: "80"
