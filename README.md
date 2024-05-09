@@ -31,8 +31,9 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -s 10.16.0.0/16 -j MASQUERADE
 ```
 ## 部署起点云
+部署文档：https://www.yuque.com/yangjianan-eq8a5/iceon4/ydlzbwo6x3uiqucf?singleDoc
 
-见视频：http://stu.jxit.net.cn:88/mp4/shizhan/qdcloud/20240430_qdcloud_k8s_deploy.mp4
+部署视频：https://www.bilibili.com/video/BV1hw4m117b5/?vd_source=716fc00b8b8776df63ada30f06fac1a9
 
 ## 日常维护命令
 ### 获取所有学生Pod状态
