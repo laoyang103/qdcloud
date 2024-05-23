@@ -1,3 +1,7 @@
+# in ubuntu2204 please run
+# sudo apt-get install apparmor-utils
+# sudo aa-complain /usr/bin/swtpm
+# sudo apparmor_parser -r /etc/apparmor.d/usr.bin.swtpm
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
