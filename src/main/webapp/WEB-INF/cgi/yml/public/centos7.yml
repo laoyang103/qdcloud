@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centos7-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 80Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: centos7
+  labels:
+    name: centos7
+spec:
+  terminationGracePeriodSeconds: 120 # the Kubernetes default is 30 seconds and it may be not enough
+  containers:
+    - name: centos7
+      image: qemux/qemu-docker
+      ports:
+        - containerPort: 8006
+          protocol: TCP
+      #resources:
+      #  limits:
+      #    devices.kubevirt.io/kvm: 1
+      securityContext:
+        privileged: true
+      env:
+        - name: BOOT
+          value: "http://192.168.1.55/iso/centos/CentOS-7-x86_64-Minimal-2009.iso"
+        - name: RAM_SIZE
+          value: 16G
+        - name: CPU_CORES
+          value: "8"
+        - name: DISK_SIZE
+          value: "16G"
+      volumeMounts:
+        - mountPath: /storage
+          name: storage
+        - mountPath: /dev/kvm
+          name: kvm
+  volumes:
+    - name: storage
+      persistentVolumeClaim:
+        claimName: centos7-pvc
+    - name: kvm
+      hostPath:
+        path: /dev/kvm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: centos7
+spec:
+  type: NodePort
+  selector:
+    name: centos7
+  ports:
+    - name: tcp-8006
+      protocol: TCP
+      port: 8006
+      targetPort: 8006
+      nodePort: 31808
