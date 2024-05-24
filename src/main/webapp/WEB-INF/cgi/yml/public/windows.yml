@@ -64,7 +64,7 @@ spec:
         memory: 16512Mi
     env:
     - name: VERSION
-      value: "2012"
+      value: "2016"
     ports:
     - name: vnc
       containerPort: 8006
