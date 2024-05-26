@@ -7,7 +7,7 @@ export INSTALL_K3S_MIRROR=cn
 # 安装时去掉默认网络插件flannel，去掉默认ingress-controller traefik
 # 将kubeconfig保存到~/.kube/config
 wget https://rancher-mirror.rancher.cn/k3s/k3s-install.sh 
-sh k3s-install.sh --flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode 644 --write-kubeconfig ~/.kube/config --kubelet-arg=max-pods=5000
+sh k3s-install.sh --flannel-backend=none --disable-network-policy --disable=traefik --write-kubeconfig-mode=644 --write-kubeconfig=~/.kube/config --service-node-port-range=60-59000 --kubelet-arg=max-pods=5000
 
 # 下载kube-ovn安装脚本（已经将pod网络改为10.42.0.0/16，svc改为10.43.0.0/16）
 wget http://stu.jxit.net.cn:88/qdcloud/kube-ovn-1.12-k3s-1.28.8-install.sh
