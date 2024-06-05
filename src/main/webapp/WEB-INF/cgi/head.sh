@@ -184,7 +184,8 @@ function startvm() {
     sleep 5
   done
 
-  # 创建目标Pod
+  # 创建目标Pod和PVC
+  kubectl apply -f $hpvdiskdir/$user_name/pvc.yml
   kubectl apply -f $hpvdiskdir/$user_name/pod/$vm.yml
 }
 
